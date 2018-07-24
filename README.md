@@ -2,6 +2,21 @@
 
 Used for terraforming a highly available set of clusters across multiple cloud vendors.
 
+## Authenticating
+
+### Azure
+
+You will need to create a service principal to use for authentication when applying your terraform configuration.
+
+Because this service principal will need to create other principals as part of the provisioning it must have permissions to both "Read and write all applications" and "Sign in and read user profile" within the "Windows Azure Active Directory" API. You grant these permissions via the Application Registrations blade in the Azure portal.
+
+It should also have "Owner" role within the subscription you intend to deploy to.
+
+### Google Compute Cloud
+
+You must create a user that has asmin priviledges within your project.
+You must also activate the relevante IAM management APIs within the project
+
 ## Variables
 
 - azure_client_id - (Required) 
