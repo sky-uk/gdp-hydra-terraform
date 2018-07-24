@@ -57,7 +57,7 @@ module "acr" {
   source = "acr"
 
   resource_group_name     = "${local.resource_group_name_acr}"
-  resource_group_location = "westeurope"
+  resource_group_location = "${var.azure_resource_locations[0]}"
 }
 
 module "aks_cluster_1" {
@@ -76,7 +76,7 @@ module "aks_cluster_1" {
   node_count         = "${var.node_count}"
   node_sku           = "${local.aks_node}"
 
-  region = "westeurope"
+  region = "${var.azure_resource_locations[0]}"
 }
 
 module "k8s_config_aks_1" {
@@ -111,7 +111,7 @@ module "aks_cluster_2" {
   node_count         = "${var.node_count}"
   node_sku           = "${local.aks_node}"
 
-  region = "northeurope"
+  region = "${var.azure_resource_locations[1]}"
 }
 
 module "k8s_config_aks_2" {

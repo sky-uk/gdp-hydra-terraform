@@ -3,6 +3,13 @@ variable "azure_client_secret" {}
 variable "azure_tenant_id" {}
 variable "azure_subscription_id" {}
 
+variable "azure_resource_locations" {
+  default = [
+    "westeurope",
+    "northeurope",
+  ]
+}
+
 variable "project_name" {
   description = "Name of the project that is used across the deployment for naming resources"
 }
