@@ -63,6 +63,8 @@ locals {
 
   resource_group_name_acr = "${var.project_name}-acr"
 
+  resource_group_name_config = "${var.project_name}-config"
+
   node_match = {
     "small"  = "n1-standard-2,Standard_D2_v3"
     "medium" = "n1-standard-4,Standard_D4_v3"

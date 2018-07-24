@@ -38,3 +38,8 @@ output "acr_password" {
   sensitive = true
   value     = "${module.acr.password}"
 }
+
+output "kubeconfig_url" {
+  description = "Azure storage URL for zip file containing all of the cluster kubeconfigs"
+  value       = "${azurerm_storage_blob.kubeconfig.url}"
+}
