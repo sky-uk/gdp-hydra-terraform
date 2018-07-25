@@ -7,3 +7,7 @@ variable "resource_group_location" {
   type        = "string"
   description = "Location of the azure resource group."
 }
+
+variable "project_name" {
+  description = "Name of the project"
+}

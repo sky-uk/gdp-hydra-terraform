@@ -58,6 +58,7 @@ module "acr" {
 
   resource_group_name     = "${local.resource_group_name_acr}"
   resource_group_location = "${var.azure_resource_locations[0]}"
+  project_name            = "${var.project_name}"
 }
 
 module "aks_cluster_1" {
