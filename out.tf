@@ -41,5 +41,6 @@ output "acr_password" {
 
 output "kubeconfig_url" {
   description = "Azure storage URL for zip file containing all of the cluster kubeconfigs"
-  value       = "${azurerm_storage_blob.kubeconfig.url}"
+  sensitive   = true
+  value       = "${azurerm_storage_blob.kubeconfig.url}${data.azurerm_storage_account_sas.config_container_sas.sas}"
 }

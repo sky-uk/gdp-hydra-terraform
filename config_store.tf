@@ -53,3 +53,35 @@ resource "azurerm_storage_blob" "kubeconfig" {
   type   = "block"
   source = "${data.archive_file.kubeconfig.output_path}"
 }
+
+data "azurerm_storage_account_sas" "config_container_sas" {
+  connection_string = "${azurerm_storage_account.config_storage.primary_connection_string}"
+  https_only        = true
+
+  resource_types {
+    service   = false
+    container = false
+    object    = true
+  }
+
+  services {
+    blob  = true
+    queue = false
+    table = false
+    file  = false
+  }
+
+  start  = "${timestamp()}"
+  expiry = "${timeadd(timestamp(), "8760h")}"
+
+  permissions {
+    read    = true
+    write   = false
+    delete  = false
+    list    = false
+    add     = false
+    create  = false
+    update  = false
+    process = false
+  }
+}
