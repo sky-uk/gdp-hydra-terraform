@@ -1,6 +1,6 @@
 variable "resource_group_name" {
   type        = "string"
-  description = "Name of the azure resource group."
+  description = "Name of the azure resource group the Azure Container Service will be created in"
 }
 
 variable "resource_group_location" {
