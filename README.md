@@ -106,18 +106,12 @@ These variables are used to configure aspects of the clusters that are created b
 
  Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| project_name | Name of the project that is used across the deployment for naming resources. This will be used in cluster names, DNS entries and all other configuration and will enable you to identify resources. | string | - | yes |
 | azure_node_ssh_key | SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N '' -C aks-key` | string | - | yes |
 | azure_resource_locations | List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. | string | `<list>` | no |
 | kubernetes_version | The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5 | string | `1.10.5` | no |
 | node_count | Number of nodes in each cluster. | string | `1` | no |
 | node_type | Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters. | string | `small` | no |
-
-- project_name - (Required) Name of the project that is used across the deployment for naming resources. This will be used in cluster names, DNS entries and all other configuration and will enable you to identify resources.
-- azure_node_ssh_key - (Required) SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N "" -C "aks-key"`
-- azure_resource_locations - (Optional) List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. 
-- kubernetes_version - (Optional) The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5
-- node_type - (Optional) Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters.
-- node_count - (Optional) Number of nodes in each cluster. Defaults to 1
 
 ### Cluster Load Balancing
 
@@ -145,3 +139,7 @@ The following variables configure which clusters should be active in the Akamai 
 | kubeconfigs | Map of the kuber config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url |
 
 You can run `terraform output` from an initialised terraform directory to get the outputs of the terrafom config to use in things like CI or to get access details for different resources.
+
+## Documentation
+
+Parts of this documentation have been generated from the module souce via https://github.com/segmentio/terraform-docs
