@@ -35,7 +35,7 @@ module "hydra" {
   "azure_tenant_id"       = ""
   "azure_subscription_id" = ""
   "azure_node_ssh_key"    = ""
-  "gcp_creds_base64"      = ""
+  "google_creds_base64"   = ""
   "google_project_id"     = "my-project-101"
   "akamai_host"           = ""
   "akamai_client_secret"  = ""
@@ -75,28 +75,42 @@ You can then pass that into the hydra module.
 
 The following properties are required for authenticating into the Azure platform to create resources. See the Authenticating section above for more information on creating credentials
 
-- azure_client_id - (Required) 
-- azure_client_secret - (Required) 
-- azure_tenant_id - (Required) 
-- azure_subscription_id - (Required) 
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| azure_client_id |  | string | - | yes |
+| azure_client_secret |  | string | - | yes |
+| azure_subscription_id |  | string | - | yes |
+| azure_tenant_id |  | string | - | yes |
 
 ### Google Compute Platform Credentials
 
 These variables are requried configuration to create resources within GCP. See the Authenticating section above for more information on creating credentials
 
-- google_project_id - (Required) 
-- gcp_creds_base64 - (Required) The service account json file base64 encoded
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| google_project_id |  | string | - | yes |
+| google_creds_base64 | The service account json file base64 encoded | string | - | yes |
 
 ### Akamain API Authentication
 
-- akamai_host - (Required) Host for akamai API
-- akamai_client_secret - (Required) 
-- akamai_access_token - (Required) 
-- akamai_client_token - (Required) 
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| akamai_access_token |  | string | - | yes |
+| akamai_client_secret |  | string | - | yes |
+| akamai_client_token |  | string | - | yes |
+| akamai_host | Host for akamai API | string | - | yes |
 
 ### Cluster Configuration
 
 These variables are used to configure aspects of the clusters that are created by hydra.
+
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| azure_node_ssh_key | SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N '' -C aks-key` | string | - | yes |
+| azure_resource_locations | List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. | string | `<list>` | no |
+| kubernetes_version | The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5 | string | `1.10.5` | no |
+| node_count | Number of nodes in each cluster. | string | `1` | no |
+| node_type | Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters. | string | `small` | no |
 
 - project_name - (Required) Name of the project that is used across the deployment for naming resources. This will be used in cluster names, DNS entries and all other configuration and will enable you to identify resources.
 - azure_node_ssh_key - (Required) SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N "" -C "aks-key"`
@@ -109,21 +123,25 @@ These variables are used to configure aspects of the clusters that are created b
 
 The following variables configure which clusters should be active in the Akamai load balancing configuration. You can use these variables to remove a cluster from the traffic manager so that you can perform maintenance or upgrades. Setting a property to false will disable it in the traffic manager configuration.
 
-- aks_cluster_1_enabled - (Optional) Defaults to true
-- aks_cluster_2_enabled - (Optional) Defaults to true
-- gke_cluster_1_enabled - (Optional) Defaults to true
-- gke_cluster_2_enabled - (Optional) Defaults to true
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| traffic_manager_aks_cluster_1_enabled |  | string | `true` | no |
+| traffic_manager_aks_cluster_2_enabled |  | string | `true` | no |
+| traffic_manager_gke_cluster_1_enabled |  | string | `true` | no |
+| traffic_manager_gke_cluster_2_enabled |  | string | `true` | no |
 
 ## Outputs
 
-- ips - A list of all the cluster IP addresses
-- kubeconfigs - A map containing all of the configs in a map |
-- edge_url - The configured edge URL on akamai
-- gcr_location
-- gcr_credentials
-- acr_location
-- acr_username
-- acr_password
-- kubeconfig_url - Azure storage URL for zip file containing all of the cluster kubeconfigs, this link includes a SAS token and will grant access to all users. This can be used as part of CI processes to access all clusters.
+| Name | Description |
+|------|-------------|
+| acr_password | The password for the docker registry for Azure clusters |
+| acr_url | The URL of the docker registry for Azure clusters |
+| acr_username | The username for the docker registry for Azure clusters |
+| edge_url | The URL of the Akamai Traffic Manager edge |
+| gcr_credentials | JSON credentials file for the docker registry for GCP clusters |
+| gcr_url | The URL of the docker registry for GCP clusters |
+| ips | Map of the cluster IPs |
+| kubeconfig_url | URL for zip file containing all of the cluster kubeconfigs, this link includes a SAS token and will grant access to all users. This can be used as part of CI processes to access all clusters. |
+| kubeconfigs | Map of the kuber config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url |
 
 You can run `terraform output` from an initialised terraform directory to get the outputs of the terrafom config to use in things like CI or to get access details for different resources.

@@ -27,10 +27,13 @@ resource "google_service_account_key" "access_key" {
 }
 
 output "url" {
-  value = "${data.google_container_registry_repository.registry.repository_url}"
+  type        = "string"
+  description = "The URL of the docker container registry for the GDP project"
+  value       = "${data.google_container_registry_repository.registry.repository_url}"
 }
 
 output "credentials" {
-  sensitive = true
-  value     = "${base64decode(google_service_account_key.access_key.private_key)}"
+  description = "The JSON credentials file for the docker registry user for GCP"
+  value       = "${base64decode(google_service_account_key.access_key.private_key)}"
+  sensitive   = true
 }

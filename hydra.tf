@@ -7,7 +7,7 @@ provider "azurerm" {
 
 // Configure the Google Cloud provider
 provider "google" {
-  credentials = "${base64decode(var.gcp_creds_base64)}"
+  credentials = "${base64decode(var.google_creds_base64)}"
 }
 
 provider "akamai" {

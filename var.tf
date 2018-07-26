@@ -4,6 +4,8 @@ variable "azure_tenant_id" {}
 variable "azure_subscription_id" {}
 
 variable "azure_resource_locations" {
+  description = "List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. "
+
   default = [
     "westeurope",
     "northeurope",
@@ -11,14 +13,16 @@ variable "azure_resource_locations" {
 }
 
 variable "project_name" {
-  description = "Name of the project that is used across the deployment for naming resources"
+  description = "Name of the project that is used across the deployment for naming resources. This will be used in cluster names, DNS entries and all other configuration and will enable you to identify resources."
 }
 
 variable "azure_node_ssh_key" {
-  description = "SSH key for nodes created in AKS"
+  description = "SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N '' -C aks-key`"
 }
 
-variable "gcp_creds_base64" {
+variable "google_project_id" {}
+
+variable "google_creds_base64" {
   description = "The service account json file base64 encoded"
 }
 
@@ -33,28 +37,28 @@ variable "akamai_access_token" {}
 variable "akamai_client_token" {}
 
 variable "kubernetes_version" {
-  default = "1.10.5"
+  description = "The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5"
+  default     = "1.10.5"
 }
-
-variable "google_project_id" {}
 
 variable "node_type" {
-  default = "small"
+  description = "Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters."
+  default     = "small"
 }
 
-variable "aks_cluster_1_enabled" {
+variable "traffic_manager_aks_cluster_1_enabled" {
   default = true
 }
 
-variable "aks_cluster_2_enabled" {
+variable "traffic_manager_aks_cluster_2_enabled" {
   default = true
 }
 
-variable "gke_cluster_1_enabled" {
+variable "traffic_manager_gke_cluster_1_enabled" {
   default = true
 }
 
-variable "gke_cluster_2_enabled" {
+variable "traffic_manager_gke_cluster_2_enabled" {
   default = true
 }
 
@@ -83,5 +87,6 @@ locals {
 }
 
 variable "node_count" {
-  default = 1
+  description = "Number of nodes in each cluster."
+  default     = 1
 }
