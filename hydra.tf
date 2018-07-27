@@ -17,42 +17,6 @@ provider "akamai" {
   client_secret = "${var.akamai_client_secret}"
 }
 
-provider "kubernetes" {
-  alias = "aks_1"
-
-  client_certificate     = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
-  client_key             = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
-  cluster_ca_certificate = "${base64decode(module.aks_cluster_1.cluster_ca)}"
-  host                   = "${module.aks_cluster_1.host}"
-}
-
-provider "kubernetes" {
-  alias = "aks_2"
-
-  client_certificate     = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
-  client_key             = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
-  cluster_ca_certificate = "${base64decode(module.aks_cluster_2.cluster_ca)}"
-  host                   = "${module.aks_cluster_2.host}"
-}
-
-provider "kubernetes" {
-  alias = "gke_2"
-
-  client_certificate     = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
-  client_key             = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
-  cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
-  host                   = "${module.gke_cluster_2.host}"
-}
-
-provider "kubernetes" {
-  alias = "gke_1"
-
-  client_certificate     = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
-  client_key             = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
-  cluster_ca_certificate = "${base64decode(module.gke_cluster_1.cluster_ca)}"
-  host                   = "${module.gke_cluster_1.host}"
-}
-
 module "acr" {
   source = "acr"
 
@@ -80,22 +44,6 @@ module "aks_cluster_1" {
   region = "${var.azure_resource_locations[0]}"
 }
 
-module "k8s_config_aks_1" {
-  source = "k8s"
-
-  providers {
-    "kubernetes" = "kubernetes.aks_1"
-  }
-
-  enable_image_pull_secret = true
-  image_pull_server        = "${module.acr.url}"
-  image_pull_username      = "${module.acr.username}"
-  image_pull_password      = "${module.acr.password}"
-
-  # workaround for issue with the kubernetes provider constructing cluster name here rather than passing it from the module
-  cluster_link = "aks-cluster-westeurope"
-}
-
 module "aks_cluster_2" {
   source = "aks"
 
@@ -115,22 +63,6 @@ module "aks_cluster_2" {
   region = "${var.azure_resource_locations[1]}"
 }
 
-module "k8s_config_aks_2" {
-  source = "k8s"
-
-  providers {
-    "kubernetes" = "kubernetes.aks_2"
-  }
-
-  enable_image_pull_secret = true
-  image_pull_server        = "${module.acr.url}"
-  image_pull_username      = "${module.acr.username}"
-  image_pull_password      = "${module.acr.password}"
-
-  # workaround for issue with the kubernetes provider constructing cluster name here rather than passing it from the module
-  cluster_link = "aks-cluster-northeurope"
-}
-
 module "gke_cluster_1" {
   source = "gke"
 
@@ -141,17 +73,6 @@ module "gke_cluster_1" {
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
-}
-
-module "k8s_config_gke_1" {
-  providers {
-    "kubernetes" = "kubernetes.gke_1"
-  }
-
-  source = "k8s"
-
-  # workaround for issue with the kubernetes provider constructing cluster name here rather than passing it from the module
-  cluster_link = "gke-cluster-europe-west2-a"
 }
 
 module "gke_cluster_2" {
@@ -166,15 +87,50 @@ module "gke_cluster_2" {
   machine_type       = "${local.gke_node}"
 }
 
-module "k8s_config_gke_2" {
-  providers {
-    "kubernetes" = "kubernetes.gke_2"
-  }
-
+module "k8s_config_aks_1" {
   source = "k8s"
 
-  # workaround for issue with the kubernetes provider constructing cluster name here rather than passing it from the module
-  cluster_link = "gke-cluster-europe-west3-a"
+  enable_image_pull_secret = true
+  image_pull_server        = "${module.acr.url}"
+  image_pull_username      = "${module.acr.username}"
+  image_pull_password      = "${module.acr.password}"
+
+  cluster_client_certificate = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
+  cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
+  cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
+  host                       = "${module.aks_cluster_1.host}"
+}
+
+module "k8s_config_aks_2" {
+  source = "k8s"
+
+  enable_image_pull_secret = true
+  image_pull_server        = "${module.acr.url}"
+  image_pull_username      = "${module.acr.username}"
+  image_pull_password      = "${module.acr.password}"
+
+  cluster_client_certificate = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
+  cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
+  cluster_ca_certificate     = "${base64decode(module.aks_cluster_2.cluster_ca)}"
+  host                       = "${module.aks_cluster_2.host}"
+}
+
+module "k8s_config_gke_1" {
+  source = "k8s"
+
+  cluster_client_certificate = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
+  cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
+  cluster_ca_certificate     = "${base64decode(module.gke_cluster_1.cluster_ca)}"
+  host                       = "${module.gke_cluster_1.host}"
+}
+
+module "k8s_config_gke_2" {
+  source = "k8s"
+
+  cluster_client_certificate = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
+  cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
+  cluster_ca_certificate     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
+  host                       = "${module.gke_cluster_2.host}"
 }
 
 module "akamai_config" {

@@ -1,20 +1,9 @@
-variable "image_pull_server" {
-  default = ""
+provider "kubernetes" {
+  client_certificate     = "${var.cluster_client_certificate}"
+  client_key             = "${var.cluster_client_key}"
+  cluster_ca_certificate = "${var.cluster_ca_certificate}"
+  host                   = "${var.host}"
 }
-
-variable "image_pull_username" {
-  default = ""
-}
-
-variable "image_pull_password" {
-  default = ""
-}
-
-variable "enable_image_pull_secret" {
-  default = 0
-}
-
-variable "cluster_link" {}
 
 resource "kubernetes_service" "ingress_service" {
   metadata {
@@ -23,7 +12,6 @@ resource "kubernetes_service" "ingress_service" {
 
     labels = {
       createdby = "terraform"
-      cluster   = "${var.cluster_link}"
     }
   }
 
@@ -75,15 +63,10 @@ resource "kubernetes_secret" "image_pull_secret" {
 
     labels = {
       createdby = "terraform"
-      cluster   = "${var.cluster_link}"
     }
   }
 
   data {
     ".dockerconfigjson" = "${data.template_file.image_pull_config.rendered}"
   }
-}
-
-output "cluster_ingress_ip" {
-  value = "${kubernetes_service.ingress_service.load_balancer_ingress.0.ip}"
 }
