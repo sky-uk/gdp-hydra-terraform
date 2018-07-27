@@ -180,10 +180,10 @@ module "k8s_config_gke_2" {
 module "akamai_config" {
   source                = "akamai"
   cluster_ips           = "${local.cluster_ips}"
-  aks_cluster_1_enabled = "${var.aks_cluster_1_enabled}"
-  aks_cluster_2_enabled = "${var.aks_cluster_2_enabled}"
-  gke_cluster_1_enabled = "${var.gke_cluster_1_enabled}"
-  gke_cluster_2_enabled = "${var.gke_cluster_2_enabled}"
+  aks_cluster_1_enabled = "${var.traffic_manager_aks_cluster_1_enabled}"
+  aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
+  gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
+  gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
 }
 
 module "gcr" {

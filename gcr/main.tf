@@ -27,7 +27,6 @@ resource "google_service_account_key" "access_key" {
 }
 
 output "url" {
-  type        = "string"
   description = "The URL of the docker container registry for the GDP project"
   value       = "${data.google_container_registry_repository.registry.repository_url}"
 }
