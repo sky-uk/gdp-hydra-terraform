@@ -2,3 +2,5 @@
 *.tfstate*
 *.private.*
 crash.log
+
+kubeconfig.zip

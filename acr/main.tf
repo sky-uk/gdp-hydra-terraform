@@ -26,10 +26,10 @@ resource "azurerm_container_registry" "deploy" {
 }
 
 resource "azurerm_azuread_application" "acr_application" {
-  name                       = "example"
-  homepage                   = "http://hydra"
-  identifier_uris            = ["http://hydra"]
-  reply_urls                 = ["http://hydra"]
+  name                       = "${var.project_name}-ci-user"
+  homepage                   = "http://${var.project_name}-ci"
+  identifier_uris            = ["http://${var.project_name}-ci"]
+  reply_urls                 = ["http://${var.project_name}-ci"]
   available_to_other_tenants = false
   oauth2_allow_implicit_flow = true
 }
@@ -52,6 +52,12 @@ resource "azurerm_azuread_service_principal_password" "acr_service_principal_pas
   service_principal_id = "${azurerm_azuread_service_principal.acr_service_principal.id}"
   value                = "${random_string.acr_password.result}"
   end_date             = "${timeadd(timestamp(), "8760h")}"
+
+  # This is a hack to stop it generating a new password each time by having a sliding date
+  # to get the date to change here you would have to manually taint this resource...
+  lifecycle {
+    ignore_changes = ["end_date"]
+  }
 }
 
 resource "azurerm_role_assignment" "acr_service_principal_role" {

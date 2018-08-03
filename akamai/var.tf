@@ -1,19 +1,24 @@
 variable "cluster_ips" {
-  type = "map"
+  description = "Map of the IP addresses to the ingress of all clusters in the hydra deployment"
+  type        = "map"
 }
 
 variable "aks_cluster_1_enabled" {
-  default = true
+  description = "Enable the cluster in the Akamai traffic manager"
+  default     = true
 }
 
 variable "aks_cluster_2_enabled" {
-  default = true
+  description = "Enable the cluster in the Akamai traffic manager"
+  default     = true
 }
 
 variable "gke_cluster_1_enabled" {
-  default = true
+  description = "Enable the cluster in the Akamai traffic manager"
+  default     = true
 }
 
 variable "gke_cluster_2_enabled" {
-  default = true
+  description = "Enable the cluster in the Akamai traffic manager"
+  default     = true
 }
