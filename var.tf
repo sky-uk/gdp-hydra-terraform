@@ -85,7 +85,6 @@ locals {
     "gke_cluster_2" = "${module.k8s_config_gke_2.cluster_ingress_ip}"
   }
   cluster_name = "${var.cluster_prefix}-${var.region}"
-  agents_resource_group_name = "MC_${var.resource_group_name}_${local.cluster_name}_${azurerm_resource_group.rg.location}"
 }
 
 variable "node_count" {

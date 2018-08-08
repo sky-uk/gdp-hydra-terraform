@@ -29,11 +29,15 @@ resource "azurerm_azuread_service_principal_password" "aks_sp_password" {
   }
 }
 
-output "client_id" {
+output "sp_object_id" {
+  value = "${azurerm_azuread_service_principal.aks_sp.id}"
+}
+
+output "application_id" {
   value = "${azurerm_azuread_service_principal.aks_sp.application_id}"
 }
 
-output "client_secret" {
+output "sp_password" {
   sensitive = true
   value     = "${random_string.aks_sp_password.result}"
 }
