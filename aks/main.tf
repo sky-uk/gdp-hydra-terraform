@@ -57,6 +57,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
 
 data "azurerm_resource_group" "agents" {
   name = "${local.agents_resource_group_name}"
+  depends_on = [
+    "azurerm_kubernetes_cluster.aks",
+  ]
 }
 
 // After the cluster creates the MC_* resource group which holds
@@ -65,9 +68,5 @@ resource "azurerm_role_assignment" "aks_service_principal_role_agents" {
   scope                = "${data.azurerm_resource_group.agents.id}"
   role_definition_name = "Owner"
   principal_id         = "${module.service_principal.client_id}"
-
-  depends_on = [
-    "azurerm_kubernetes_cluster.aks"
-  ]
 }
 
