@@ -4,3 +4,5 @@
 crash.log
 
 kubeconfig.zip
+terraform-provider-akamai
+terraform-provider-helm

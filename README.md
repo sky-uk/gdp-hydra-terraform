@@ -13,6 +13,11 @@ You should be familiar with some basic Terraform concepts such as
 
 You can find out more in the [Terraform Documentation](https://www.terraform.io/docs/index.html)
 
+The provider also requires a set of additional Terraform Providers. These are installed by the `install.sh` script:
+
+- [Helm (mcuadros)](https://github.com/mcuadros/terraform-provider-helm)
+- [Akamai (Comcast)](https://github.com/Comcast/terraform-provider-akamai)
+
 ## Getting Started
 
 To get started using this module you will need to create a new Terraform file and reference the module in git. You should ensure that you have specified a specific version in `ref=` section to ensure you get consistent results. This can be either a branch or a tag reference.

@@ -15,8 +15,14 @@ resource "random_string" "cluster_name" {
   number  = false
 }
 
+module "service_principal" {
+  source = "service_principal"
+
+  sp_name                = "${local.cluster_name}"
+}
+
 resource "azurerm_kubernetes_cluster" "aks" {
-  name       = "${var.cluster_prefix}-${var.region}"
+  name       = "${cluster_name}"
   dns_prefix = "${random_string.cluster_name.result}"
 
   location            = "${var.region}"
@@ -38,12 +44,30 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_type = "Linux"
   }
 
+  
   service_principal {
-    client_id     = "${var.client_id}"
-    client_secret = "${var.client_secret}"
+    client_id     = "${module.service_principal.client_id}"
+    client_secret = "${module.service_principal.client_secret}"
   }
 
   tags {
     source = "terraform"
   }
 }
+
+data "azurerm_resource_group" "agents" {
+  name = "${local.agents_resource_group_name}"
+}
+
+// After the cluster creates the MC_* resource group which holds
+// the nodes for AKS we can assign the SP permissions to that RG
+resource "azurerm_role_assignment" "aks_service_principal_role_agents" {
+  scope                = "${data.azurerm_resource_group.agents.id}"
+  role_definition_name = "Owner"
+  principal_id         = "${module.service_principal.client_id}"
+
+  depends_on = [
+    "azurerm_kubernetes_cluster.aks"
+  ]
+}
+
