@@ -30,6 +30,11 @@ module "acr" {
   project_name            = "${var.project_name}"
 }
 
+resource "azurerm_resource_group" "rg" {
+  name     = "${local.resource_group_name_clusters}"
+  location = "${var.azure_resource_locations[0]}"
+}
+
 module "aks_cluster_1" {
   source = "aks"
 
