@@ -26,15 +26,29 @@ variable "google_creds_base64" {
   description = "The service account json file base64 encoded"
 }
 
+variable "edge_dns_zone" {
+  description = "The dns zone the edge should use eg. example.com"
+}
+
+variable "edge_dns_name" {
+  description = "The dns name the edge should use (akamai or cloudflare) eg. hydraclusters is combined with zone to create hydraclusters.example.com"
+}
+
 variable "akamai_host" {
   description = "Host for akamai API"
 }
+
+variable "akamai_enabled" {}
 
 variable "akamai_client_secret" {}
 
 variable "akamai_access_token" {}
 
 variable "akamai_client_token" {}
+
+variable "cloudflare_email" {}
+variable "cloudflare_token" {}
+variable "cloudflare_enabled" {}
 
 variable "kubernetes_version" {
   description = "The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5"
@@ -84,7 +98,6 @@ locals {
     "gke_cluster_1" = "${module.k8s_config_gke_1.cluster_ingress_ip}"
     "gke_cluster_2" = "${module.k8s_config_gke_2.cluster_ingress_ip}"
   }
-  cluster_name = "${var.cluster_prefix}-${var.region}"
 }
 
 variable "node_count" {

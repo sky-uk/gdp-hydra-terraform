@@ -1,6 +1,10 @@
+locals {
+  cluster_name = "${var.cluster_prefix}-${var.region}"
+}
+
 resource "azurerm_resource_group" "rg" {
   name     = "${var.resource_group_name}"
-  location = "westeurope"
+  location = "${var.region}"
 }
 
 resource "random_string" "cluster_name" {
@@ -18,11 +22,11 @@ resource "random_string" "cluster_name" {
 module "service_principal" {
   source = "service_principal"
 
-  sp_name                = "${local.cluster_name}"
+  sp_name = "${local.cluster_name}"
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name       = "${cluster_name}"
+  name       = "${local.cluster_name}"
   dns_prefix = "${random_string.cluster_name.result}"
 
   location            = "${var.region}"
@@ -44,7 +48,6 @@ resource "azurerm_kubernetes_cluster" "aks" {
     os_type = "Linux"
   }
 
-  
   service_principal {
     client_id     = "${module.service_principal.application_id}"
     client_secret = "${module.service_principal.sp_password}"

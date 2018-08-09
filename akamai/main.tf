@@ -1,9 +1,11 @@
 resource "akamai_gtm_domain" "hydra_domain" {
-  name = "sky-gdp-hydra.akadns.net"
-  type = "basic"
+  count = "${var.enabled}"
+  name  = "${var.zone}"
+  type  = "basic"
 }
 
 resource "akamai_gtm_data_center" "azure_1" {
+  count     = "${var.enabled}"
   name      = "azure_1"
   domain    = "${akamai_gtm_domain.hydra_domain.name}"
   country   = "GB"
@@ -18,6 +20,7 @@ resource "akamai_gtm_data_center" "azure_1" {
 }
 
 resource "akamai_gtm_data_center" "azure_2" {
+  count     = "${var.enabled}"
   name      = "azure_2"
   domain    = "${akamai_gtm_domain.hydra_domain.name}"
   country   = "GB"
@@ -32,6 +35,7 @@ resource "akamai_gtm_data_center" "azure_2" {
 }
 
 resource "akamai_gtm_data_center" "google_1" {
+  count     = "${var.enabled}"
   name      = "google_1"
   domain    = "${akamai_gtm_domain.hydra_domain.name}"
   country   = "GB"
@@ -46,6 +50,8 @@ resource "akamai_gtm_data_center" "google_1" {
 }
 
 resource "akamai_gtm_data_center" "google_2" {
+  count = "${var.enabled}"
+
   name      = "google_2"
   domain    = "${akamai_gtm_domain.hydra_domain.name}"
   country   = "GB"
@@ -60,11 +66,13 @@ resource "akamai_gtm_data_center" "google_2" {
 }
 
 resource "akamai_gtm_property" "hydra_property" {
+  count = "${var.enabled}"
+
   depends_on = []
 
   domain                      = "${akamai_gtm_domain.hydra_domain.name}"
   type                        = "weighted-round-robin"
-  name                        = "hydra"
+  name                        = "${var.dns_name}"
   balance_by_download_score   = false
   dynamic_ttl                 = 30
   failover_delay              = 15
