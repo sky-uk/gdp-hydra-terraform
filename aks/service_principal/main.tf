@@ -27,10 +27,23 @@ resource "azurerm_azuread_service_principal_password" "aks_sp_password" {
   lifecycle {
     ignore_changes = ["end_date"]
   }
+
+  // Add a delay to allow resource to propogate
+}
+
+resource "null_resource" "delay" {
+  provisioner "local-exec" {
+    command = "sleep 10"
+  }
+
+  triggers = {
+    "before" = "${azurerm_azuread_service_principal_password.aks_sp_password.result}"
+  }
 }
 
 output "sp_object_id" {
-  value = "${azurerm_azuread_service_principal.aks_sp.id}"
+  depends_on = ["null_resource.delay"]
+  value      = "${azurerm_azuread_service_principal.aks_sp.id}"
 }
 
 output "application_id" {
