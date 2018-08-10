@@ -91,7 +91,9 @@ resource "akamai_gtm_property" "hydra_property" {
 
   liveness_test {
     name                             = "health check"
-    test_object                      = "/akamai"
+    test_object                      = "/healthz"
+    test_object_username             = "admin"
+    test_object_password             = "monitor"
     test_object_protocol             = "HTTP"
     test_interval                    = 15
     disable_nonstandard_port_warning = false
