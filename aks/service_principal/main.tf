@@ -33,11 +33,11 @@ resource "azurerm_azuread_service_principal_password" "aks_sp_password" {
 
 resource "null_resource" "delay" {
   provisioner "local-exec" {
-    command = "sleep 10"
+    command = "sleep 120"
   }
 
   triggers = {
-    "before" = "${azurerm_azuread_service_principal_password.aks_sp_password.result}"
+    "runafter" = "${azurerm_azuread_service_principal_password.aks_sp_password.service_principal_id}"
   }
 }
 
@@ -47,10 +47,18 @@ output "sp_object_id" {
 }
 
 output "application_id" {
+  depends_on = ["null_resource.delay"]
+
   value = "${azurerm_azuread_service_principal.aks_sp.application_id}"
+
+  depends_on = [
+    "${azurerm_azuread_service_principal.aks_sp}",
+  ]
 }
 
 output "sp_password" {
+  depends_on = ["null_resource.delay"]
+
   sensitive = true
   value     = "${random_string.aks_sp_password.result}"
 }

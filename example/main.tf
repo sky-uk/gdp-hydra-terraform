@@ -15,6 +15,8 @@ module "hydra" {
 
   project_name = "${var.project_name}"
 
+  enable_helm_deployment = false
+
   azure_client_id       = "${var.azure_client_id}"
   azure_client_secret   = "${var.azure_client_secret}"
   azure_tenant_id       = "${var.azure_tenant_id}"

@@ -76,6 +76,10 @@ variable "traffic_manager_gke_cluster_2_enabled" {
   default = true
 }
 
+variable "enable_helm_deployment" {
+  default = true
+}
+
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
 
