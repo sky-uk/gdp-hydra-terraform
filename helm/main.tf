@@ -8,7 +8,7 @@ provider "helm" {
 }
 
 resource "helm_release" "traefik" {
-  count     = "${var.enabled}"
+  count     = "${var.enable_traefik}"
   name      = "traefik-ingress-controller"
   chart     = "stable/traefik"
   namespace = "kube-system"
@@ -29,14 +29,14 @@ resource "helm_release" "traefik" {
 # }
 
 resource "helm_repository" "coreos" {
-  count = "${var.enabled}"
+  count = "${var.enable_prometheus}"
 
   name = "coreos"
   url  = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
 }
 
 resource "helm_release" "prometheus_operator" {
-  count = "${var.enabled}"
+  count = "${var.enable_prometheus}"
 
   name       = "prometheus-operator"
   repository = "${helm_repository.coreos.metadata.0.name}"
@@ -50,7 +50,7 @@ resource "helm_release" "prometheus_operator" {
 }
 
 resource "helm_release" "kube_prometheus" {
-  count = "${var.enabled}"
+  count = "${var.enable_prometheus}"
 
   name       = "kube-prometheus"
   repository = "${helm_repository.coreos.metadata.0.name}"
@@ -68,7 +68,7 @@ resource "helm_release" "kube_prometheus" {
 }
 
 resource "helm_release" "prometheus_slaves" {
-  count = "${var.enabled}"
+  count = "${var.enable_prometheus}"
 
   name      = "prometheus-slaves"
   chart     = "coreos/prometheus"
@@ -84,7 +84,7 @@ resource "helm_release" "prometheus_slaves" {
 }
 
 resource "helm_release" "prometheus_master" {
-  count = "${var.enabled}"
+  count = "${var.enable_prometheus}"
 
   name      = "prometheus-master"
   chart     = "coreos/prometheus"

@@ -2,4 +2,5 @@ variable "client_certificate" {}
 variable "client_key" {}
 variable "cluster_ca_certificate" {}
 variable "host" {}
-variable "enabled" {}
+variable "enable_traefik" {}
+variable "enable_prometheus" {}
