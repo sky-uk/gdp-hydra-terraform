@@ -76,7 +76,11 @@ variable "traffic_manager_gke_cluster_2_enabled" {
   default = true
 }
 
-variable "enable_helm_deployment" {
+variable "enable_traefik" {
+  default = true
+}
+
+variable "enable_prometheus" {
   default = true
 }
 

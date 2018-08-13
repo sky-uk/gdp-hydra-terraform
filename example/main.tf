@@ -18,6 +18,8 @@ module "hydra" {
   enable_traefik    = true
   enable_prometheus = false
 
+  node_type = "medium"
+
   azure_client_id       = "${var.azure_client_id}"
   azure_client_secret   = "${var.azure_client_secret}"
   azure_tenant_id       = "${var.azure_tenant_id}"
@@ -46,5 +48,6 @@ output "ips" {
 }
 
 output "kubeconfigs" {
+  sensitive = true
   value = "${module.hydra.kubeconfigs}"
 }

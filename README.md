@@ -74,6 +74,22 @@ cat ./creds/gcp.private.json | base64 > ./creds/gcp.base64.txt
 
 You can then pass that into the hydra module.
 
+## Rolling Update
+
+Terraform supports targeting specific resources during an `tf apply` command. The module has been designed to allow a rolling cluster update to be performed using this targetting. There is a sample script [here](./example/rolling_update.sh), it does the following for each cluster:
+
+- Disables the cluster from Akamai or Cloudflare to stop new traffic using the cluster
+- Applies any required updates to that cluster 
+- Checks the `/healthz` endpoint in the cluster, provided by the [k8s-healthcheck](https://github.com/emrekenci/k8s-healthcheck) project. 
+- If that endpoint returns healthy: Renables the cluster in Akamai or Cloudflare
+
+There are a number of limitation to the current script, called out inline with the `[Placeholder]` calls:
+
+1. It doesn't wait for requests to stop arriving before updating the cluster. For example Akamai uses DNS based routing so some requests may continue to arrive even after the change has been made to Akamai's config due to the DNS TTL.
+2. The healthcheck is limited to K8s infrastructure, if this is being used to roll out an app you would want to also check the apps health. 
+
+It serves to demonstrate how a zero downtime rollout, for example updating K8's versions, could be handled but for a production system this flow would best be split out into a CD pipeline with more checks, automated approval steps and possibly manual ones too. 
+
 ## Variables
 
 ### Azure Athentication
