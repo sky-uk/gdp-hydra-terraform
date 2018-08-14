@@ -106,8 +106,7 @@ locals {
   aks_node = "${element(split(",",local.node_match[var.node_type]), 1)}"
 
   cluster_ips = {
-    # "aks_cluster_1" = "${module.k8s_config_aks_1.cluster_ingress_ip}"
-    "aks_cluster_1" = "52.138.252.107"
+    "aks_cluster_1" = "${module.k8s_config_aks_1.cluster_ingress_ip}"
     "aks_cluster_2" = "${module.k8s_config_aks_2.cluster_ingress_ip}"
     "gke_cluster_1" = "${module.k8s_config_gke_1.cluster_ingress_ip}"
     "gke_cluster_2" = "${module.k8s_config_gke_2.cluster_ingress_ip}"

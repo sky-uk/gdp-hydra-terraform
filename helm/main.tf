@@ -7,6 +7,12 @@ provider "helm" {
   }
 }
 
+variable "depends_on_hack" {}
+
+output "depends_on_hack" {
+  value = "${var.depends_on_hack}"
+}
+
 resource "helm_release" "traefik" {
   count     = "${var.enable_traefik}"
   name      = "traefik-ingress-controller"
@@ -67,6 +73,14 @@ resource "helm_release" "kube_prometheus" {
   ]
 }
 
+data "template_file" "prom_values" {
+  template = "${file("${path.module}/values/prometheus.slaves.values.yaml.tpl")}"
+
+  vars {
+    cluster_name = "${var.cluster_name}"
+  }
+}
+
 resource "helm_release" "prometheus_slaves" {
   count = "${var.enable_prometheus}"
 
@@ -75,11 +89,10 @@ resource "helm_release" "prometheus_slaves" {
   namespace = "monitoring"
 
   values = [
-    "${file("${path.module}/values/prometheus.slaves.values.yaml")}",
+    "${data.template_file.prom_values.rendered}",
   ]
 
   depends_on = [
     "helm_release.prometheus_operator",
   ]
 }
-
