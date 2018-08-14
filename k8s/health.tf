@@ -3,7 +3,7 @@ resource "kubernetes_ingress" "hc-ingress" {
     name = "hc-ingress"
 
     annotations {
-      "kubernetes.io/ingress.class" = "traefik"
+      "kubernetes.io/ingress.class"          = "traefik"
       "ingress.kubernetes.io/rewrite-target" = "/healthz"
     }
   }
@@ -79,7 +79,7 @@ resource "kubernetes_deployment" "hc-app" {
 
           env {
             name  = "PASSWORD"
-            value = "monitor"
+            value = "${var.monitoring_endpoint_password}"
           }
 
           env {

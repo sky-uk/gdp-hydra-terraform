@@ -16,9 +16,12 @@ module "hydra" {
   project_name = "${var.project_name}"
 
   enable_traefik    = true
-  enable_prometheus = false
+  enable_prometheus = true
 
-  node_type = "medium"
+  monitoring_endpoint_password = "monitor"
+
+  node_type = "small"
+  node_count = 1
 
   azure_client_id       = "${var.azure_client_id}"
   azure_client_secret   = "${var.azure_client_secret}"

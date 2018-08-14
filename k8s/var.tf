@@ -18,3 +18,5 @@ variable "cluster_client_certificate" {}
 variable "cluster_client_key" {}
 variable "cluster_ca_certificate" {}
 variable "host" {}
+variable "monitoring_endpoint_password" {}
+

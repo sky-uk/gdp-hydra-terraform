@@ -83,18 +83,3 @@ resource "helm_release" "prometheus_slaves" {
   ]
 }
 
-resource "helm_release" "prometheus_master" {
-  count = "${var.enable_prometheus}"
-
-  name      = "prometheus-master"
-  chart     = "coreos/prometheus"
-  namespace = "monitoring"
-
-  values = [
-    "${file("${path.module}/values/prometheus.master.values.yaml")}",
-  ]
-
-  depends_on = [
-    "helm_release.prometheus_operator",
-  ]
-}

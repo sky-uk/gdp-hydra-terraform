@@ -93,7 +93,7 @@ resource "akamai_gtm_property" "hydra_property" {
     name                             = "health check"
     test_object                      = "/healthz"
     test_object_username             = "admin"
-    test_object_password             = "monitor"
+    test_object_password             = "${var.monitoring_endpoint_password}"
     test_object_protocol             = "HTTP"
     test_interval                    = 15
     disable_nonstandard_port_warning = false
@@ -121,8 +121,6 @@ resource "akamai_gtm_property" "hydra_property" {
     weight         = 1.0
     name           = "${akamai_gtm_data_center.azure_2.name}"
 
-    # handout_cname  = "www.google.com"
-
     servers = [
       "${var.cluster_ips["aks_cluster_2"]}",
     ]
@@ -134,8 +132,6 @@ resource "akamai_gtm_property" "hydra_property" {
     weight         = 1.0
     name           = "${akamai_gtm_data_center.google_1.name}"
 
-    # handout_cname  = "www.comcast.com"
-
     servers = [
       "${var.cluster_ips["gke_cluster_1"]}",
     ]
@@ -146,8 +142,6 @@ resource "akamai_gtm_property" "hydra_property" {
     data_center_id = "${akamai_gtm_data_center.google_2.id}"
     weight         = 1.0
     name           = "${akamai_gtm_data_center.google_2.name}"
-
-    # handout_cname  = "www.comcast.com"
 
     servers = [
       "${var.cluster_ips["gke_cluster_2"]}",

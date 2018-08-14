@@ -50,6 +50,11 @@ variable "cloudflare_email" {}
 variable "cloudflare_token" {}
 variable "cloudflare_enabled" {}
 
+variable "monitoring_endpoint_password" {
+  default = "eafc7df7-6ed0-4e35-b65c-76bb14748a7b"
+}
+
+
 variable "kubernetes_version" {
   description = "The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5"
   default     = "1.10.5"
@@ -101,7 +106,8 @@ locals {
   aks_node = "${element(split(",",local.node_match[var.node_type]), 1)}"
 
   cluster_ips = {
-    "aks_cluster_1" = "${module.k8s_config_aks_1.cluster_ingress_ip}"
+    # "aks_cluster_1" = "${module.k8s_config_aks_1.cluster_ingress_ip}"
+    "aks_cluster_1" = "52.138.252.107"
     "aks_cluster_2" = "${module.k8s_config_aks_2.cluster_ingress_ip}"
     "gke_cluster_1" = "${module.k8s_config_gke_1.cluster_ingress_ip}"
     "gke_cluster_2" = "${module.k8s_config_gke_2.cluster_ingress_ip}"

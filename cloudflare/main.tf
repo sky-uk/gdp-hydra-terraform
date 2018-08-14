@@ -2,6 +2,8 @@ variable "enabled" {}
 variable "zone" {}
 variable "dns_name" {}
 
+variable "monitoring_endpoint_password" {}
+
 variable "cluster_ips" {
   description = "Map of the IP addresses to the ingress of all clusters in the hydra deployment"
   type        = "map"
@@ -37,13 +39,14 @@ resource "cloudflare_load_balancer_monitor" "health" {
   interval       = 60
   retries        = 2
   description    = "hydra load test"
+
   header {
     header = "Authorization"
-    values = [ "Basic ${base64encode("admin:monitor")}" ]
+    values = ["Basic ${base64encode("admin:${var.monitoring_endpoint_password}")}"]
   }
 }
 
-resource "cloudflare_load_balancer" "hyrda" {
+resource "cloudflare_load_balancer" "hydra" {
   count = "${var.enabled}"
   zone  = "${var.zone}"
   name  = "${var.dns_name}.${var.zone}"
@@ -51,10 +54,9 @@ resource "cloudflare_load_balancer" "hyrda" {
   fallback_pool_id = "${cloudflare_load_balancer_pool.fallback_pool.id}"
 
   default_pool_ids = [
-    "${cloudflare_load_balancer_pool.aks_cluster_1.id}",
-    "${cloudflare_load_balancer_pool.aks_cluster_2.id}",
-    "${cloudflare_load_balancer_pool.gke_cluster_1.id}",
-    "${cloudflare_load_balancer_pool.gke_cluster_2.id}",
+    "${cloudflare_load_balancer_pool.hydra_clusters.id}",
+    "${cloudflare_load_balancer_pool.aks_clusters.id}",
+    "${cloudflare_load_balancer_pool.gke_clusters.id}",
   ]
 
   description = "Load balancer for hyra [Created by Terraform]"
@@ -72,9 +74,9 @@ resource "cloudflare_load_balancer_pool" "fallback_pool" {
   }
 }
 
-resource "cloudflare_load_balancer_pool" "aks_cluster_1" {
+resource "cloudflare_load_balancer_pool" "hydra_clusters" {
   count = "${var.enabled}"
-  name  = "aks_cluster_1"
+  name  = "hydra_clusters"
 
   monitor = "${cloudflare_load_balancer_monitor.health.id}"
 
@@ -83,13 +85,38 @@ resource "cloudflare_load_balancer_pool" "aks_cluster_1" {
     address = "${var.cluster_ips["aks_cluster_1"]}"
     enabled = "${var.aks_cluster_1_enabled}"
   }
+
+  origins {
+    name    = "aks_cluster_2"
+    address = "${var.cluster_ips["aks_cluster_2"]}"
+    enabled = "${var.aks_cluster_1_enabled}"
+  }
+
+  origins {
+    name    = "gke_cluster_1"
+    address = "${var.cluster_ips["gke_cluster_1"]}"
+    enabled = "${var.aks_cluster_1_enabled}"
+  }
+
+  origins {
+    name    = "gke_cluster_2"
+    address = "${var.cluster_ips["gke_cluster_2"]}"
+    enabled = "${var.aks_cluster_1_enabled}"
+  }
 }
 
-resource "cloudflare_load_balancer_pool" "aks_cluster_2" {
+resource "cloudflare_load_balancer_pool" "aks_clusters" {
   count = "${var.enabled}"
-  name  = "aks_cluster_2"
+  name  = "aks_clusters"
 
   monitor = "${cloudflare_load_balancer_monitor.health.id}"
+
+
+  origins {
+    name    = "aks_cluster_1"
+    address = "${var.cluster_ips["aks_cluster_1"]}"
+    enabled = "${var.aks_cluster_1_enabled}"
+  }
 
   origins {
     name    = "aks_cluster_2"
@@ -98,24 +125,18 @@ resource "cloudflare_load_balancer_pool" "aks_cluster_2" {
   }
 }
 
-resource "cloudflare_load_balancer_pool" "gke_cluster_1" {
+resource "cloudflare_load_balancer_pool" "gke_clusters" {
   count = "${var.enabled}"
-  name  = "gke_cluster_1"
+  name  = "gke_clusters"
 
   monitor = "${cloudflare_load_balancer_monitor.health.id}"
+
 
   origins {
     name    = "gke_cluster_1"
     address = "${var.cluster_ips["gke_cluster_1"]}"
     enabled = "${var.gke_cluster_1_enabled}"
   }
-}
-
-resource "cloudflare_load_balancer_pool" "gke_cluster_2" {
-  count = "${var.enabled}"
-  name  = "gke_cluster_2"
-
-  monitor = "${cloudflare_load_balancer_monitor.health.id}"
 
   origins {
     name    = "gke_cluster_2"

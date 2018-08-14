@@ -11,6 +11,13 @@ rbac:
 dashboard:
   domain: ""
   enabled: true
+
+tracing:
+  jaeger:
+    samplingServerUrl: "http://jaeger-agent:5778/"
+    samplingType: "const"
+    localAgentHostPort: "jaeger-agent:6831"
+
 # Enabling prometheus metrics will expose a /metrics
 # endpoint that we can scrape with prometheus
 metrics:
