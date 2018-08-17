@@ -30,16 +30,10 @@ module "acr" {
   project_name            = "${var.project_name}"
 }
 
-resource "azurerm_resource_group" "rg" {
-  name     = "${local.resource_group_name_clusters}"
-  location = "${var.azure_resource_locations[0]}"
-}
-
 module "aks_cluster_1" {
   source = "aks"
 
   cluster_prefix      = "aks-cluster"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
 
   //Defaults to using current ssh key: recomend changing as needed
   linux_admin_username      = "aks"
@@ -58,7 +52,6 @@ module "aks_cluster_2" {
   source = "aks"
 
   cluster_prefix      = "aks-cluster"
-  resource_group_name = "${azurerm_resource_group.rg.name}"
 
   //Defaults to using current ssh key: recomend changing as needed
   linux_admin_username      = "aks"

@@ -2,10 +2,15 @@ locals {
   cluster_name = "${var.cluster_prefix}-${var.region}"
 }
 
+resource "azurerm_resource_group" "rg" {
+  name     = "${local.cluster_name}"
+  location = "${var.region}"
+}
+
 resource "random_string" "cluster_name" {
   keepers = {
     # Generate a new id each time we switch to a new resource group
-    group_name = "${var.resource_group_name}"
+    group_name = "${local.cluster_name}"
   }
 
   length  = 8
@@ -25,7 +30,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
   dns_prefix = "${random_string.cluster_name.result}"
 
   location            = "${var.region}"
-  resource_group_name = "${var.resource_group_name}"
+  resource_group_name = "${azurerm_resource_group.rg.name}"
   kubernetes_version  = "${var.kubernetes_version}"
 
   linux_profile {

@@ -1,8 +1,3 @@
-variable "resource_group_name" {
-  type    = "string"
-  default = "hydra-clusters"
-}
-
 variable "kubernetes_version" {
   type        = "string"
   description = "The version of k8s to use for deployment"

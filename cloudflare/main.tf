@@ -111,7 +111,6 @@ resource "cloudflare_load_balancer_pool" "aks_clusters" {
 
   monitor = "${cloudflare_load_balancer_monitor.health.id}"
 
-
   origins {
     name    = "aks_cluster_1"
     address = "${var.cluster_ips["aks_cluster_1"]}"
@@ -130,7 +129,6 @@ resource "cloudflare_load_balancer_pool" "gke_clusters" {
   name  = "gke_clusters"
 
   monitor = "${cloudflare_load_balancer_monitor.health.id}"
-
 
   origins {
     name    = "gke_cluster_1"
