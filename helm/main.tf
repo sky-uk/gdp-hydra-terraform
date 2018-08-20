@@ -7,7 +7,14 @@ provider "helm" {
   }
 }
 
+variable "depends_on_hack" {}
+
+output "depends_on_hack" {
+  value = "${var.depends_on_hack}"
+}
+
 resource "helm_release" "traefik" {
+  count     = "${var.enable_traefik}"
   name      = "traefik-ingress-controller"
   chart     = "stable/traefik"
   namespace = "kube-system"
@@ -28,11 +35,15 @@ resource "helm_release" "traefik" {
 # }
 
 resource "helm_repository" "coreos" {
+  count = "${var.enable_prometheus}"
+
   name = "coreos"
   url  = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
 }
 
 resource "helm_release" "prometheus_operator" {
+  count = "${var.enable_prometheus}"
+
   name       = "prometheus-operator"
   repository = "${helm_repository.coreos.metadata.0.name}"
   chart      = "coreos/prometheus-operator"
@@ -45,6 +56,8 @@ resource "helm_release" "prometheus_operator" {
 }
 
 resource "helm_release" "kube_prometheus" {
+  count = "${var.enable_prometheus}"
+
   name       = "kube-prometheus"
   repository = "${helm_repository.coreos.metadata.0.name}"
   chart      = "coreos/kube-prometheus"
@@ -60,27 +73,23 @@ resource "helm_release" "kube_prometheus" {
   ]
 }
 
+data "template_file" "prom_values" {
+  template = "${file("${path.module}/values/prometheus.slaves.values.yaml.tpl")}"
+
+  vars {
+    cluster_name = "${var.cluster_name}"
+  }
+}
+
 resource "helm_release" "prometheus_slaves" {
+  count = "${var.enable_prometheus}"
+
   name      = "prometheus-slaves"
   chart     = "coreos/prometheus"
   namespace = "monitoring"
 
   values = [
-    "${file("${path.module}/values/prometheus.slaves.values.yaml")}",
-  ]
-
-  depends_on = [
-    "helm_release.prometheus_operator",
-  ]
-}
-
-resource "helm_release" "prometheus_master" {
-  name      = "prometheus-master"
-  chart     = "coreos/prometheus"
-  namespace = "monitoring"
-
-  values = [
-    "${file("${path.module}/values/prometheus.master.values.yaml")}",
+    "${data.template_file.prom_values.rendered}",
   ]
 
   depends_on = [

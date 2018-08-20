@@ -16,8 +16,8 @@ output "kubeconfigs" {
 }
 
 output "edge_url" {
-  description = "The URL of the Akamai Traffic Manager edge"
-  value       = "${module.akamai_config.edge_url}"
+  description = "The URL of the edge routing (Akamai or Cloudflare)"
+  value       = "${var.edge_dns_name}.${var.edge_dns_zone}"
 }
 
 output "gcr_url" {

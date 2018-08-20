@@ -17,6 +17,11 @@ provider "akamai" {
   client_secret = "${var.akamai_client_secret}"
 }
 
+provider "cloudflare" {
+  email = "${var.cloudflare_email}"
+  token = "${var.cloudflare_token}"
+}
+
 module "acr" {
   source = "acr"
 
@@ -29,7 +34,6 @@ module "aks_cluster_1" {
   source = "aks"
 
   cluster_prefix      = "aks-cluster"
-  resource_group_name = "${local.resource_group_name_clusters}"
 
   //Defaults to using current ssh key: recomend changing as needed
   linux_admin_username      = "aks"
@@ -48,7 +52,6 @@ module "aks_cluster_2" {
   source = "aks"
 
   cluster_prefix      = "aks-cluster"
-  resource_group_name = "${local.resource_group_name_clusters}"
 
   //Defaults to using current ssh key: recomend changing as needed
   linux_admin_username      = "aks"
@@ -90,6 +93,8 @@ module "gke_cluster_2" {
 module "k8s_config_aks_1" {
   source = "k8s"
 
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
   enable_image_pull_secret = true
   image_pull_server        = "${module.acr.url}"
   image_pull_username      = "${module.acr.username}"
@@ -104,6 +109,8 @@ module "k8s_config_aks_1" {
 module "k8s_config_aks_2" {
   source = "k8s"
 
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+  
   enable_image_pull_secret = true
   image_pull_server        = "${module.acr.url}"
   image_pull_username      = "${module.acr.username}"
@@ -118,6 +125,8 @@ module "k8s_config_aks_2" {
 module "k8s_config_gke_1" {
   source = "k8s"
 
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
   cluster_client_certificate = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_1.cluster_ca)}"
@@ -127,6 +136,8 @@ module "k8s_config_gke_1" {
 module "k8s_config_gke_2" {
   source = "k8s"
 
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
   cluster_client_certificate = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
@@ -134,8 +145,31 @@ module "k8s_config_gke_2" {
 }
 
 module "akamai_config" {
-  source                = "akamai"
-  cluster_ips           = "${local.cluster_ips}"
+  source  = "akamai"
+  enabled = "${var.akamai_enabled}"
+
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
+  cluster_ips = "${local.cluster_ips}"
+  zone        = "${var.edge_dns_zone}"
+  dns_name    = "${var.edge_dns_name}"
+
+  aks_cluster_1_enabled = "${var.traffic_manager_aks_cluster_1_enabled}"
+  aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
+  gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
+  gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
+}
+
+module "cloudflare" {
+  source                       = "cloudflare"
+  enabled                      = "${var.cloudflare_enabled}"
+
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
+  cluster_ips = "${local.cluster_ips}"
+  zone        = "${var.edge_dns_zone}"
+  dns_name    = "${var.edge_dns_name}"
+
   aks_cluster_1_enabled = "${var.traffic_manager_aks_cluster_1_enabled}"
   aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
@@ -145,5 +179,7 @@ module "akamai_config" {
 module "gcr" {
   source = "gcr"
 
+
   google_project_id = "${var.google_project_id}"
 }
+

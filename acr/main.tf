@@ -41,7 +41,6 @@ resource "azurerm_azuread_service_principal" "acr_service_principal" {
 resource "random_string" "acr_password" {
   length           = 16
   special          = true
-  override_special = "/@\" "
 
   keepers = {
     service_principal = "${azurerm_azuread_service_principal.acr_service_principal.id}"

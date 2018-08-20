@@ -3,6 +3,13 @@ variable "cluster_ips" {
   type        = "map"
 }
 
+variable "enabled" {}
+
+variable "zone" {}
+variable "dns_name" {}
+variable "monitoring_endpoint_password" {}
+
+
 variable "aks_cluster_1_enabled" {
   description = "Enable the cluster in the Akamai traffic manager"
   default     = true
