@@ -34,19 +34,12 @@ resource "helm_release" "traefik" {
 #   ]
 # }
 
-resource "helm_repository" "coreos" {
-  count = "${var.enable_prometheus}"
-
-  name = "coreos"
-  url  = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-}
-
 resource "helm_release" "prometheus_operator" {
   count = "${var.enable_prometheus}"
 
   name       = "prometheus-operator"
-  repository = "${helm_repository.coreos.metadata.0.name}"
-  chart      = "coreos/prometheus-operator"
+  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
+  chart      = "prometheus-operator"
   namespace  = "monitoring"
 
   set {
@@ -59,8 +52,8 @@ resource "helm_release" "kube_prometheus" {
   count = "${var.enable_prometheus}"
 
   name       = "kube-prometheus"
-  repository = "${helm_repository.coreos.metadata.0.name}"
-  chart      = "coreos/kube-prometheus"
+  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
+  chart      = "kube-prometheus"
   namespace  = "monitoring"
 
   set {
@@ -83,10 +76,11 @@ data "template_file" "prom_values" {
 
 resource "helm_release" "prometheus_slaves" {
   count = "${var.enable_prometheus}"
-
-  name      = "prometheus-slaves"
-  chart     = "coreos/prometheus"
-  namespace = "monitoring"
+  
+  name       = "prometheus-slaves"
+  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
+  chart      = "prometheus"
+  namespace  = "monitoring"
 
   values = [
     "${data.template_file.prom_values.rendered}",
