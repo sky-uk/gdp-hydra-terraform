@@ -1,7 +1,7 @@
 # We override the fullname to give us a consistent name
 fullnameOverride: traefik-ingress-controller
 serviceType: NodePort
-replicas: "{$replicas_count}"
+replicas: ${replicas_count}
 # Enabling RBAC will create a service account, cluster role
 # and cluster role binding to give Traefik the required
 # permissions

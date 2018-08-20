@@ -27,6 +27,21 @@ rules:
   specifiedInValues: false
   additionalLabels: {}
   value: {}
+serviceMonitors:
+  - name: traefik-ingress
+    labels:
+      prometheus: prometheus-slave
+    selector:
+      matchLabels:
+        app: traefik
+    targetLabels:
+      - datacenter
+    namespaceSelector:
+      matchNames:
+      - kube-system
+    endpoints:
+      - port: metrics
+    interval: 15s
 service:
   sessionAffinity: None
   annotations: {}
