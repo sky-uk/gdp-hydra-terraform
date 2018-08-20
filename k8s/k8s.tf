@@ -13,6 +13,7 @@ resource "kubernetes_service" "ingress_service" {
     labels = {
       createdby = "terraform"
       app       = "traefik"
+      datacenter = "${var.cluster_name}"
     }
   }
 

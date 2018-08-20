@@ -93,6 +93,8 @@ module "gke_cluster_2" {
 module "k8s_config_aks_1" {
   source = "k8s"
 
+  cluster_name = "aks_1"
+
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   enable_image_pull_secret = true
@@ -108,6 +110,8 @@ module "k8s_config_aks_1" {
 
 module "k8s_config_aks_2" {
   source = "k8s"
+
+  cluster_name = "aks_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
   
@@ -125,6 +129,8 @@ module "k8s_config_aks_2" {
 module "k8s_config_gke_1" {
   source = "k8s"
 
+  cluster_name = "gke_1"
+
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   cluster_client_certificate = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
@@ -135,6 +141,8 @@ module "k8s_config_gke_1" {
 
 module "k8s_config_gke_2" {
   source = "k8s"
+
+  cluster_name = "gke_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
