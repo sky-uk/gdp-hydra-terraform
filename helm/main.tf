@@ -13,6 +13,14 @@ output "depends_on_hack" {
   value = "${var.depends_on_hack}"
 }
 
+data "template_file" "traefik_values" {
+  template = "${file("${path.module}/values/traefik.values.yaml.tpl")}"
+
+  vars {
+    replicas_count = "${var.traefik_replica_count}"
+  }
+}
+
 resource "helm_release" "traefik" {
   count     = "${var.enable_traefik}"
   name      = "traefik-ingress-controller"
@@ -20,7 +28,7 @@ resource "helm_release" "traefik" {
   namespace = "kube-system"
 
   values = [
-    "${file("${path.module}/values/traefik.values.yaml")}",
+    "${data.template_file.traefik_values.rendered}",
   ]
 }
 

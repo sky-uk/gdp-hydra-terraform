@@ -9,6 +9,9 @@ module "helm_aks1" {
   host                   = "${module.aks_cluster_1.host}"
   cluster_name           = "aks1"
 
+  //Create 1 traefik instance per node up to 5
+  traefik_replica_count = "${min(var.node_count, var.max_traefik_replicas)}"
+
   // This forces the helm config to run after the
   // initial Kubernetes configuration module 
   // to prevent race configuration
