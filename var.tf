@@ -115,5 +115,5 @@ locals {
 
 variable "node_count" {
   description = "Number of nodes in each cluster."
-  default     = 1
+  default     = 3
 }

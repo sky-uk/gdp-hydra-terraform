@@ -21,7 +21,7 @@ module "hydra" {
   monitoring_endpoint_password = "monitor"
 
   node_type = "small"
-  node_count = 1
+  node_count = 3
 
   azure_client_id       = "${var.azure_client_id}"
   azure_client_secret   = "${var.azure_client_secret}"
@@ -50,7 +50,6 @@ output "ips" {
   value = "${module.hydra.ips}"
 }
 
-output "kubeconfigs" {
-  sensitive = true
-  value = "${module.hydra.kubeconfigs}"
+output "url" {
+  value = "${module.hydra.kubeconfig_url}"
 }
