@@ -10,7 +10,7 @@ rbac:
 # current configuration and health.
 dashboard:
   domain: ""
-  enabled: true
+  enabled: false
 
 tracing:
   jaeger:
