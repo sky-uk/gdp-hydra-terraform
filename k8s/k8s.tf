@@ -7,7 +7,7 @@ provider "kubernetes" {
 
 resource "kubernetes_service" "ingress_service" {
   metadata {
-    name      = "traefik-ingress-controller"
+    name      = "terraform-ingress-controller"
     namespace = "kube-system"
 
     labels = {

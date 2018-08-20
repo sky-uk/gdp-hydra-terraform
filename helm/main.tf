@@ -75,6 +75,8 @@ data "template_file" "prom_values" {
 }
 
 resource "helm_release" "prometheus_slaves" {
+  count = "${var.enable_prometheus}"
+  
   name       = "prometheus-slaves"
   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
   chart      = "prometheus"
