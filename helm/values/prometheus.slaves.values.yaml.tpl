@@ -34,6 +34,7 @@ serviceMonitors:
     selector:
       matchLabels:
         app: traefik
+        createdby: terraform
     targetLabels:
       - datacenter
     namespaceSelector:
