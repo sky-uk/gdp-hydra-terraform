@@ -48,24 +48,6 @@ resource "helm_release" "prometheus_operator" {
   }
 }
 
-resource "helm_release" "kube_prometheus" {
-  count = "${var.enable_prometheus}"
-
-  name       = "kube-prometheus"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "kube-prometheus"
-  namespace  = "monitoring"
-
-  set {
-    name  = "global.rbacEnable"
-    value = "false"
-  }
-
-  depends_on = [
-    "helm_release.prometheus_operator",
-  ]
-}
-
 data "template_file" "prom_values" {
   template = "${file("${path.module}/values/prometheus.slaves.values.yaml.tpl")}"
 
