@@ -74,7 +74,7 @@ cat ./creds/gcp.private.json | base64 > ./creds/gcp.base64.txt
 
 You can then pass that into the hydra module.
 
-## Rolling Update
+## Rolling Update (Status: WIP)
 
 Terraform supports targeting specific resources during an `tf apply` command. The module has been designed to allow a rolling cluster update to be performed using this targetting. There is a sample script [here](./example/rolling_update.sh), it does the following for each cluster:
 
@@ -89,6 +89,8 @@ There are a number of limitation to the current script, called out inline with t
 2. The healthcheck is limited to K8s infrastructure, if this is being used to roll out an app you would want to also check the apps health. 
 
 It serves to demonstrate how a zero downtime rollout, for example updating K8's versions, could be handled but for a production system this flow would best be split out into a CD pipeline with more checks, automated approval steps and possibly manual ones too. 
+
+> Note: There is currently an issue with cloudflare which prevents rolling update performing as expected. See the [issue here](https://github.com/terraform-providers/terraform-provider-cloudflare/issues/108).
 
 ## Responding to Failures
 

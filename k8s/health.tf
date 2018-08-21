@@ -85,6 +85,8 @@ resource "kubernetes_deployment" "hc-app" {
       app = "hc-app"
     }
 
+    replicas = 3
+
     template {
       metadata {
         labels {
