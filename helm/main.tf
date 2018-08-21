@@ -13,6 +13,14 @@ output "depends_on_hack" {
   value = "${var.depends_on_hack}"
 }
 
+data "template_file" "traefik_values" {
+  template = "${file("${path.module}/values/traefik.values.yaml.tpl")}"
+
+  vars {
+    replicas_count = "${var.traefik_replica_count}"
+  }
+}
+
 resource "helm_release" "traefik" {
   count     = "${var.enable_traefik}"
   name      = "traefik-ingress-controller"
@@ -20,7 +28,7 @@ resource "helm_release" "traefik" {
   namespace = "kube-system"
 
   values = [
-    "${file("${path.module}/values/traefik.values.yaml")}",
+    "${data.template_file.traefik_values.rendered}",
   ]
 }
 
@@ -46,24 +54,6 @@ resource "helm_release" "prometheus_operator" {
     name  = "rbacEnable"
     value = "false"
   }
-}
-
-resource "helm_release" "kube_prometheus" {
-  count = "${var.enable_prometheus}"
-
-  name       = "kube-prometheus"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "kube-prometheus"
-  namespace  = "monitoring"
-
-  set {
-    name  = "global.rbacEnable"
-    value = "false"
-  }
-
-  depends_on = [
-    "helm_release.prometheus_operator",
-  ]
 }
 
 data "template_file" "prom_values" {

@@ -62,6 +62,7 @@ resource "kubernetes_secret" "image_pull_secret" {
 
   metadata {
     name = "image-pull-secret-acr"
+    namespace = "kube-system"
 
     labels = {
       createdby = "terraform"

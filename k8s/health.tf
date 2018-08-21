@@ -1,10 +1,27 @@
+resource "kubernetes_namespace" "healthcheck" {
+  metadata {
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
+    }
+
+    name = "healthcheck"
+  }
+}
+
 resource "kubernetes_ingress" "hc-ingress" {
   metadata {
-    name = "hc-ingress"
+    name      = "hc-ingress"
+    namespace = "${kubernetes_namespace.healthcheck.metadata.0.name}"
 
     annotations {
       "kubernetes.io/ingress.class"          = "traefik"
       "ingress.kubernetes.io/rewrite-target" = "/healthz"
+    }
+
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
     }
   }
 
@@ -31,7 +48,13 @@ resource "kubernetes_ingress" "hc-ingress" {
 
 resource "kubernetes_service" "hc-service" {
   metadata {
-    name = "hc-service"
+    name      = "hc-service"
+    namespace = "${kubernetes_namespace.healthcheck.metadata.0.name}"
+
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
+    }
   }
 
   spec {
@@ -48,7 +71,13 @@ resource "kubernetes_service" "hc-service" {
 
 resource "kubernetes_deployment" "hc-app" {
   metadata {
-    name = "hc-app"
+    name      = "hc-app"
+    namespace = "${kubernetes_namespace.healthcheck.metadata.0.name}"
+
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
+    }
   }
 
   spec {
@@ -59,7 +88,9 @@ resource "kubernetes_deployment" "hc-app" {
     template {
       metadata {
         labels {
-          app = "hc-app"
+          app        = "hc-app"
+          createdby  = "terraform"
+          datacenter = "${var.cluster_name}"
         }
       }
 

@@ -115,5 +115,11 @@ locals {
 
 variable "node_count" {
   description = "Number of nodes in each cluster."
-  default     = 1
+  default     = 3
 }
+
+variable "max_traefik_replicas" {
+  description = "The number of traefik replias to create, min of this or node_count variable will be used"
+  default = 5
+}
+
