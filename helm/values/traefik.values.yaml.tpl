@@ -13,6 +13,11 @@ dashboard:
   domain: ""
   enabled: false
 
+cpuRequest: 0.5
+memoryRequest: 50M
+cpuLimit: 2
+memoryLimit: 300M
+
 tracing:
   jaeger:
     samplingServerUrl: "http://jaeger-agent:5778/"

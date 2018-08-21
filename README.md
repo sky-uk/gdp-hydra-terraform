@@ -2,6 +2,8 @@
 
 Used for terraforming a highly available set of clusters across multiple cloud vendors. Currently this module is designed to create 4 clusters across Azure and GCP with each cluster being in a different availability zone within the rprovider. It will also then use Akamai Traffic Manager to balance traffic across the cluster.
 
+![Diagram](/docs/images/overview.png)
+
 ## Pre-requisites
 
 You should be familiar with some basic Terraform concepts such as
@@ -49,7 +51,9 @@ module "hydra" {
 }
 ```
 
-You must supply values for all of these variables. You can choose to use any of the other optional variables as required by your deployment.
+You must supply values for all of these variables. You can choose to use any of the other optional variables as required by your deployment. 
+
+To see an view an example usage see the [main.tf here](./example/main.tf).
 
 ## Authenticating
 
