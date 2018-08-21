@@ -19,6 +19,7 @@ module "hydra" {
   enable_prometheus = true
 
   monitoring_endpoint_password = "monitor"
+  traefik_replicas_count = 3
 
   node_type = "small"
   node_count = 3

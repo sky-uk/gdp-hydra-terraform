@@ -89,19 +89,19 @@ resource "cloudflare_load_balancer_pool" "hydra_clusters" {
   origins {
     name    = "aks_cluster_2"
     address = "${var.cluster_ips["aks_cluster_2"]}"
-    enabled = "${var.aks_cluster_1_enabled}"
+    enabled = "${var.aks_cluster_2_enabled}"
   }
 
   origins {
     name    = "gke_cluster_1"
     address = "${var.cluster_ips["gke_cluster_1"]}"
-    enabled = "${var.aks_cluster_1_enabled}"
+    enabled = "${var.gke_cluster_1_enabled}"
   }
 
   origins {
     name    = "gke_cluster_2"
     address = "${var.cluster_ips["gke_cluster_2"]}"
-    enabled = "${var.aks_cluster_1_enabled}"
+    enabled = "${var.gke_cluster_2_enabled}"
   }
 }
 
@@ -139,7 +139,7 @@ resource "cloudflare_load_balancer_pool" "gke_clusters" {
   origins {
     name    = "gke_cluster_2"
     address = "${var.cluster_ips["gke_cluster_2"]}"
-    enabled = "${var.gke_cluster_1_enabled}"
+    enabled = "${var.gke_cluster_2_enabled}"
   }
 }
 

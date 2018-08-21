@@ -38,20 +38,41 @@ variable "akamai_host" {
   description = "Host for akamai API"
 }
 
-variable "akamai_enabled" {}
+variable "akamai_enabled" {
+  description = "Whether to enable Akamai for routing"
+}
 
-variable "akamai_client_secret" {}
+variable "akamai_client_secret" {
+  default = ""
+  description = "Akamai client secret used for authentication"
+}
 
-variable "akamai_access_token" {}
+variable "akamai_access_token" {
+  default = ""
+  description = "Akamai access token used for authentication"
+}
 
-variable "akamai_client_token" {}
+variable "akamai_client_token" {
+  default = ""
+  description = "Akamai client token used for authentication"
 
-variable "cloudflare_email" {}
-variable "cloudflare_token" {}
-variable "cloudflare_enabled" {}
+}
+
+variable "cloudflare_email" {
+  default = ""
+  description = "Cloudflare email token used for authentication"
+}
+variable "cloudflare_token" {
+  default = ""
+  description = "Cloudflare api token used for authentication"
+}
+variable "cloudflare_enabled" {
+  description = "Whether to enable Cloudflare for routing"
+}
 
 variable "monitoring_endpoint_password" {
   default = "eafc7df7-6ed0-4e35-b65c-76bb14748a7b"
+  description = "The password to use for the clusters /healthz endpoint"
 }
 
 
@@ -67,27 +88,44 @@ variable "node_type" {
 
 variable "traffic_manager_aks_cluster_1_enabled" {
   default = true
+  description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "traffic_manager_aks_cluster_2_enabled" {
   default = true
+  description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "traffic_manager_gke_cluster_1_enabled" {
   default = true
+  description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "traffic_manager_gke_cluster_2_enabled" {
   default = true
+  description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "enable_traefik" {
+  description = "Whether to deploy traefik into the clusters via helm"
   default = true
 }
 
+variable "traefik_replicas_count" {
+  description = "The number of traefik replias to create"
+  default = 3
+}
+
 variable "enable_prometheus" {
+  description = "Whether to deploy prometheus into the clusters via helm"
   default = true
 }
+
+variable "node_count" {
+  description = "Number of nodes in each cluster."
+  default     = 3
+}
+
 
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
@@ -113,13 +151,4 @@ locals {
   }
 }
 
-variable "node_count" {
-  description = "Number of nodes in each cluster."
-  default     = 3
-}
-
-variable "max_traefik_replicas" {
-  description = "The number of traefik replias to create, min of this or node_count variable will be used"
-  default = 5
-}
 

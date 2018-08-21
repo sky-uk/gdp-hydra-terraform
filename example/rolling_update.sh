@@ -50,10 +50,10 @@ function update_cluster {
     log "Disabling cluster: $CLUSTER_NAME in: $NETWORK_PROVIDER"
     if [ $NETWORK_PROVIDER == "cloudflare" ]
     then
-        terraform apply -auto-approve -target module.hydra.module.cloudflare -var traffic_manager_"$CLUSTER_NAME"_enabled=false
+        terraform apply -refresh=false -auto-approve -target module.hydra.module.cloudflare.cloudflare_load_balancer_pool.hydra_clusters -var traffic_manager_"$CLUSTER_NAME"_enabled=false
     elif [ $NETWORK_PROVIDER == "akamai" ]
     then
-        terraform apply -auto-approve -target module.hydra.module.akamai_config -var traffic_manager_"$CLUSTER_NAME"_enabled=false
+        terraform apply -refresh=false -auto-approve -target module.hydra.module.akamai_config.akamai_gtm_property.hydra_property -var traffic_manager_"$CLUSTER_NAME"_enabled=false
     else
         log "Unsupported network provider: $NETWORK_PROVIDER"
     fi

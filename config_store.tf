@@ -4,22 +4,22 @@ data "archive_file" "kubeconfig" {
 
   source {
     content  = "${module.aks_cluster_1.kubeconfig}"
-    filename = "kubeconfig_1"
+    filename = "kubeconfig_aks_1"
   }
 
   source {
     content  = "${module.aks_cluster_2.kubeconfig}"
-    filename = "kubeconfig_2"
+    filename = "kubeconfig_aks_2"
   }
 
   source {
     content  = "${module.gke_cluster_1.kubeconfig}"
-    filename = "kubeconfig_3"
+    filename = "kubeconfig_gke_1"
   }
 
   source {
     content  = "${module.gke_cluster_2.kubeconfig}"
-    filename = "kubeconfig_4"
+    filename = "kubeconfig_gke_2"
   }
 }
 
