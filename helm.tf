@@ -9,8 +9,7 @@ module "helm_aks1" {
   host                   = "${module.aks_cluster_1.host}"
   cluster_name           = "aks1"
 
-  //Create 1 traefik instance per node up to 5
-  traefik_replica_count = "${min(var.node_count, var.max_traefik_replicas)}"
+  traefik_replica_count = "${max(var.node_count, var.max_traefik_replicas)}"
 
   // This forces the helm config to run after the
   // initial Kubernetes configuration module 
@@ -29,6 +28,8 @@ module "helm_aks2" {
   host                   = "${module.aks_cluster_2.host}"
   cluster_name           = "aks2"
 
+  traefik_replica_count = "${max(var.node_count, var.max_traefik_replicas)}"
+
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
 
@@ -43,6 +44,8 @@ module "helm_gke1" {
   host                   = "${module.gke_cluster_1.host}"
   cluster_name           = "gke1"  
 
+  traefik_replica_count = "${max(var.node_count, var.max_traefik_replicas)}"
+
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
 
@@ -56,6 +59,8 @@ module "helm_gke2" {
   cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                   = "${module.gke_cluster_2.host}"
   cluster_name           = "gke2"  
+
+  traefik_replica_count = "${max(var.node_count, var.max_traefik_replicas)}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }
