@@ -1,4 +1,3 @@
-
 resource "kubernetes_namespace" "monitoring"{
   metadata {
     labels = {
@@ -6,7 +5,7 @@ resource "kubernetes_namespace" "monitoring"{
       datacenter = "${var.cluster_name}"
     }
 
-    name = "monitoring-ingress"
+    name = "monitoring"
   }
 }
 

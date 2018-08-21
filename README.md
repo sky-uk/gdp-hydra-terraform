@@ -131,7 +131,7 @@ These variables are used to configure aspects of the clusters that are created b
 | azure_node_ssh_key | SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N '' -C aks-key` | string | - | yes |
 | azure_resource_locations | List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. | string | `<list>` | no |
 | kubernetes_version | The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5 | string | `1.10.5` | no |
-| node_count | Number of nodes in each cluster. | string | `1` | no |
+| node_count | Number of nodes in each cluster. | string | `3` | no |
 | node_type | Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters. | string | `small` | no |
 
 ### Cluster Load Balancing
