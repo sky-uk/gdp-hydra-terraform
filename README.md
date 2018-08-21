@@ -90,8 +90,39 @@ There are a number of limitation to the current script, called out inline with t
 
 It serves to demonstrate how a zero downtime rollout, for example updating K8's versions, could be handled but for a production system this flow would best be split out into a CD pipeline with more checks, automated approval steps and possibly manual ones too. 
 
-## Variables
+## Responding to Failures
 
+Terraform uses a state file to reconsile it's world view with any of the providers. This can sometime create issues, if for example, a set of manual changes are made which can't be reconciled or create an issue for the dependency graph in Terraform. 
+
+One example is when a Kuberentes cluster has been deleted outside of the Terraform module (through the portal or CLI).
+
+When attempting the `terraform plan` or `apply` command Terraform will attempt to connect to the cluster to refresh it's view of the clusters deployments. Given the cluster no longer exists you will see an error. To work around this issue you can run your commands with `terraform plan -refresh=false`. This will allow you to run plan, you may need further manipulation of the state file to progress, see below. 
+
+Here is how to investigate:
+
+- `terraform state list` Gives you information about all the items in state
+- `terraform state show` Allows you to see an item 
+- `terraform state rm` Allows you to remove an item 
+
+You can, for example, use these commands to remove all terraform state related to Helm. This will mean you run `terraform apply` it will reapply all helm actions. Be warned some providers handle this differently. Helm will succeed when a resource already exists. The Kubernetes provider will fail as with an error like "namespace x already exists".
+
+```bash
+terraform state list | grep helm | xargs -n 1 terraform destroy -force -target 
+```
+
+For a more blanket approach you can also use the `taint` command. Once run this marks the object for recreation in terraforms state file. For example, doing the following would destroy then recreate the `GKE_1` cluster:
+
+```bash
+terraform taint -module hydra.gke_cluster_1 google_container_cluster.cluster
+
+> The resource google_container_cluster.cluster in the module root.hydra.gke_cluster_1 has been marked as tainted!
+
+# Double apply works around a dependency issue which has been seen. First will rebuild cluster. Second run will install/configure.
+terraform apply && terraform apply
+
+```
+
+## Variables
 ### Azure Athentication
 
 The following properties are required for authenticating into the Azure platform to create resources. See the Authenticating section above for more information on creating credentials
@@ -116,10 +147,23 @@ These variables are requried configuration to create resources within GCP. See t
 
  Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
+| akamai_enabled | Whether to enable Akamai for routing | string | - | yes |
 | akamai_access_token |  | string | - | yes |
 | akamai_client_secret |  | string | - | yes |
 | akamai_client_token |  | string | - | yes |
 | akamai_host | Host for akamai API | string | - | yes |
+| edge_dns_zone | The dns zone the edge should use eg. example.com | string | - | yes |
+| edge_dns_name | The dns name the edge should use (akamai or cloudflare) eg. hydraclusters is combined with zone to create hydraclusters.example.com | string | - | yes |
+
+### Cloudflare API Authentication
+
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| cloudflare_enabled | Whether to enable Cloudflare for routing | string | - | yes |
+| cloudflare_email | Cloudflare email token used for authentication | string | `` | no |
+| cloudflare_token | Cloudflare api token used for authentication | string | `` | no |
+| edge_dns_name | The dns name the edge should use (akamai or cloudflare) eg. hydraclusters is combined with zone to create hydraclusters.example.com | string | - | yes |
+| edge_dns_zone | The dns zone the edge should use eg. example.com | string | - | yes |
 
 ### Cluster Configuration
 
@@ -140,10 +184,21 @@ The following variables configure which clusters should be active in the Akamai 
 
  Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| traffic_manager_aks_cluster_1_enabled |  | string | `true` | no |
-| traffic_manager_aks_cluster_2_enabled |  | string | `true` | no |
-| traffic_manager_gke_cluster_1_enabled |  | string | `true` | no |
-| traffic_manager_gke_cluster_2_enabled |  | string | `true` | no |
+| traffic_manager_aks_cluster_1_enabled | Enables/disables traffic routing to this cluster from akamai or cloudflare | string | `true` | no |
+| traffic_manager_aks_cluster_2_enabled | Enables/disables traffic routing to this cluster from akamai or cloudflare | string | `true` | no |
+| traffic_manager_gke_cluster_1_enabled | Enables/disables traffic routing to this cluster from akamai or cloudflare | string | `true` | no |
+| traffic_manager_gke_cluster_2_enabled | Enables/disables traffic routing to this cluster from akamai or cloudflare | string | `true` | no |
+
+### Cluster Setup 
+
+The following variables configure components inside the cluster such as the Traefik ingress controller, Prometheus monitoring and the [Health check app](https://github.com/emrekenci/k8s-healthcheck) used to monitor cluster health.  
+
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| enable_prometheus | Whether to deploy prometheus into the clusters via helm | string | `true` | no |
+| enable_traefik | Whether to deploy traefik into the clusters via helm | string | `true` | no |
+| monitoring_endpoint_password | The password to use for the clusters /healthz endpoint | string |  | yes |
+| traefik_replicas_count | The number of traefik replias to create | string | `3` | no |
 
 ## Outputs
 
