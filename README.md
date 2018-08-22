@@ -73,7 +73,7 @@ module "hydra" {
 
 You must supply values for all of these variables. You can choose to use any of the other optional variables as required by your deployment. 
 
-To see an view an example usage see the [main.tf and vars.example.tfvars here](./example/).
+To see an example of using the module to create clusters and then deploying items into the clusters see the [example here](./example/).
 
 ## Authenticating
 
