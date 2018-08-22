@@ -71,7 +71,6 @@ variable "cloudflare_enabled" {
 }
 
 variable "monitoring_endpoint_password" {
-  default = "eafc7df7-6ed0-4e35-b65c-76bb14748a7b"
   description = "The password to use for the clusters /healthz endpoint"
 }
 
