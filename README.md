@@ -36,24 +36,44 @@ You will then need to add the required varibles as described below. Your final m
 module "hydra" {
   "source" = "git@github.com:sky-uk/gdp-hydra-terraform?ref=v0.0.1"
 
-  "project_name"          = "myclusters"
-  "azure_client_id"       = ""
-  "azure_client_secret"   = ""
-  "azure_tenant_id"       = ""
-  "azure_subscription_id" = ""
-  "azure_node_ssh_key"    = ""
-  "google_creds_base64"   = ""
-  "google_project_id"     = "my-project-101"
-  "akamai_host"           = ""
-  "akamai_client_secret"  = ""
-  "akamai_access_token"   = ""
-  "akamai_client_token"   = ""
+  project_name = "my-project-101"
+
+  enable_traefik    = true
+  enable_prometheus = true
+
+  monitoring_endpoint_password = "aGoodPasswordHere"
+  traefik_replicas_count = 3
+
+  node_type = "small"
+  node_count = 3
+
+  azure_client_id       = ""
+  azure_client_secret   = ""
+  azure_tenant_id       = ""
+  azure_subscription_id = ""
+  azure_node_ssh_key    = ""
+
+  google_creds_base64 = ""
+  google_project_id   = ""
+
+  edge_dns_zone = "${var.edge_dns_zone}"
+  edge_dns_name = "${var.edge_dns_name}"
+
+  akamai_enabled       = false
+  akamai_host          = ""
+  akamai_client_secret = ""
+  akamai_access_token  = ""
+  akamai_client_token  = ""
+
+  cloudflare_enabled = true
+  cloudflare_email   = ""
+  cloudflare_token   = ""
 }
 ```
 
 You must supply values for all of these variables. You can choose to use any of the other optional variables as required by your deployment. 
 
-To see an view an example usage see the [main.tf here](./example/main.tf).
+To see an view an example usage see the [main.tf and vars.example.tfvars here](./example/).
 
 ## Authenticating
 
