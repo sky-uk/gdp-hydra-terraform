@@ -149,6 +149,7 @@ locals {
   }
 
   tags = {
+    # need to use underscores here as GCP doesnt accept full stops
     "hydra_version" = "0_0_4"
     "hydra_project" = "${var.project_name}"
   }
