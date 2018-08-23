@@ -4,7 +4,7 @@ locals {
 
 resource "google_container_cluster" "cluster" {
   project            = "${var.google_project}"
-  name               = "${var.cluster_name}"
+  name               = "${local.cluster_name}"
   zone               = "${var.region}"
   initial_node_count = "${var.node_count}"
   enable_legacy_abac = true
