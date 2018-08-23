@@ -194,3 +194,12 @@ module "gcr" {
 
   google_project_id = "${var.google_project_id}"
 }
+
+module "monitoring" {
+  source = "monitoring"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_ips = "${local.cluster_ips}"
+}
