@@ -10,7 +10,7 @@ provider "kubernetes" {
   host                   = "${var.host}"
 }
 
-resource "kubernetes_namespace" "ns"{
+resource "kubernetes_namespace" "ns" {
   metadata {
     labels = {
       createdby = "terraform"
@@ -23,10 +23,13 @@ resource "kubernetes_namespace" "ns"{
 resource "kubernetes_ingress" "example" {
   metadata {
     name = "example"
+
     labels = {
       createdby = "terraform"
     }
+
     namespace = "${kubernetes_namespace.ns.metadata.0.name}"
+
     annotations {
       "kubernetes.io/ingress.class"          = "traefik"
       "ingress.kubernetes.io/rewrite-target" = "/"
@@ -40,7 +43,6 @@ resource "kubernetes_ingress" "example" {
     }
 
     rule {
-
       http {
         path {
           path_regex = "/example"
@@ -62,6 +64,7 @@ resource "kubernetes_service" "echoserver" {
     labels = {
       createdby = "terraform"
     }
+
     namespace = "${kubernetes_namespace.ns.metadata.0.name}"
   }
 
@@ -86,6 +89,7 @@ resource "kubernetes_deployment" "echoserver" {
     labels = {
       createdby = "terraform"
     }
+
     namespace = "${kubernetes_namespace.ns.metadata.0.name}"
   }
 

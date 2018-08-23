@@ -44,7 +44,7 @@ module "helm_gke1" {
   client_key             = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
   cluster_ca_certificate = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                   = "${module.gke_cluster_1.host}"
-  cluster_name           = "gke1"  
+  cluster_name           = "gke1"
 
   traefik_replica_count  = "${var.traefik_replicas_count}"
   registry_url           = "${module.gcr.url}"
@@ -61,7 +61,7 @@ module "helm_gke2" {
   client_key             = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
   cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                   = "${module.gke_cluster_2.host}"
-  cluster_name           = "gke2"  
+  cluster_name           = "gke2"
 
   traefik_replica_count  = "${var.traefik_replicas_count}"
   registry_url           = "${module.gcr.url}"

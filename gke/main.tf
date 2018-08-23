@@ -24,6 +24,8 @@ resource "google_container_cluster" "cluster" {
       start_time = "0${count.index*2}:00"
     }
   }
+
+  resource_labels = "${var.tags}"
 }
 
 data "template_file" "kubeconfig" {
