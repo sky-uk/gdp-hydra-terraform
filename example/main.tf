@@ -47,6 +47,48 @@ module "hydra" {
   cloudflare_token   = "${var.cloudflare_token}"
 }
 
+
+// Below we use the credentials from each of the clusters to deploy Kuberentes objects
+// you can also do the same with the helm provider https://github.com/mcuadros/terraform-provider-helm
+module "aks_1_deploy" {
+  source = "./deploy"
+
+  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_client_certificate")}"
+  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_client_key")}"
+  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_ca_certificate")}"
+  host                       = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "host")}"
+}
+
+module "aks_2_deploy" {
+  source = "./deploy"
+
+  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_client_certificate")}"
+  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_client_key")}"
+  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_ca_certificate")}"
+  host                       = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "host")}"
+}
+
+
+module "gke_1_deploy" {
+  source = "./deploy"
+
+  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_client_certificate")}"
+  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_client_key")}"
+  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_ca_certificate")}"
+  host                       = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "host")}"
+}
+
+
+module "gke_2_deploy" {
+  source = "./deploy"
+
+  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_client_certificate")}"
+  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_client_key")}"
+  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_ca_certificate")}"
+  host                       = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "host")}"
+}
+
+
 output "ips" {
   value = "${module.hydra.ips}"
 }
