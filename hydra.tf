@@ -37,7 +37,7 @@ module "aks_cluster_1" {
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
 
-  cluster_prefix            = "aks-cluster"
+  cluster_prefix            = "${local.resource_group_name_clusters}"
   linux_admin_username      = "aks"
   linux_admin_ssh_publickey = "${var.azure_node_ssh_key}"
   client_id                 = "${var.azure_client_id}"
@@ -55,7 +55,7 @@ module "aks_cluster_2" {
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
 
-  cluster_prefix            = "aks-cluster"
+  cluster_prefix            = "${local.resource_group_name_clusters}"
   linux_admin_username      = "aks"
   linux_admin_ssh_publickey = "${var.azure_node_ssh_key}"
   client_id                 = "${var.azure_client_id}"
@@ -73,7 +73,7 @@ module "gke_cluster_1" {
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
 
-  cluster_prefix     = "gke-cluster"
+  cluster_prefix     = "${local.resource_group_name_clusters}"
   region             = "europe-west2-a"
   google_project     = "${var.google_project_id}"
   kubernetes_version = "${var.kubernetes_version}"
@@ -87,7 +87,7 @@ module "gke_cluster_2" {
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
 
-  cluster_prefix     = "gke-cluster"
+  cluster_prefix     = "${local.resource_group_name_clusters}"
   region             = "europe-west3-a"
   kubernetes_version = "${var.kubernetes_version}"
   google_project     = "${var.google_project_id}"
