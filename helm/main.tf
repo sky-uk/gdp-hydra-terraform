@@ -66,7 +66,7 @@ data "template_file" "prom_values" {
 
 resource "helm_release" "prometheus_slaves" {
   count = "${var.enable_prometheus}"
-  
+
   name       = "prometheus-slaves"
   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
   chart      = "prometheus"
@@ -75,6 +75,26 @@ resource "helm_release" "prometheus_slaves" {
   values = [
     "${data.template_file.prom_values.rendered}",
   ]
+
+  depends_on = [
+    "helm_release.prometheus_operator",
+  ]
+}
+
+resource "helm_release" "registry_rewriter" {
+  name       = "registry-rewriter"
+  chart      = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.0/registry-rewriter-0.1.0.tgz"
+  namespace  = "kube-system"
+
+  set {
+    name  = "containerRegistryUrl"
+    value = "${var.registry_url}"
+  }
+
+  set {
+    name  = "caBundle"
+    value = "${base64encode(var.cluster_ca_certificate)}"
+  }
 
   depends_on = [
     "helm_release.prometheus_operator",
