@@ -18,7 +18,7 @@ resource "azurerm_resource_group" "rg" {
 }
 
 resource "azurerm_container_registry" "deploy" {
-  name = "ionacr${random_string.name.result}"
+  name = "${var.project_name}acr${random_string.name.result}"
 
   location            = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"

@@ -2,6 +2,7 @@ variable "google_project_id" {}
 
 data "google_container_registry_repository" "registry" {
   project = "${var.google_project_id}"
+  region = "eu"
 }
 
 resource "google_service_account" "registry_user" {
