@@ -61,8 +61,8 @@ resource "kubernetes_secret" "image_pull_secret" {
   type  = "kubernetes.io/dockerconfigjson"
 
   metadata {
-    name      = "image-pull-secret-acr"
-    namespace = "kube-system"
+    name      = "cluster-local-image-secret"
+    namespace = "default"
 
     labels = {
       createdby = "terraform"
