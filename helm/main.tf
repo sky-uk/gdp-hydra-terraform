@@ -82,9 +82,9 @@ resource "helm_release" "prometheus_slaves" {
 }
 
 resource "helm_release" "registry_rewriter" {
-  name       = "registry-rewriter"
-  chart      = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.0/registry-rewriter-0.1.0.tgz"
-  namespace  = "kube-system"
+  name      = "registry-rewriter"
+  chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.0/registry-rewriter-0.1.0.tgz"
+  namespace = "kube-system"
 
   set {
     name  = "containerRegistryUrl"

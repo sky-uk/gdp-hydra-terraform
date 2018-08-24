@@ -55,10 +55,10 @@ output "kubeconfig_url" {
 
 output "prometheus_url" {
   description = "URL of the central prometheus instance that scrapes from all clusters to aggregate information"
-  value = "${module.monitoring.prometheus_url}"
+  value       = "${module.monitoring.prometheus_url}"
 }
 
 output "grafana_url" {
   description = "URL of the central grafana instance that is connected to the central prometheus"
-  value = "${module.monitoring.grafana_url}"
+  value       = "${module.monitoring.grafana_url}"
 }
