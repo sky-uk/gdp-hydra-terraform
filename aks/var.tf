@@ -1,3 +1,8 @@
+variable "project_name" {
+  type        = "string"
+  description = "The name of the hydra project"
+}
+
 variable "kubernetes_version" {
   type        = "string"
   description = "The version of k8s to use for deployment"
@@ -43,4 +48,9 @@ variable "linux_admin_username" {
 variable "linux_admin_ssh_publickey" {
   type        = "string"
   description = "Configure all the linux virtual machines in the cluster with the SSH RSA public key string. The key should include three parts, for example 'ssh-rsa AAAAB...snip...UcyupgH azureuser@linuxvm'"
+}
+
+variable "tags" {
+  type        = "map"
+  description = "Tags to apply to all resources"
 }

@@ -1,6 +1,6 @@
 output "username" {
   description = "Username for the Azure Container Service"
-  value       = "${azurerm_azuread_service_principal.acr_service_principal.id}"
+  value       = "${azurerm_azuread_application.acr_application.application_id}"
 }
 
 output "password" {

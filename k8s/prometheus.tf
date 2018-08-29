@@ -1,7 +1,7 @@
-resource "kubernetes_namespace" "monitoring"{
+resource "kubernetes_namespace" "monitoring" {
   metadata {
     labels = {
-      createdby = "terraform"
+      createdby  = "terraform"
       datacenter = "${var.cluster_name}"
     }
 
@@ -11,16 +11,17 @@ resource "kubernetes_namespace" "monitoring"{
 
 resource "kubernetes_ingress" "prometheus-ingress" {
   metadata {
-    name = "prometheus-ingress"
+    name      = "prometheus-ingress"
     namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
+
     annotations {
-      "kubernetes.io/ingress.class"          = "traefik"
-      "ingress.kubernetes.io/rewrite-target" = "/federate"
+      "kubernetes.io/ingress.class"             = "traefik"
+      "ingress.kubernetes.io/rewrite-target"    = "/federate"
       "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
     }
 
     labels = {
-      createdby = "terraform"
+      createdby  = "terraform"
       datacenter = "${var.cluster_name}"
     }
   }

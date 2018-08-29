@@ -11,3 +11,8 @@ variable "resource_group_location" {
 variable "project_name" {
   description = "Name of the project"
 }
+
+variable "tags" {
+  type        = "map"
+  description = "Tags to apply to all resources"
+}

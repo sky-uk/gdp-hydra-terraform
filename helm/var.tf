@@ -6,4 +6,4 @@ variable "enable_traefik" {}
 variable "enable_prometheus" {}
 variable "cluster_name" {}
 variable "traefik_replica_count" {}
-
+variable "registry_url" {}

@@ -1,6 +1,10 @@
+locals {
+  cluster_name = "${var.cluster_prefix}-${var.region}"
+}
+
 resource "google_container_cluster" "cluster" {
   project            = "${var.google_project}"
-  name               = "${var.cluster_prefix}-${var.region}"
+  name               = "${local.cluster_name}"
   zone               = "${var.region}"
   initial_node_count = "${var.node_count}"
   enable_legacy_abac = true
@@ -24,6 +28,8 @@ resource "google_container_cluster" "cluster" {
       start_time = "0${count.index*2}:00"
     }
   }
+
+  resource_labels = "${var.tags}"
 }
 
 data "template_file" "kubeconfig" {

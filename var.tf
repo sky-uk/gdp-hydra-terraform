@@ -43,29 +43,30 @@ variable "akamai_enabled" {
 }
 
 variable "akamai_client_secret" {
-  default = ""
+  default     = ""
   description = "Akamai client secret used for authentication"
 }
 
 variable "akamai_access_token" {
-  default = ""
+  default     = ""
   description = "Akamai access token used for authentication"
 }
 
 variable "akamai_client_token" {
-  default = ""
+  default     = ""
   description = "Akamai client token used for authentication"
-
 }
 
 variable "cloudflare_email" {
-  default = ""
+  default     = ""
   description = "Cloudflare email token used for authentication"
 }
+
 variable "cloudflare_token" {
-  default = ""
+  default     = ""
   description = "Cloudflare api token used for authentication"
 }
+
 variable "cloudflare_enabled" {
   description = "Whether to enable Cloudflare for routing"
 }
@@ -73,7 +74,6 @@ variable "cloudflare_enabled" {
 variable "monitoring_endpoint_password" {
   description = "The password to use for the clusters /healthz endpoint"
 }
-
 
 variable "kubernetes_version" {
   description = "The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5"
@@ -86,38 +86,38 @@ variable "node_type" {
 }
 
 variable "traffic_manager_aks_cluster_1_enabled" {
-  default = true
+  default     = true
   description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "traffic_manager_aks_cluster_2_enabled" {
-  default = true
+  default     = true
   description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "traffic_manager_gke_cluster_1_enabled" {
-  default = true
+  default     = true
   description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "traffic_manager_gke_cluster_2_enabled" {
-  default = true
+  default     = true
   description = "Enables/disables traffic routing to this cluster from akamai or cloudflare"
 }
 
 variable "enable_traefik" {
   description = "Whether to deploy traefik into the clusters via helm"
-  default = true
+  default     = true
 }
 
 variable "traefik_replicas_count" {
   description = "The number of traefik replias to create"
-  default = 3
+  default     = 3
 }
 
 variable "enable_prometheus" {
   description = "Whether to deploy prometheus into the clusters via helm"
-  default = true
+  default     = true
 }
 
 variable "node_count" {
@@ -125,11 +125,10 @@ variable "node_count" {
   default     = 3
 }
 
-
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
 
-  resource_group_name_acr = "${var.project_name}-acr"
+  resource_group_name_acr = "${var.project_name}-registry"
 
   resource_group_name_config = "${var.project_name}-config"
 
@@ -148,6 +147,10 @@ locals {
     "gke_cluster_1" = "${module.k8s_config_gke_1.cluster_ingress_ip}"
     "gke_cluster_2" = "${module.k8s_config_gke_2.cluster_ingress_ip}"
   }
+
+  tags = {
+    # need to use underscores here as GCP doesnt accept full stops
+    "hydra_version" = "0_0_4"
+    "hydra_project" = "${var.project_name}"
+  }
 }
-
-
