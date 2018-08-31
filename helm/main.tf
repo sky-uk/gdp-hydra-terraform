@@ -100,3 +100,25 @@ resource "helm_release" "registry_rewriter" {
     "helm_release.prometheus_operator",
   ]
 }
+
+# https://github.com/helm/charts/tree/master/stable/fluent-bit
+resource "helm_release" "fluent_bit" {
+  name      = "fluent-bit"
+  chart     = "stable/fluent-bit"
+  namespace = "logging"
+
+  set {
+    name  = "rbac.create"
+    value = "false"
+  }
+
+  set {
+    name  = "backend.forward.host"
+    value = "sghydra-logging-ykqvkzid.northeurope.azurecontainer.io"
+  }
+
+  set {
+    name  = "backend.forward.port"
+    value = "24224"
+  }
+}

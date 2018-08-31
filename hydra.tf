@@ -202,4 +202,13 @@ module "monitoring" {
   tags         = "${local.tags}"
 
   cluster_ips = "${local.cluster_ips}"
+
+  azure_node_ssh_key  = "${var.azure_node_ssh_key}"
+  azure_client_id     = "${var.azure_client_id}"
+  azure_client_secret = "${var.azure_client_secret}"
+  kubernetes_version  = "${var.kubernetes_version}"
+  node_count          = "${var.node_count}"
+  node_sku            = "${local.aks_node}"
+
+  azure_resource_location = "${var.azure_resource_locations[0]}"
 }
