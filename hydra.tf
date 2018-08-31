@@ -211,4 +211,10 @@ module "monitoring" {
   node_sku            = "${local.aks_node}"
 
   azure_resource_location = "${var.azure_resource_locations[0]}"
+
+  cluster_prefix     = "${var.project_name}-monitoring"
+  google_project     = "${var.google_project_id}"
+  kubernetes_version = "${var.kubernetes_version}"
+  node_count         = "${var.node_count}"
+  machine_type       = "${local.gke_node}"
 }

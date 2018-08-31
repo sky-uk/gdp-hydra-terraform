@@ -23,12 +23,31 @@ variable "azure_node_ssh_key" {
 variable "azure_client_id" {}
 variable "azure_client_secret" {}
 
+variable "node_sku" {}
+
+variable "azure_resource_location" {}
+
+module "monitoring_cluster_gke" {
+  source = "../gke"
+
+  project_name = "${var.project_name}"
+  tags         = "${var.tags}"
+
+  cluster_prefix     = "${var.cluster_prefix}"
+  region             = "europe-west2-a"
+  google_project     = "${var.google_project}"
+  kubernetes_version = "${var.kubernetes_version}-gke.4"
+  node_count         = "${var.node_count}"
+  machine_type       = "${var.machine_type}"
+}
+
+variable "cluster_prefix" {}
+
+variable "google_project" {}
 variable "kubernetes_version" {}
 
-variable "node_sku" {}
+variable "machine_type" {}
 
 variable "node_count" {
   default = 2
 }
-
-variable "azure_resource_location" {}
