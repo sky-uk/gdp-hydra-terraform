@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: hashicorp/terraform:0.11.7
+    environment:
+    steps:
+      - checkout
+      - run:
+          name: Check Formatting
+          command: |
+            terraform fmt -check=true
+            terraform validate -check-variables=false
