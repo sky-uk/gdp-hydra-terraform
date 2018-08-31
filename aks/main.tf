@@ -5,6 +5,8 @@ locals {
 resource "azurerm_resource_group" "rg" {
   name     = "${local.cluster_name}"
   location = "${var.region}"
+
+  tags = "${var.tags}"
 }
 
 resource "random_string" "cluster_name" {
@@ -53,7 +55,5 @@ resource "azurerm_kubernetes_cluster" "aks" {
     client_secret = "${module.service_principal.sp_password}"
   }
 
-  tags {
-    source = "terraform"
-  }
+  tags = "${var.tags}"
 }

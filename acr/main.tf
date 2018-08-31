@@ -13,16 +13,20 @@ resource "random_string" "name" {
 resource "azurerm_resource_group" "rg" {
   name     = "${var.resource_group_name}"
   location = "${var.resource_group_location}"
+
+  tags = "${var.tags}"
 }
 
 resource "azurerm_container_registry" "deploy" {
-  name = "ionacr${random_string.name.result}"
+  name = "${var.project_name}acr${random_string.name.result}"
 
   location            = "${azurerm_resource_group.rg.location}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
   admin_enabled = true
   sku           = "Standard"
+
+  tags = "${var.tags}"
 }
 
 resource "azurerm_azuread_application" "acr_application" {
@@ -39,8 +43,8 @@ resource "azurerm_azuread_service_principal" "acr_service_principal" {
 }
 
 resource "random_string" "acr_password" {
-  length           = 16
-  special          = true
+  length  = 16
+  special = true
 
   keepers = {
     service_principal = "${azurerm_azuread_service_principal.acr_service_principal.id}"

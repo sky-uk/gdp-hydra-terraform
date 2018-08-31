@@ -1,6 +1,6 @@
-variable "organization" {
+variable "project_name" {
   type        = "string"
-  description = "The GKE Organisation under which to create the cluster"
+  description = "The name of the hydra project"
 }
 
 variable "kubernetes_version" {
@@ -33,4 +33,9 @@ variable "machine_type" {
 variable "region" {
   type        = "string"
   description = "The region in which to deploy a GKE cluster"
+}
+
+variable "tags" {
+  type        = "map"
+  description = "Tags to apply to all resources"
 }

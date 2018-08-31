@@ -23,27 +23,28 @@ provider "cloudflare" {
 }
 
 module "acr" {
-  source = "acr"
+  source       = "acr"
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
 
   resource_group_name     = "${local.resource_group_name_acr}"
   resource_group_location = "${var.azure_resource_locations[0]}"
-  project_name            = "${var.project_name}"
 }
 
 module "aks_cluster_1" {
   source = "aks"
 
-  cluster_prefix      = "aks-cluster"
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
 
-  //Defaults to using current ssh key: recomend changing as needed
+  cluster_prefix            = "${local.resource_group_name_clusters}"
   linux_admin_username      = "aks"
   linux_admin_ssh_publickey = "${var.azure_node_ssh_key}"
-
-  client_id          = "${var.azure_client_id}"
-  client_secret      = "${var.azure_client_secret}"
-  kubernetes_version = "${var.kubernetes_version}"
-  node_count         = "${var.node_count}"
-  node_sku           = "${local.aks_node}"
+  client_id                 = "${var.azure_client_id}"
+  client_secret             = "${var.azure_client_secret}"
+  kubernetes_version        = "${var.kubernetes_version}"
+  node_count                = "${var.node_count}"
+  node_sku                  = "${local.aks_node}"
 
   region = "${var.azure_resource_locations[0]}"
 }
@@ -51,17 +52,17 @@ module "aks_cluster_1" {
 module "aks_cluster_2" {
   source = "aks"
 
-  cluster_prefix      = "aks-cluster"
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
 
-  //Defaults to using current ssh key: recomend changing as needed
+  cluster_prefix            = "${local.resource_group_name_clusters}"
   linux_admin_username      = "aks"
   linux_admin_ssh_publickey = "${var.azure_node_ssh_key}"
-
-  client_id          = "${var.azure_client_id}"
-  client_secret      = "${var.azure_client_secret}"
-  kubernetes_version = "${var.kubernetes_version}"
-  node_count         = "${var.node_count}"
-  node_sku           = "${local.aks_node}"
+  client_id                 = "${var.azure_client_id}"
+  client_secret             = "${var.azure_client_secret}"
+  kubernetes_version        = "${var.kubernetes_version}"
+  node_count                = "${var.node_count}"
+  node_sku                  = "${local.aks_node}"
 
   region = "${var.azure_resource_locations[1]}"
 }
@@ -69,8 +70,10 @@ module "aks_cluster_2" {
 module "gke_cluster_1" {
   source = "gke"
 
-  organization       = "0"
-  cluster_prefix     = "gke-cluster"
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${local.resource_group_name_clusters}"
   region             = "europe-west2-a"
   google_project     = "${var.google_project_id}"
   kubernetes_version = "${var.kubernetes_version}"
@@ -81,8 +84,10 @@ module "gke_cluster_1" {
 module "gke_cluster_2" {
   source = "gke"
 
-  organization       = "0"
-  cluster_prefix     = "gke-cluster"
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${local.resource_group_name_clusters}"
   region             = "europe-west3-a"
   kubernetes_version = "${var.kubernetes_version}"
   google_project     = "${var.google_project_id}"
@@ -114,7 +119,7 @@ module "k8s_config_aks_2" {
   cluster_name = "aks_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
-  
+
   enable_image_pull_secret = true
   image_pull_server        = "${module.acr.url}"
   image_pull_username      = "${module.acr.username}"
@@ -169,8 +174,8 @@ module "akamai_config" {
 }
 
 module "cloudflare" {
-  source                       = "cloudflare"
-  enabled                      = "${var.cloudflare_enabled}"
+  source  = "cloudflare"
+  enabled = "${var.cloudflare_enabled}"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
@@ -187,7 +192,14 @@ module "cloudflare" {
 module "gcr" {
   source = "gcr"
 
-
   google_project_id = "${var.google_project_id}"
 }
 
+module "monitoring" {
+  source = "monitoring"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_ips = "${local.cluster_ips}"
+}

@@ -26,6 +26,8 @@ data "archive_file" "kubeconfig" {
 resource "azurerm_resource_group" "config_rg" {
   name     = "${local.resource_group_name_config}"
   location = "${var.azure_resource_locations[0]}"
+
+  tags = "${local.tags}"
 }
 
 resource "azurerm_storage_account" "config_storage" {
@@ -34,6 +36,8 @@ resource "azurerm_storage_account" "config_storage" {
   location                 = "${var.azure_resource_locations[0]}"
   account_tier             = "Standard"
   account_replication_type = "LRS"
+
+  tags = "${local.tags}"
 }
 
 resource "azurerm_storage_container" "config_container" {
