@@ -16,7 +16,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
 
     annotations {
       "kubernetes.io/ingress.class"             = "traefik"
-      "ingress.kubernetes.io/rewrite-target"    = "/federate"
+      "ingress.kubernetes.io/rewrite-target"    = "/metrics"
       "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
     }
 
