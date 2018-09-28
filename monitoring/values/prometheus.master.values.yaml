@@ -37,6 +37,10 @@ serviceMonitors:
       - monitoring
     endpoints:
       - path: /federate
+        honorLabels: true
+        params: 
+          - '{job="prometheus"}'
+          - '{__name__=~"traefik.*"}'
     interval: 15s
 service:
   sessionAffinity: None

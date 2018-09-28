@@ -41,3 +41,11 @@ resource "helm_release" "prometheus_master" {
     "helm_release.prometheus_operator",
   ]
 }
+
+
+resource "helm_release" "worker_endpoints" {
+  name       = "workerendpoints"
+  repository = "../charts"
+  chart      = "monitoringendpoints"
+  namespace  = "monitoring"
+}

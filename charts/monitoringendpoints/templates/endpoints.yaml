@@ -1,0 +1,11 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: hydra-workers
+subsets:
+  - addresses:
+    {{- range .Values.workers }}
+    - ip: {{ . }}
+    {{- end }}    
+    ports:
+      - port: {{ .Values.port }}
