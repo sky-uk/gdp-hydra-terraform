@@ -18,7 +18,7 @@ module "monitoring_cluster" {
   cluster_prefix     = "${var.cluster_prefix}"
   region             = "europe-west2-a"
   google_project     = "${var.google_project}"
-  kubernetes_version = "${var.kubernetes_version}-gke.4"
+  kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${var.machine_type}"
 }

@@ -16,8 +16,6 @@ resource "kubernetes_ingress" "kibana-ingress" {
 
     labels = {
       createdby = "terraform"
-
-      # datacenter = "${var.cluster_name}"
     }
   }
 
