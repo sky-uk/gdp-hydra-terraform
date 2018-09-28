@@ -45,7 +45,11 @@ resource "helm_release" "prometheus_master" {
 
 resource "helm_release" "worker_endpoints" {
   name       = "workerendpoints"
-  repository = "../charts"
-  chart      = "monitoringendpoints"
+  chart      = "${path.module}/charts/monitoringendpoints"
   namespace  = "monitoring"
+
+  set {
+    name = "workers" 
+    value = "{${join(",", values(var.cluster_ips))}}"
+  }
 }
