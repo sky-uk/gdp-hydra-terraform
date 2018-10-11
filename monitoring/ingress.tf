@@ -5,48 +5,13 @@ provider "kubernetes" {
   host                   = "${module.monitoring_cluster.host}"
 }
 
-# resource "kubernetes_ingress" "kibana-ingress" {
-#   metadata {
-#     name      = "kibana"
-#     namespace = "logging"
-
-#     annotations {
-#       "kubernetes.io/ingress.class" = "traefik"
-#     }
-
-#     labels = {
-#       createdby = "terraform"
-#     }
-#   }
-
-#   spec {
-#     backend {
-#       service_name = "kibana"
-#       service_port = 80
-#     }
-
-#     rule {
-#       http {
-#         path {
-#           path_regex = "/"
-
-#           backend {
-#             service_name = "kibana"
-#             service_port = 80
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
-
 resource "kubernetes_ingress" "prometheus-ingress" {
   metadata {
     name      = "prometheus"
     namespace = "monitoring"
 
-   annotations {
-      "kubernetes.io/ingress.class"             = "traefik"
+    annotations {
+      "kubernetes.io/ingress.class" = "traefik"
     }
 
     labels = {
