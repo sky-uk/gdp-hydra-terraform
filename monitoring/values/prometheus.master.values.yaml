@@ -3,7 +3,7 @@ config:
   value: {}
 labels:
   prometheus-operated: 'true'
-externalUrl: ''
+externalUrl: '/prometheus'
 selfServiceMonitor: false
 image:
   repository: quay.io/prometheus/prometheus
@@ -20,7 +20,7 @@ podAntiAffinity: soft
 remoteRead: {}
 remoteWrite: {}
 retention: 24h
-routePrefix: /
+routePrefix: /prometheus/
 rules:
   specifiedInValues: false
   additionalLabels: {}

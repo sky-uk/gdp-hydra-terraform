@@ -45,8 +45,8 @@ resource "kubernetes_ingress" "prometheus-ingress" {
     name      = "prometheus"
     namespace = "monitoring"
 
-    annotations {
-      "kubernetes.io/ingress.class" = "traefik"
+   annotations {
+      "kubernetes.io/ingress.class"             = "traefik"
     }
 
     labels = {
@@ -63,7 +63,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
     rule {
       http {
         path {
-          path_regex = "/"
+          path_regex = "/prometheus"
 
           backend {
             service_name = "prometheus-master"

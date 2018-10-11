@@ -12,17 +12,12 @@ resource "helm_release" "prometheus_operator" {
 
 resource "kubernetes_service" "workers" {
   metadata {
-    name = "hydra-workers"
-
-    labels = {
-      hydra_role = "worker"
-    }
-
+    name      = "hydra-workers"
     namespace = "monitoring"
   }
 
   spec {
-    external_name = "${var.cluster_ips["aks_cluster_1"]}"
+    external_name = "hydra.workers.local"
     type          = "ExternalName"
   }
 }
@@ -42,14 +37,13 @@ resource "helm_release" "prometheus_master" {
   ]
 }
 
-
 resource "helm_release" "worker_endpoints" {
-  name       = "workerendpoints"
-  chart      = "${path.module}/charts/monitoringendpoints"
-  namespace  = "monitoring"
+  name      = "workerendpoints"
+  chart     = "${path.module}/charts/monitoringendpoints"
+  namespace = "monitoring"
 
   set {
-    name = "workers" 
+    name  = "workers"
     value = "{${join(",", values(var.cluster_ips))}}"
   }
 }
