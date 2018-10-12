@@ -62,6 +62,7 @@ data "template_file" "kibana_values" {
 }
 
 resource "helm_release" "kibana" {
+  version   = "0.14.7"
   name      = "kibana"
   chart     = "stable/kibana"
   namespace = "logging"

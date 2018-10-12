@@ -39,3 +39,75 @@ resource "kubernetes_ingress" "prometheus-ingress" {
     }
   }
 }
+
+resource "kubernetes_ingress" "fluentd-ingress" {
+  metadata {
+    name      = "fluentd"
+    namespace = "logging"
+
+    annotations {
+      "kubernetes.io/ingress.class"             = "traefik"
+      "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
+    }
+
+    labels = {
+      createdby = "terraform"
+    }
+  }
+
+  spec {
+    backend {
+      service_name = "fluentd-ingest"
+      service_port = 24220
+    }
+
+    rule {
+      http {
+        path {
+          path_regex = "/"
+
+          backend {
+            service_name = "fluentd-ingest"
+            service_port = 24220
+          }
+        }
+      }
+    }
+  }
+}
+
+resource "kubernetes_ingress" "kibana-ingress" {
+  metadata {
+    name      = "kibana"
+    namespace = "logging"
+
+    annotations {
+      "kubernetes.io/ingress.class"             = "traefik"
+      "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
+    }
+
+    labels = {
+      createdby = "terraform"
+    }
+  }
+
+  spec {
+    backend {
+      service_name = "kibana"
+      service_port = 80
+    }
+
+    rule {
+      http {
+        path {
+          path_regex = "/kibana"
+
+          backend {
+            service_name = "kibana"
+            service_port = 80
+          }
+        }
+      }
+    }
+  }
+}

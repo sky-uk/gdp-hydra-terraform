@@ -13,6 +13,7 @@ files:
     ## Default Kibana configuration from kibana-docker.
     server.name: kibana
     server.host: "0"
+    server.basePath: "/kibana"
     elasticsearch.url: http://elascticsearch-elasticsearch-coordinating-only:9200
 
     ## Custom config properties below
