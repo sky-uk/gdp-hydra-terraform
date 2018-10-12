@@ -5,13 +5,28 @@ provider "kubernetes" {
   host                   = "${module.monitoring_cluster.host}"
 }
 
+resource "kubernetes_secret" "prometheus_password" {
+  metadata {
+    name      = "prometheus"
+    namespace = "monitoring"
+  }
+
+  data {
+    auth = "prom:${bcrypt("something")}"
+  }
+
+  type = "Opaque"
+}
+
 resource "kubernetes_ingress" "prometheus-ingress" {
   metadata {
     name      = "prometheus"
     namespace = "monitoring"
 
     annotations {
-      "kubernetes.io/ingress.class" = "traefik"
+      "kubernetes.io/ingress.class"               = "traefik"
+      "traefik.ingress.kubernetes.io/auth-type"   = "basic"
+      "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
     }
 
     labels = {
@@ -76,14 +91,29 @@ resource "kubernetes_ingress" "fluentd-ingress" {
   }
 }
 
+resource "kubernetes_secret" "kibana_password" {
+  metadata {
+    name      = "kibana"
+    namespace = "logging"
+  }
+
+  data {
+    auth = "kibana:${bcrypt("something")}"
+  }
+
+  type = "Opaque"
+}
+
 resource "kubernetes_ingress" "kibana-ingress" {
   metadata {
     name      = "kibana"
     namespace = "logging"
 
     annotations {
-      "kubernetes.io/ingress.class"             = "traefik"
-      "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
+      "kubernetes.io/ingress.class"               = "traefik"
+      "traefik.ingress.kubernetes.io/rule-type"   = "PathPrefixStrip"
+      "traefik.ingress.kubernetes.io/auth-type"   = "basic"
+      "traefik.ingress.kubernetes.io/auth-secret" = "kibana"
     }
 
     labels = {
