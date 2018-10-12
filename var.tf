@@ -125,6 +125,11 @@ variable "node_count" {
   default     = 3
 }
 
+variable "prom_metrics_username" {
+  description = "Username used for basic auth on each worked cluster metrics endpoint"
+  default     = "metrics"
+}
+
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
 

@@ -38,6 +38,13 @@ serviceMonitors:
     endpoints:
       - path: /federate
         honorLabels: true
+        basicAuth:
+          username: 
+            name: prometheus-workers
+            key: username
+          password:
+            name: prometheus-workers
+            key: password
         params: 
           'match[]':
             - '{job="prometheus"}'

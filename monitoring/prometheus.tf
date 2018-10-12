@@ -1,5 +1,6 @@
 resource "helm_release" "prometheus_operator" {
   name       = "prometheus-operator"
+  version    = "0.0.29"
   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
   chart      = "prometheus-operator"
   namespace  = "monitoring"
@@ -22,8 +23,24 @@ resource "kubernetes_service" "workers" {
   }
 }
 
+resource "kubernetes_secret" "prometheus_workers_password" {
+  metadata {
+    name      = "prometheus-workers"
+    namespace = "monitoring"
+  }
+
+  data {
+    username = "${var.prometheus_scrape_credentials["username"]}"
+    password = "${var.prometheus_scrape_credentials["password"]}"
+  }
+
+  type = "Opaque"
+}
+
+
 resource "helm_release" "prometheus_master" {
   name       = "prometheus-master"
+  version    = "0.0.51"
   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
   chart      = "prometheus"
   namespace  = "monitoring"

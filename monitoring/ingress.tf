@@ -16,6 +16,12 @@ resource "kubernetes_secret" "prometheus_password" {
   }
 
   type = "Opaque"
+
+  # this will stop the password updating on each apply but will also name it difficult to change the password if needed
+  # it will probably be required to delete the secret manually and then re-run terraform apply
+  lifecycle {
+    ignore_changes = ["data.auth"]
+  }
 }
 
 resource "kubernetes_ingress" "prometheus-ingress" {
@@ -102,6 +108,12 @@ resource "kubernetes_secret" "kibana_password" {
   }
 
   type = "Opaque"
+
+  # this will stop the password updating on each apply but will also name it difficult to change the password if needed
+  # it will probably be required to delete the secret manually and then re-run terraform apply
+  lifecycle {
+    ignore_changes = ["data.auth"]
+  }
 }
 
 resource "kubernetes_ingress" "kibana-ingress" {

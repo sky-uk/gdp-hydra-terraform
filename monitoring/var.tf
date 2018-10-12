@@ -12,3 +12,8 @@ variable "cluster_ips" {
   type        = "map"
   description = "Map of the IP addresses to the ingress of all clusters in the hydra deployment"
 }
+
+variable "prometheus_scrape_credentials" {
+  type        = "map"
+  description = "Credentials for worker prometheus metric endpoints"
+}

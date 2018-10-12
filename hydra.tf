@@ -95,6 +95,11 @@ module "gke_cluster_2" {
   machine_type       = "${local.gke_node}"
 }
 
+resource "random_string" "prom_metrics_password" {
+  length  = 16
+  special = true
+}
+
 module "k8s_config_aks_1" {
   source = "k8s"
 
@@ -111,6 +116,11 @@ module "k8s_config_aks_1" {
   cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
   host                       = "${module.aks_cluster_1.host}"
+
+  prom_metrics_credentials = {
+    username = "${var.prom_metrics_username}"
+    password = "${random_string.prom_metrics_password.result}"
+  }
 }
 
 module "k8s_config_aks_2" {
@@ -129,6 +139,11 @@ module "k8s_config_aks_2" {
   cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.aks_cluster_2.cluster_ca)}"
   host                       = "${module.aks_cluster_2.host}"
+
+  prom_metrics_credentials = {
+    username = "${var.prom_metrics_username}"
+    password = "${random_string.prom_metrics_password.result}"
+  }
 }
 
 module "k8s_config_gke_1" {
@@ -142,6 +157,11 @@ module "k8s_config_gke_1" {
   cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                       = "${module.gke_cluster_1.host}"
+
+  prom_metrics_credentials = {
+    username = "${var.prom_metrics_username}"
+    password = "${random_string.prom_metrics_password.result}"
+  }
 }
 
 module "k8s_config_gke_2" {
@@ -155,6 +175,11 @@ module "k8s_config_gke_2" {
   cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                       = "${module.gke_cluster_2.host}"
+
+  prom_metrics_credentials = {
+    username = "${var.prom_metrics_username}"
+    password = "${random_string.prom_metrics_password.result}"
+  }
 }
 
 module "akamai_config" {
@@ -217,4 +242,9 @@ module "monitoring" {
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
+
+  prometheus_scrape_credentials = {
+    username = "${var.prom_metrics_username}"
+    password = "${random_string.prom_metrics_password.result}"
+  }
 }
