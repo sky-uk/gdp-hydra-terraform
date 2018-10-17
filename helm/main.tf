@@ -83,7 +83,7 @@ resource "helm_release" "prometheus_slaves" {
 
 resource "helm_release" "registry_rewriter" {
   name      = "registry-rewriter"
-  chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.0/registry-rewriter-0.1.0.tgz"
+  chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
   namespace = "kube-system"
 
   set {
@@ -94,6 +94,16 @@ resource "helm_release" "registry_rewriter" {
   set {
     name  = "caBundle"
     value = "${base64encode(var.cluster_ca_certificate)}"
+  }
+
+  set {
+    name = "webhookImage"
+    value = "lawrencegripper/imagenamemutatingcontroller:30"
+  }
+
+  set {
+    name = "imagePullSecretName"
+    value = "cluster-local-image-secret"
   }
 
   depends_on = [
