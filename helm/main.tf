@@ -103,7 +103,7 @@ resource "helm_release" "registry_rewriter" {
 
   set {
     name = "imagePullSecretName"
-    value = "cluster-local-image-secret"
+    value = "${substr(var.cluster_name, 0, 3) == "gke" ? "" : "cluster-local-image-secret"}"
   }
 
   depends_on = [
