@@ -31,9 +31,9 @@ resource "azurerm_container_registry" "deploy" {
 
 resource "azurerm_azuread_application" "acr_application" {
   name                       = "${var.project_name}-ci-user"
-  homepage                   = "http://${var.project_name}-ci"
-  identifier_uris            = ["http://${var.project_name}-ci"]
-  reply_urls                 = ["http://${var.project_name}-ci"]
+  homepage                   = "https://${var.project_name}-ci"
+  identifier_uris            = ["https://${var.project_name}-ci"]
+  reply_urls                 = ["https://${var.project_name}-ci"]
   available_to_other_tenants = false
   oauth2_allow_implicit_flow = true
 }
