@@ -50,6 +50,16 @@ serviceMonitors:
             - '{job="prometheus"}'
             - '{__name__=~"traefik.*"}'
     interval: 15s
+  - name: traefik-ingress
+    selector:
+      matchLabels:
+        app: traefik
+    namespaceSelector:
+      matchNames:
+      - kube-system
+    endpoints:
+      - port: metrics
+    interval: 15s  
 service:
   sessionAffinity: None
   annotations: {}
