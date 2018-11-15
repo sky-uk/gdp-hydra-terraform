@@ -5,6 +5,9 @@ resource "helm_release" "prometheus_operator" {
   chart      = "prometheus-operator"
   namespace  = "monitoring"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   set {
     name  = "rbacEnable"
     value = "false"
@@ -45,6 +48,9 @@ resource "helm_release" "prometheus_master" {
   chart      = "prometheus"
   namespace  = "monitoring"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   values = [
     "${file("${path.module}/values/prometheus.master.values.yaml")}",
   ]
@@ -58,6 +64,9 @@ resource "helm_release" "worker_endpoints" {
   name      = "workerendpoints"
   chart     = "${path.module}/charts/monitoringendpoints"
   namespace = "monitoring"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
   set {
     name  = "workers"
