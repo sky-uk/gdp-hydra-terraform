@@ -1,5 +1,6 @@
 provider "helm" {
   version = "~> 0.6"
+
   kubernetes {
     client_certificate     = "${var.client_certificate}"
     client_key             = "${var.client_key}"
@@ -110,12 +111,12 @@ resource "helm_release" "registry_rewriter" {
   }
 
   set {
-    name = "webhookImage"
+    name  = "webhookImage"
     value = "lawrencegripper/imagenamemutatingcontroller:30"
   }
 
   set {
-    name = "imagePullSecretName"
+    name  = "imagePullSecretName"
     value = "${substr(var.cluster_name, 0, 3) == "gke" ? "" : "cluster-local-image-secret"}"
   }
 

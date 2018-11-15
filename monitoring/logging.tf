@@ -1,5 +1,6 @@
 provider "helm" {
-  version = "~> 0.6" 
+  version = "~> 0.6"
+
   kubernetes {
     client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
     client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"

@@ -40,7 +40,6 @@ resource "kubernetes_secret" "prometheus_workers_password" {
   type = "Opaque"
 }
 
-
 resource "helm_release" "prometheus_master" {
   name       = "prometheus-master"
   version    = "0.0.51"
