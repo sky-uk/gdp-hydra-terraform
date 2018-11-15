@@ -71,4 +71,10 @@ resource "helm_release" "worker_endpoints" {
     name  = "workers"
     value = "{${join(",", values(var.cluster_ips))}}"
   }
+
+  # chart is embedded in module and so path will change each time module path changes
+  # it will still update when chart version is changed
+  lifecycle {
+    ignore_changes = ["chart"]
+  }
 }
