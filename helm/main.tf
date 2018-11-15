@@ -83,7 +83,7 @@ resource "helm_release" "prometheus_slaves" {
 
 resource "helm_release" "registry_rewriter" {
   name      = "registry-rewriter"
-  chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.0/registry-rewriter-0.1.0.tgz"
+  chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
   namespace = "kube-system"
 
   set {
@@ -96,7 +96,39 @@ resource "helm_release" "registry_rewriter" {
     value = "${base64encode(var.cluster_ca_certificate)}"
   }
 
+  set {
+    name = "webhookImage"
+    value = "lawrencegripper/imagenamemutatingcontroller:30"
+  }
+
+  set {
+    name = "imagePullSecretName"
+    value = "${substr(var.cluster_name, 0, 3) == "gke" ? "" : "cluster-local-image-secret"}"
+  }
+
   depends_on = [
     "helm_release.prometheus_operator",
   ]
+}
+
+# https://github.com/helm/charts/tree/master/stable/fluent-bit
+resource "helm_release" "fluent_bit" {
+  name      = "fluent-bit"
+  chart     = "stable/fluent-bit"
+  namespace = "logging"
+
+  set {
+    name  = "rbac.create"
+    value = "false"
+  }
+
+  set {
+    name  = "backend.forward.host"
+    value = "sghydra-logging-ykqvkzid.northeurope.azurecontainer.io"
+  }
+
+  set {
+    name  = "backend.forward.port"
+    value = "24224"
+  }
 }

@@ -1,0 +1,94 @@
+env: {}
+  # All Kibana configuration options are adjustable via env vars.
+  # To adjust a config option to an env var uppercase + replace `.` with `_`
+  # Ref: https://www.elastic.co/guide/en/kibana/current/settings.html
+  #
+  # ELASTICSEARCH_URL: http://elasticsearch-client:9200
+  # SERVER_PORT: 5601
+  # LOGGING_VERBOSE: "true"
+  # SERVER_DEFAULTROUTE: "/app/kibana"
+
+files:
+  kibana.yml:
+    ## Default Kibana configuration from kibana-docker.
+    server.name: kibana
+    server.host: "0"
+    server.basePath: "/kibana"
+    elasticsearch.url: http://elascticsearch-elasticsearch-coordinating-only:9200
+
+    ## Custom config properties below
+    ## Ref: https://www.elastic.co/guide/en/kibana/current/settings.html
+    # server.port: 5601
+    # logging.verbose: "true"
+    # server.defaultRoute: "/app/kibana"
+
+service:
+  type: ClusterIP
+  externalPort: 80
+  internalPort: 5601
+  # authProxyPort: 5602 To be used with authProxyEnabled and a proxy extraContainer
+  ## External IP addresses of service
+  ## Default: nil
+  ##
+  # externalIPs:
+  # - 192.168.0.1
+  #
+  ## LoadBalancer IP if service.type is LoadBalancer
+  ## Default: nil
+  ##
+  # loadBalancerIP: 10.2.2.2
+  annotations:
+    # Annotation example: setup ssl with aws cert when service.type is LoadBalancer
+    # service.beta.kubernetes.io/aws-load-balancer-ssl-cert: arn:aws:acm:us-east-1:EXAMPLE_CERT
+  labels:
+    ## Label example: show service URL in `kubectl cluster-info`
+    # kubernetes.io/cluster-service: "true"
+
+ingress:
+  enabled: false
+  hosts:
+    - chart-example.local
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    # traefik.ingress.kubernetes.io/rule-type: "PathPrefixStrip"
+    # ingress.kubernetes.io/rewrite-target: "/kibana"
+    # kubernetes.io/tls-acme: "true"
+  # tls:
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+
+
+# Enable an authproxy. Specify container in extraContainers
+authProxyEnabled: false
+
+extraContainers: |
+# - name: proxy
+#   image: quay.io/gambol99/keycloak-proxy:latest
+#   args:
+#     - --resource=uri=/*
+#     - --discovery-url=https://discovery-url
+#     - --client-id=client
+#     - --client-secret=secret
+#     - --listen=0.0.0.0:5602
+#     - --upstream-url=http://127.0.0.1:5601
+#   ports:
+#     - name: web
+#       containerPort: 9090
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 300Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 300Mi
+
+# to export a dashboard from a running kibana 6.3.x use:
+# curl --user <username>:<password> -XGET https://kibana.yourdomain.com:5601/api/kibana/dashboards/export?dashboard=<some-dashboard-uuid> > my-dashboard.json
+# you can find an example dashboard for kubernests with fluentd-elasticsearch chart here: https://github.com/monotek/kibana-dashboards/blob/master/k8s-fluentd-elasticsearch.json
+dashboardImport:
+  xpackauth:
+    enabled: false
+    username: myuser
+    password: mypass
+  dashboards: {}

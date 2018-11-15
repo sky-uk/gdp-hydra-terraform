@@ -1,0 +1,68 @@
+config:
+  specifiedInValues: true
+  value: {}
+labels:
+  prometheus-operated: 'true'
+externalUrl: '/prometheus'
+selfServiceMonitor: false
+image:
+  repository: quay.io/prometheus/prometheus
+  tag: v2.2.1
+paused: false
+global:
+  rbacEnable: false
+  pspEnable: false
+serviceAccount:
+  create: true
+replicaCount: 1
+logLevel: info
+podAntiAffinity: soft
+remoteRead: {}
+remoteWrite: {}
+retention: 24h
+routePrefix: /prometheus/
+rules:
+  specifiedInValues: false
+  additionalLabels: {}
+  value: {}
+serviceMonitors:
+  - name: federated-prometheus
+    labels:
+      hydra: monitoring
+    selector:
+      matchLabels:
+        hydra_role: worker
+    namespaceSelector:
+      matchNames:
+      - monitoring
+    endpoints:
+      - path: /federate
+        honorLabels: true
+        basicAuth:
+          username: 
+            name: prometheus-workers
+            key: username
+          password:
+            name: prometheus-workers
+            key: password
+        params: 
+          'match[]':
+            - '{job="prometheus"}'
+            - '{__name__=~"traefik.*"}'
+    interval: 15s
+  - name: traefik-ingress
+    selector:
+      matchLabels:
+        app: traefik
+    namespaceSelector:
+      matchNames:
+      - kube-system
+    endpoints:
+      - port: metrics
+    interval: 15s  
+service:
+  sessionAffinity: None
+  annotations: {}
+  labels: {}
+  loadBalancerSourceRanges: []
+  type: ClusterIP

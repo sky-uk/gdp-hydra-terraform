@@ -53,12 +53,16 @@ output "kubeconfig_url" {
   value       = "${azurerm_storage_blob.kubeconfig.url}${data.azurerm_storage_account_sas.config_container_sas.sas}"
 }
 
-output "prometheus_url" {
-  description = "URL of the central prometheus instance that scrapes from all clusters to aggregate information"
-  value       = "${module.monitoring.prometheus_url}"
-}
+# output "prometheus_url" {
+#   description = "URL of the central prometheus instance that scrapes from all clusters to aggregate information"
+#   value       = "${module.monitoring.prometheus_url}"
+# }
 
-output "grafana_url" {
-  description = "URL of the central grafana instance that is connected to the central prometheus"
-  value       = "${module.monitoring.grafana_url}"
+# output "grafana_url" {
+#   description = "URL of the central grafana instance that is connected to the central prometheus"
+#   value       = "${module.monitoring.grafana_url}"
+# }
+
+output "monitoring_kubeconfig" {
+  value = "${module.monitoring.kubeconfig}"
 }
