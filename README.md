@@ -1,6 +1,13 @@
 # Hydra Terraform Module
 
-Used for terraforming a highly available set of clusters across multiple cloud vendors. Currently this module is designed to create 4 clusters across Azure and GCP with each cluster being in a different availability zone within the rprovider. It will also then use Akamai Traffic Manager to balance traffic across the cluster.
+Used for terraforming a highly available set of clusters across multiple cloud vendors. Currently this module is designed to create 4 clusters across Azure and GCP with each cluster being in a different availability zone within the rprovider. It will also then use Akamai Traffic Manager to balance traffic across the cluster. The hydra cluster comes with some built in best practives including a background cluster for aggregation of metrics and montiring across all of the clusters.
+
+There are a number of configurations built into this module that deploy usegful features into the clusters creates. These features make deployments and operations easier for you:
+
+- [Automatic provisioning of ingress and load balancing via GTM](docs/ingress.md)
+- [Independent docker registries per provider](docs/docker-registries.md)
+- [Automatic local image repository injection](docs/docker-registries.md)
+- Federation of prometheus across clusters
 
 ![Diagram](/docs/images/overview.png)
 
