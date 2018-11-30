@@ -5,6 +5,9 @@ resource "helm_release" "prometheus_operator" {
   chart      = "prometheus-operator"
   namespace  = "monitoring"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   set {
     name  = "rbacEnable"
     value = "false"
@@ -37,13 +40,15 @@ resource "kubernetes_secret" "prometheus_workers_password" {
   type = "Opaque"
 }
 
-
 resource "helm_release" "prometheus_master" {
   name       = "prometheus-master"
   version    = "0.0.51"
   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
   chart      = "prometheus"
   namespace  = "monitoring"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
   values = [
     "${file("${path.module}/values/prometheus.master.values.yaml")}",
@@ -59,8 +64,17 @@ resource "helm_release" "worker_endpoints" {
   chart     = "${path.module}/charts/monitoringendpoints"
   namespace = "monitoring"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   set {
     name  = "workers"
     value = "{${join(",", values(var.cluster_ips))}}"
+  }
+
+  # chart is embedded in module and so path will change each time module path changes
+  # it will still update when chart version is changed
+  lifecycle {
+    ignore_changes = ["chart"]
   }
 }

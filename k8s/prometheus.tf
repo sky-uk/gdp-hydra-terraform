@@ -24,7 +24,7 @@ resource "kubernetes_secret" "prometheus_metrics_password" {
     auth = "${var.prom_metrics_credentials["username"]}:${bcrypt(var.prom_metrics_credentials["password"])}"
   }
 
-  type = "Opaque" 
+  type = "Opaque"
 
   # this will stop the password updating on each apply but will also name it difficult to change the password if needed
   # it will probably be required to delete the secret manually and then re-run terraform apply
