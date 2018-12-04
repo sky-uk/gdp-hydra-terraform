@@ -76,8 +76,8 @@ variable "monitoring_endpoint_password" {
 }
 
 variable "kubernetes_version" {
-  description = "The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5"
-  default     = "1.10.5"
+  description = "The version of kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.9"
+  default     = "1.10.9"
 }
 
 variable "node_type" {
