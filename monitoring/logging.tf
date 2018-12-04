@@ -86,7 +86,7 @@ data "template_file" "fluentd_ingress_values" {
 
 resource "helm_release" "fluentd_ingest" {
   name      = "fluentd-ingest"
-  chart     = "incubator/fluentd"
+  chart     = "stable/fluentd"
   namespace = "logging"
 
   values = [
