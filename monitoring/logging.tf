@@ -89,6 +89,10 @@ resource "kubernetes_daemonset" "elasticsetup" {
               memory = "50Mi"
             }
           }
+
+          security_context {
+            privileged = "true"
+          }
         }
       }
     }
