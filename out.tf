@@ -15,15 +15,51 @@ output "kubeconfigs" {
   }
 }
 
-output "kube_conn_details" {
-  description = "Map of all the kubernetes connection details for all clusters."
+output "aks_cluster_1_connection" {
+  description = "Map of the connection details of the aks cluster 1."
   sensitive = true
 
   value = {
-    "aks_cluster_1" = "${module.aks_cluster_1}"
-    "aks_cluster_2" = "${module.aks_cluster_2}"
-    "gke_cluster_1" = "${module.gke_cluster_1}"
-    "gke_cluster_2" = "${module.gke_cluster_2}"
+    "cluster_ca" = "${module.aks_cluster_1.cluster_ca}"
+    "cluster_client_certificate" = "${module.aks_cluster_1.cluster_client_certificate}"
+    "cluster_client_key" = "${module.aks_cluster_1.cluster_client_key}"
+    "host" = "${module.aks_cluster_1.host}"
+  }
+}
+
+output "aks_cluster_2_connection" {
+  description = "Map of the connection details of the aks cluster 2."
+  sensitive = true
+
+  value = {
+    "cluster_ca" = "${module.aks_cluster_2.cluster_ca}"
+    "cluster_client_certificate" = "${module.aks_cluster_2.cluster_client_certificate}"
+    "cluster_client_key" = "${module.aks_cluster_2.cluster_client_key}"
+    "host" = "${module.aks_cluster_2.host}"
+  }
+}
+
+output "gke_cluster_1_connection" {
+  description = "Map of the connection details of the gke cluster 1."
+  sensitive = true
+
+  value = {
+    "cluster_ca" = "${module.gke_cluster_1.cluster_ca}"
+    "cluster_client_certificate" = "${module.gke_cluster_1.cluster_client_certificate}"
+    "cluster_client_key" = "${module.gke_cluster_1.cluster_client_key}"
+    "host" = "${module.gke_cluster_1.host}"
+  }
+}
+
+output "gke_cluster_2_connection" {
+  description = "Map of the connection details of the gke cluster 2."
+  sensitive = true
+
+  value = {
+    "cluster_ca" = "${module.gke_cluster_2.cluster_ca}"
+    "cluster_client_certificate" = "${module.gke_cluster_2.cluster_client_certificate}"
+    "cluster_client_key" = "${module.gke_cluster_2.cluster_client_key}"
+    "host" = "${module.gke_cluster_2.host}"
   }
 }
 
