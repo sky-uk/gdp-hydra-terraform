@@ -1,4 +1,6 @@
 provider "helm" {
+  version = "~> 0.6"
+
   kubernetes {
     client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
     client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
@@ -24,6 +26,9 @@ resource "helm_release" "traefik" {
   chart     = "stable/traefik"
   namespace = "kube-system"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   values = [
     "${data.template_file.traefik_values.rendered}",
   ]
@@ -33,6 +38,9 @@ resource "helm_release" "fluentd" {
   name      = "fluentd"
   chart     = "stable/fluentd-elasticsearch"
   namespace = "logging"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
   set {
     name  = "rbac.create"
@@ -51,6 +59,9 @@ resource "helm_release" "elasticsearch" {
   chart      = "elasticsearch"
   namespace  = "logging"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   set {
     name  = "rbac.create"
     value = "false"
@@ -66,6 +77,9 @@ resource "helm_release" "kibana" {
   name      = "kibana"
   chart     = "stable/kibana"
   namespace = "logging"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
   values = [
     "${data.template_file.kibana_values.rendered}",
@@ -88,6 +102,9 @@ resource "helm_release" "fluentd_ingest" {
   name      = "fluentd-ingest"
   chart     = "stable/fluentd"
   namespace = "logging"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
   values = [
     "${data.template_file.fluentd_ingress_values.rendered}",

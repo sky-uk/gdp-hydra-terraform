@@ -1,4 +1,6 @@
 provider "helm" {
+  version = "~> 0.6"
+
   kubernetes {
     client_certificate     = "${var.client_certificate}"
     client_key             = "${var.client_key}"
@@ -27,6 +29,9 @@ resource "helm_release" "traefik" {
   chart     = "stable/traefik"
   namespace = "kube-system"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   values = [
     "${data.template_file.traefik_values.rendered}",
   ]
@@ -50,6 +55,9 @@ resource "helm_release" "prometheus_operator" {
   chart      = "prometheus-operator"
   namespace  = "monitoring"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   set {
     name  = "rbacEnable"
     value = "false"
@@ -72,6 +80,9 @@ resource "helm_release" "prometheus_slaves" {
   chart      = "prometheus"
   namespace  = "monitoring"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   values = [
     "${data.template_file.prom_values.rendered}",
   ]
@@ -86,6 +97,9 @@ resource "helm_release" "registry_rewriter" {
   chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
   namespace = "kube-system"
 
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
   set {
     name  = "containerRegistryUrl"
     value = "${var.registry_url}"
@@ -97,12 +111,12 @@ resource "helm_release" "registry_rewriter" {
   }
 
   set {
-    name = "webhookImage"
+    name  = "webhookImage"
     value = "lawrencegripper/imagenamemutatingcontroller:30"
   }
 
   set {
-    name = "imagePullSecretName"
+    name  = "imagePullSecretName"
     value = "${substr(var.cluster_name, 0, 3) == "gke" ? "" : "cluster-local-image-secret"}"
   }
 
@@ -116,6 +130,9 @@ resource "helm_release" "fluent_bit" {
   name      = "fluent-bit"
   chart     = "stable/fluent-bit"
   namespace = "logging"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
   set {
     name  = "rbac.create"

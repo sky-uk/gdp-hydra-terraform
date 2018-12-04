@@ -1,6 +1,6 @@
 data "archive_file" "kubeconfig" {
   type        = "zip"
-  output_path = "${path.module}/kubeconfig.zip"
+  output_path = "kubeconfig.zip"
 
   source {
     content  = "${module.aks_cluster_1.kubeconfig}"
