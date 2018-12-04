@@ -60,25 +60,39 @@ resource "kubernetes_daemonset" "elasticsetup" {
   }
 
   spec {
-    container {
-      image = "busybox:1.29"
-      name = "sysctl-conf"
+    selector {
+      app = "sysctl-conf"
+    }
 
-      command = ["sysctl", "-w", "vm.max_map_count=262166", "&&", "while true; do", "sleep 86400;", "done"]
-
-      resources {
-        requests {
-          cpu = "10m"
-          memory = "50Mi"
+    template {
+      metadata {
+        labels {
+          app = "sysctl-conf"
         }
+      }
 
-        limits {
-          cpu = "10m"
-          memory = "50Mi"
-        }
+      spec {
+        container {
+          image = "busybox:1.29"
+          name = "sysctl-conf"
 
-        securityContext {
-          privileged = "true"
+          command = ["sysctl", "-w", "vm.max_map_count=262166", "&&", "while true; do", "sleep 86400;", "done"]
+
+          resources {
+            requests {
+              cpu = "10m"
+              memory = "50Mi"
+            }
+
+            limits {
+              cpu = "10m"
+              memory = "50Mi"
+            }
+
+            securityContext {
+              privileged = "true"
+            }
+          }
         }
       }
     }
