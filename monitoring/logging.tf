@@ -88,10 +88,10 @@ resource "kubernetes_daemonset" "elasticsetup" {
               cpu = "10m"
               memory = "50Mi"
             }
-
-            securityContext {
-              privileged = "true"
-            }
+          }
+          
+          securityContext {
+            privileged = "true"
           }
         }
       }
