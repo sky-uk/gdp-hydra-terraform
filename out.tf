@@ -15,6 +15,18 @@ output "kubeconfigs" {
   }
 }
 
+output "kube_conn_details" {
+  description = "Map of all the kubernetes connection details for all clusters."
+  sensitive = true
+
+  value = {
+    "aks_cluster_1" = "${module.aks_cluster_1}"
+    "aks_cluster_2" = "${module.aks_cluster_2}"
+    "gke_cluster_1" = "${module.gke_cluster_1}"
+    "gke_cluster_2" = "${module.gke_cluster_2}"
+  }
+}
+
 output "edge_url" {
   description = "The URL of the edge routing (Akamai or Cloudflare)"
   value       = "${var.edge_dns_name}.${var.edge_dns_zone}"
