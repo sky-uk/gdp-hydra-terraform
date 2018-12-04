@@ -53,6 +53,38 @@ resource "helm_release" "fluentd" {
   }
 }
 
+resource "kubernetes_daemonset" "elasticsetup" {
+  metadata {
+    namespace = "logging"
+    name = "sysctl-conf"
+  }
+
+  spec {
+    container {
+      image = "busybox:1.29"
+      name = "sysctl-conf"
+
+      command = ["sysctl", "-w", "vm.max_map_count=262166", "&&", "while true; do", "sleep 86400;", "done"]
+
+      resources {
+        requests {
+          cpu = "10m"
+          memory = "50Mi"
+        }
+
+        limits {
+          cpu = "10m"
+          memory = "50Mi"
+        }
+
+        securityContext {
+          privileged = "true"
+        }
+      }
+    }
+  }
+}
+
 resource "helm_release" "elasticsearch" {
   name       = "elascticsearch"
   repository = "https://charts.bitnami.com/bitnami"
@@ -66,6 +98,10 @@ resource "helm_release" "elasticsearch" {
     name  = "rbac.create"
     value = "false"
   }
+
+  depends_on = [
+    "kubernetes_daemonset.elasticsetup",
+  ]
 }
 
 data "template_file" "kibana_values" {
