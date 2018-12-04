@@ -76,7 +76,8 @@ resource "kubernetes_daemonset" "elasticsetup" {
           image = "busybox:1.29"
           name = "sysctl-conf"
 
-          command = ["sysctl", "-w", "vm.max_map_count=262166", "&&", "while true; do", "sleep 86400;", "done"]
+          command = ["/bin/sh", "-c"]
+          args = ["sysctl -w vm.max_map_count=262166 && while true; do sleep 86400; done"]
 
           resources {
             requests {
