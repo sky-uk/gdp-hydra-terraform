@@ -196,6 +196,8 @@ module "akamai_config" {
   aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
+
+  monitoring_cluster_ips = "${module.monitoring.monitoring_cluster_ips}"
 }
 
 module "cloudflare" {
