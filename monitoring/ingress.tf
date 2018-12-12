@@ -5,6 +5,13 @@ provider "kubernetes" {
   host                   = "${module.monitoring_cluster.host}"
 }
 
+data "kubernetes_service" "ingress" {
+  metadata {
+    name = "traefik-ingress-controller"
+    namespace = "kube-system"
+  }
+}
+
 resource "kubernetes_secret" "prometheus_password" {
   metadata {
     name      = "prometheus"
@@ -12,7 +19,7 @@ resource "kubernetes_secret" "prometheus_password" {
   }
 
   data {
-    auth = "prom:${bcrypt("something")}"
+    auth = "prom:${bcrypt("${var.prometheus_ui_password}")}"
   }
 
   type = "Opaque"

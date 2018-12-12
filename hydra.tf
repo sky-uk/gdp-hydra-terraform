@@ -247,4 +247,6 @@ module "monitoring" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  prometheus_ui_password = "${var.prometheus_ui_password}"
 }

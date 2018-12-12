@@ -226,6 +226,14 @@ The following variables configure components inside the cluster such as the Trae
 | monitoring_endpoint_password | The password to use for the clusters /healthz endpoint | string |  | yes |
 | traefik_replicas_count | The number of traefik replias to create | string | `3` | no |
 
+### Monitoring Configuration
+
+There are a number of configuration options needed to set up the monitoring for the clusters
+
+ Name | Description | Type | Default | Required |
+|------|-------------|:----:|:-----:|:-----:|
+| prometheus_ui_password | The password used to access the prometheus bashbaord | string |  | no |
+
 ## Outputs
 
 | Name | Description |

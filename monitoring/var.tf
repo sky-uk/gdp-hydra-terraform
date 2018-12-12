@@ -17,3 +17,8 @@ variable "prometheus_scrape_credentials" {
   type        = "map"
   description = "Credentials for worker prometheus metric endpoints"
 }
+
+variable "prometheus_ui_password" {
+  type        = "string"
+  description = "The password used for logging into the prometheus UI via basic auth. The username is always prom"
+}

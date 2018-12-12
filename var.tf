@@ -130,6 +130,10 @@ variable "prom_metrics_username" {
   default     = "metrics"
 }
 
+variable "prometheus_ui_password" {
+  description = "Password used on the monitoring cluster prometheus instance"
+}
+
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
 
