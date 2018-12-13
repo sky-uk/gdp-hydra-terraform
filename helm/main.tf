@@ -36,25 +36,25 @@ data "template_file" "prom_values" {
   }
 }
 
-# resource "helm_release" "prometheus" {
-#   count = "${var.enable_prometheus}"
+resource "helm_release" "prometheus" {
+  count = "${var.enable_prometheus}"
 
-#   name       = "prometheus"
-#   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-#   chart      = "prometheus"
-#   namespace  = "monitoring"
+  name       = "prometheus"
+  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
+  chart      = "prometheus"
+  namespace  = "monitoring"
 
-#   # workaround to stop CI from complaining about keyring change
-#   keyring = ""
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
 
-#   values = [
-#     "${data.template_file.prom_values.rendered}",
-#   ]
+  values = [
+    "${data.template_file.prom_values.rendered}",
+  ]
 
-#   # depends_on = [
-#   #   "helm_release.prometheus_operator",
-#   # ]
-# }
+  # depends_on = [
+  #   "helm_release.prometheus_operator",
+  # ]
+}
 
 # https://github.com/helm/charts/tree/master/stable/fluent-bit
 resource "helm_release" "fluent_bit" {

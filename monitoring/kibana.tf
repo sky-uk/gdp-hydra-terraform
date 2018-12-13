@@ -52,6 +52,7 @@ resource "kubernetes_ingress" "kibana-ingress" {
       "traefik.ingress.kubernetes.io/rule-type"   = "PathPrefixStrip"
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "kibana"
+      "ingress.kubernetes.io/ssl-redirect"        = "true"
     }
 
     labels = {
@@ -60,12 +61,8 @@ resource "kubernetes_ingress" "kibana-ingress" {
   }
 
   spec {
-    backend {
-      service_name = "kibana"
-      service_port = 80
-    }
-
     rule {
+      host = "${var.monitoring_dns_name}"
       http {
         path {
           path_regex = "/kibana"

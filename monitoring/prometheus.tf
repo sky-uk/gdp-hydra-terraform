@@ -1,19 +1,3 @@
-resource "helm_release" "prometheus_operator" {
-  name       = "prometheus-operator"
-  version    = "0.0.29"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "prometheus-operator"
-  namespace  = "monitoring"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  set {
-    name  = "rbacEnable"
-    value = "false"
-  }
-}
-
 resource "kubernetes_service" "workers" {
   metadata {
     name      = "hydra-workers"
@@ -54,9 +38,9 @@ resource "helm_release" "prometheus_master" {
     "${file("${path.module}/values/prometheus.master.values.yaml")}",
   ]
 
-  depends_on = [
-    "helm_release.prometheus_operator",
-  ]
+  # depends_on = [
+  #   "helm_release.prometheus_operator",
+  # ]
 }
 
 resource "helm_release" "worker_endpoints" {
@@ -124,14 +108,8 @@ resource "kubernetes_ingress" "prometheus-ingress" {
       secret_name = "${replace(var.monitoring_dns_name,".","-")}-tls"
     }
 
-    backend {
-      service_name = "prometheus-master"
-      service_port = 9090
-    }
-
     rule {
       host = "${var.monitoring_dns_name}"
-
       http {
         path {
           path_regex = "/prometheus"

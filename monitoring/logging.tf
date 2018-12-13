@@ -89,12 +89,8 @@ resource "kubernetes_ingress" "fluentd-ingress" {
   }
 
   spec {
-    backend {
-      service_name = "fluentd-ingest"
-      service_port = 24220
-    }
-
     rule {
+      host = "${var.monitoring_dns_name}"      
       http {
         path {
           path_regex = "/"
