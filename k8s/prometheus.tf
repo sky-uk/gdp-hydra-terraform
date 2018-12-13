@@ -54,7 +54,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
 
   spec {
     backend {
-      service_name = "prometheus-slaves"
+      service_name = "prometheus"
       service_port = 9090
     }
 
@@ -64,7 +64,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
           path_regex = "/federate"
 
           backend {
-            service_name = "prometheus-slaves"
+            service_name = "prometheus"
             service_port = 9090
           }
         }

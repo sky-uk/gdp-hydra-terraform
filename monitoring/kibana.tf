@@ -1,0 +1,82 @@
+
+data "template_file" "kibana_values" {
+  template = "${file("${path.module}/values/kibana.values.yaml.tpl")}"
+}
+
+resource "helm_release" "kibana" {
+  version   = "0.14.7"
+  name      = "kibana"
+  chart     = "stable/kibana"
+  namespace = "logging"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
+  values = [
+    "${data.template_file.kibana_values.rendered}",
+  ]
+
+  # depends_on = [
+  #   "helm_release.traefik",
+  # ]
+
+}
+
+
+resource "kubernetes_secret" "kibana_password" {
+  metadata {
+    name      = "kibana"
+    namespace = "logging"
+  }
+
+  data {
+    auth = "kibana:${bcrypt("something")}"
+  }
+
+  type = "Opaque"
+
+  # this will stop the password updating on each apply but will also name it difficult to change the password if needed
+  # it will probably be required to delete the secret manually and then re-run terraform apply
+  lifecycle {
+    ignore_changes = ["data.auth"]
+  }
+}
+
+resource "kubernetes_ingress" "kibana-ingress" {
+  metadata {
+    name      = "kibana"
+    namespace = "logging"
+
+    annotations {
+      "kubernetes.io/ingress.class"               = "traefik"
+      "traefik.ingress.kubernetes.io/rule-type"   = "PathPrefixStrip"
+      "traefik.ingress.kubernetes.io/auth-type"   = "basic"
+      "traefik.ingress.kubernetes.io/auth-secret" = "kibana"
+    }
+
+    labels = {
+      createdby = "terraform"
+    }
+  }
+
+  spec {
+    backend {
+      service_name = "kibana"
+      service_port = 80
+    }
+
+    rule {
+      http {
+        path {
+          path_regex = "/kibana"
+
+          backend {
+            service_name = "kibana"
+            service_port = 80
+          }
+        }
+      }
+    }
+  }
+}
+

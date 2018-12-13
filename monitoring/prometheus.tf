@@ -78,3 +78,70 @@ resource "helm_release" "worker_endpoints" {
     ignore_changes = ["chart"]
   }
 }
+
+
+resource "kubernetes_secret" "prometheus_password" {
+  metadata {
+    name      = "prometheus"
+    namespace = "monitoring"
+  }
+
+  data {
+    auth = "prom:${bcrypt("${var.prometheus_ui_password}")}"
+  }
+
+  type = "Opaque"
+
+  # this will stop the password updating on each apply but will also name it difficult to change the password if needed
+  # it will probably be required to delete the secret manually and then re-run terraform apply
+  lifecycle {
+    ignore_changes = ["data.auth"]
+  }
+}
+
+resource "kubernetes_ingress" "prometheus-ingress" {
+  metadata {
+    name      = "prometheus"
+    namespace = "monitoring"
+
+    annotations {
+      "kubernetes.io/ingress.class"               = "traefik"
+      "traefik.ingress.kubernetes.io/auth-type"   = "basic"
+      "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
+      "kubernetes.io/tls-acme"                    = "true"
+      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-production"
+      "ingress.kubernetes.io/ssl-redirect"        = "true"
+    }
+
+    labels = {
+      createdby = "terraform"
+    }
+  }
+
+  spec {
+    tls {
+      hosts       = ["${var.monitoring_dns_name}"]
+      secret_name = "${replace(var.monitoring_dns_name,".","-")}-tls"
+    }
+
+    backend {
+      service_name = "prometheus-master"
+      service_port = 9090
+    }
+
+    rule {
+      host = "${var.monitoring_dns_name}"
+
+      http {
+        path {
+          path_regex = "/prometheus"
+
+          backend {
+            service_name = "prometheus-master"
+            service_port = 9090
+          }
+        }
+      }
+    }
+  }
+}

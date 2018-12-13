@@ -13,27 +13,6 @@ locals {
   elasticsearch_host = "elascticsearch-elasticsearch-coordinating-only"
 }
 
-data "template_file" "traefik_values" {
-  template = "${file("${path.module}/values/traefik.values.yaml.tpl")}"
-
-  vars {
-    replicas_count = "2"
-  }
-}
-
-resource "helm_release" "traefik" {
-  name      = "traefik-ingress-controller"
-  chart     = "stable/traefik"
-  namespace = "kube-system"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  values = [
-    "${data.template_file.traefik_values.rendered}",
-  ]
-}
-
 resource "helm_release" "fluentd" {
   name      = "fluentd"
   chart     = "stable/fluentd-elasticsearch"
@@ -68,28 +47,6 @@ resource "helm_release" "elasticsearch" {
   }
 }
 
-data "template_file" "kibana_values" {
-  template = "${file("${path.module}/values/kibana.values.yaml.tpl")}"
-}
-
-resource "helm_release" "kibana" {
-  version   = "0.14.7"
-  name      = "kibana"
-  chart     = "stable/kibana"
-  namespace = "logging"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  values = [
-    "${data.template_file.kibana_values.rendered}",
-  ]
-
-  depends_on = [
-    "helm_release.traefik",
-  ]
-}
-
 data "template_file" "fluentd_ingress_values" {
   template = "${file("${path.module}/values/fluentd-ingress.values.yaml")}"
 
@@ -110,7 +67,44 @@ resource "helm_release" "fluentd_ingest" {
     "${data.template_file.fluentd_ingress_values.rendered}",
   ]
 
-  depends_on = [
-    "helm_release.traefik",
-  ]
+  # depends_on = [
+  #   "helm_release.traefik",
+  # ]
+}
+
+
+resource "kubernetes_ingress" "fluentd-ingress" {
+  metadata {
+    name      = "fluentd"
+    namespace = "logging"
+
+    annotations {
+      "kubernetes.io/ingress.class"             = "traefik"
+      "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
+    }
+
+    labels = {
+      createdby = "terraform"
+    }
+  }
+
+  spec {
+    backend {
+      service_name = "fluentd-ingest"
+      service_port = 24220
+    }
+
+    rule {
+      http {
+        path {
+          path_regex = "/"
+
+          backend {
+            service_name = "fluentd-ingest"
+            service_port = 24220
+          }
+        }
+      }
+    }
+  }
 }
