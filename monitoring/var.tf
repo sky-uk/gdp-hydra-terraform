@@ -22,3 +22,13 @@ variable "prometheus_ui_password" {
   type        = "string"
   description = "The password used for logging into the prometheus UI via basic auth. The username is always prom"
 }
+
+variable "cluster_issuer_email" {
+  type        = "string"
+  description = "Email used for the cert manager ClusterIssuer. Should be accessible as it will receive expiration notifications"
+}
+
+variable "monitoring_dns_name" {
+  type        = "string"
+  description = "DNS name for monitoring cluster ingress"
+}

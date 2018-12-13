@@ -7,7 +7,7 @@ provider "kubernetes" {
 
 data "kubernetes_service" "ingress" {
   metadata {
-    name = "traefik-ingress-controller"
+    name      = "traefik-ingress-controller"
     namespace = "kube-system"
   }
 }
@@ -40,6 +40,9 @@ resource "kubernetes_ingress" "prometheus-ingress" {
       "kubernetes.io/ingress.class"               = "traefik"
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
+      "kubernetes.io/tls-acme"                    = "true"
+      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-production"
+      "ingress.kubernetes.io/ssl-redirect"        = "true"
     }
 
     labels = {
@@ -48,12 +51,19 @@ resource "kubernetes_ingress" "prometheus-ingress" {
   }
 
   spec {
+    tls {
+      hosts       = ["${var.monitoring_dns_name}"]
+      secret_name = "${replace(var.monitoring_dns_name,".","-")}-tls"
+    }
+
     backend {
       service_name = "prometheus-master"
       service_port = 9090
     }
 
     rule {
+      host = "${var.monitoring_dns_name}"
+
       http {
         path {
           path_regex = "/prometheus"

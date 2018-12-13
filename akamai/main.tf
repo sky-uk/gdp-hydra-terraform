@@ -159,7 +159,6 @@ resource "akamai_gtm_property" "hydra_property" {
   # }
 }
 
-
 resource "akamai_gtm_data_center" "monitoring" {
   count     = "${var.enabled}"
   name      = "monitoring"
@@ -174,7 +173,6 @@ resource "akamai_gtm_data_center" "monitoring" {
     "akamai_gtm_domain.hydra_domain",
   ]
 }
-
 
 resource "akamai_gtm_property" "monitoring_property" {
   count = "${var.enabled}"
@@ -201,7 +199,7 @@ resource "akamai_gtm_property" "monitoring_property" {
   use_computed_targets        = false
 
   traffic_target {
-    enabled = true
+    enabled        = true
     data_center_id = "${akamai_gtm_data_center.monitoring.id}"
     weight         = 1.0
     name           = "${akamai_gtm_data_center.azure_1.name}"

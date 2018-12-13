@@ -19,10 +19,14 @@ cpuLimit: 2
 memoryLimit: 300M
 
 tracing:
+  enabled: true
+  serviceName: traefik
+  backend: jaeger
   jaeger:
-    samplingServerUrl: "http://jaeger-agent:5778/"
-    samplingType: "const"
-    localAgentHostPort: "jaeger-agent:6831"
+    localAgentHostPort: "jaeger-agent.monitoring:6831"
+    samplingServerURL: http://localhost:5778/sampling
+    samplingType: const
+    samplingParam: "1.0"
 
 # Enabling prometheus metrics will expose a /metrics
 # endpoint that we can scrape with prometheus
@@ -35,3 +39,8 @@ metrics:
 #   namespaces:
 #     - kube-system
 #     - default
+
+ssl:
+  enabled: true
+  enforced: false
+

@@ -134,6 +134,10 @@ variable "prometheus_ui_password" {
   description = "Password used on the monitoring cluster prometheus instance"
 }
 
+variable "cluster_issuer_email" {
+  description = "Email used for the cert manager ClusterIssuer. Should be accessible as it will receive expiration notifications"
+}
+
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
 
