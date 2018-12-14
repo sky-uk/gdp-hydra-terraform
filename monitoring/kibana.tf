@@ -1,6 +1,5 @@
-
 data "template_file" "kibana_values" {
-  template = "${file("${path.module}/values/kibana.values.yaml.tpl")}"
+  template = "${file("${path.module}/values/kibana.values.yaml")}"
 }
 
 resource "helm_release" "kibana" {
@@ -19,9 +18,7 @@ resource "helm_release" "kibana" {
   # depends_on = [
   #   "helm_release.traefik",
   # ]
-
 }
-
 
 resource "kubernetes_secret" "kibana_password" {
   metadata {
@@ -63,6 +60,7 @@ resource "kubernetes_ingress" "kibana-ingress" {
   spec {
     rule {
       host = "${var.monitoring_dns_name}"
+
       http {
         path {
           path_regex = "/kibana"
@@ -76,4 +74,3 @@ resource "kubernetes_ingress" "kibana-ingress" {
     }
   }
 }
-

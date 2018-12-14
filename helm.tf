@@ -8,6 +8,7 @@ module "helm_aks1" {
   cluster_ca_certificate = "${base64decode(module.aks_cluster_1.cluster_ca)}"
   host                   = "${module.aks_cluster_1.host}"
   cluster_name           = "aks1"
+  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
   // This forces the helm config to run after the
   // initial Kubernetes configuration module 
@@ -17,8 +18,8 @@ module "helm_aks1" {
 
 module "cluster_services_aks1" {
   source = "cluster_services"
-  
-  enable_traefik    = "${var.enable_traefik}"
+
+  enable_traefik = "${var.enable_traefik}"
 
   client_certificate     = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
   client_key             = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
@@ -29,14 +30,13 @@ module "cluster_services_aks1" {
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.acr.url}"
 
-  cluster_issuer_email   = "${var.cluster_issuer_email}"
+  cluster_issuer_email = "${var.cluster_issuer_email}"
 
   // This forces the helm config to run after the
   // initial Kubernetes configuration module 
   // to prevent race configuration
   depends_on_hack = "${module.k8s_config_aks_1.cluster_ingress_ip}"
 }
-
 
 module "helm_aks2" {
   source            = "helm"
@@ -48,13 +48,14 @@ module "helm_aks2" {
   cluster_ca_certificate = "${base64decode(module.aks_cluster_2.cluster_ca)}"
   host                   = "${module.aks_cluster_2.host}"
   cluster_name           = "aks2"
+  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
 
 module "cluster_services_aks2" {
-  source            = "cluster_services"
-  enable_traefik    = "${var.enable_traefik}"
+  source         = "cluster_services"
+  enable_traefik = "${var.enable_traefik}"
 
   client_certificate     = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
   client_key             = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
@@ -65,7 +66,7 @@ module "cluster_services_aks2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.acr.url}"
 
-  cluster_issuer_email   = "${var.cluster_issuer_email}"
+  cluster_issuer_email = "${var.cluster_issuer_email}"
 
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
@@ -80,13 +81,14 @@ module "helm_gke1" {
   cluster_ca_certificate = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                   = "${module.gke_cluster_1.host}"
   cluster_name           = "gke1"
+  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
 
 module "cluster_services_gke1" {
-  source            = "cluster_services"
-  enable_traefik    = "${var.enable_traefik}"
+  source         = "cluster_services"
+  enable_traefik = "${var.enable_traefik}"
 
   client_certificate     = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
   client_key             = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
@@ -97,7 +99,7 @@ module "cluster_services_gke1" {
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.gcr.url}"
 
-  cluster_issuer_email   = "${var.cluster_issuer_email}"
+  cluster_issuer_email = "${var.cluster_issuer_email}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
@@ -112,13 +114,14 @@ module "helm_gke2" {
   cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                   = "${module.gke_cluster_2.host}"
   cluster_name           = "gke2"
+  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }
 
 module "cluster_services_gke2" {
-  source            = "cluster_services"
-  enable_traefik    = "${var.enable_traefik}"
+  source         = "cluster_services"
+  enable_traefik = "${var.enable_traefik}"
 
   client_certificate     = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
   client_key             = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
@@ -129,7 +132,7 @@ module "cluster_services_gke2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.gcr.url}"
 
-  cluster_issuer_email   = "${var.cluster_issuer_email}"
+  cluster_issuer_email = "${var.cluster_issuer_email}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }

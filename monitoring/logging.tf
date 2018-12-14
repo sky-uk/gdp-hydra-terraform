@@ -72,35 +72,35 @@ resource "helm_release" "fluentd_ingest" {
   # ]
 }
 
+# resource "kubernetes_ingress" "fluentd-ingress" {
+#   metadata {
+#     name      = "fluentd"
+#     namespace = "logging"
 
-resource "kubernetes_ingress" "fluentd-ingress" {
-  metadata {
-    name      = "fluentd"
-    namespace = "logging"
+#     annotations {
+#       "kubernetes.io/ingress.class"             = "traefik"
+#     }
 
-    annotations {
-      "kubernetes.io/ingress.class"             = "traefik"
-      "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
-    }
+#     labels = {
+#       createdby = "terraform"
+#     }
+#   }
 
-    labels = {
-      createdby = "terraform"
-    }
-  }
+#   spec {
+#     rule {
+#       host = "${var.monitoring_dns_name}"
 
-  spec {
-    rule {
-      host = "${var.monitoring_dns_name}"      
-      http {
-        path {
-          path_regex = "/"
+#       http {
+#         path {
+#           path_regex = "/"
 
-          backend {
-            service_name = "fluentd-ingest"
-            service_port = 24220
-          }
-        }
-      }
-    }
-  }
-}
+#           backend {
+#             protocol = "TCP"
+#             service_name = "http-input"
+#             service_port = 9880
+#           }
+#         }
+#       }
+#     }
+#   }
+# }

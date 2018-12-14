@@ -15,8 +15,6 @@ output "depends_on_hack" {
   value = "${var.depends_on_hack}"
 }
 
-
-
 # resource "helm_release" "jaeger" {
 #   name      = "jaeger"
 #   chart     = "stable/traefik"
@@ -27,9 +25,8 @@ output "depends_on_hack" {
 #   ]
 # }
 
-
 data "template_file" "prom_values" {
-  template = "${file("${path.module}/values/prometheus.worker.values.yaml.tpl")}"
+  template = "${file("${path.module}/values/prometheus.worker.values.yaml")}"
 
   vars {
     cluster_name = "${var.cluster_name}"
@@ -56,8 +53,17 @@ resource "helm_release" "prometheus" {
   # ]
 }
 
+data "template_file" "fluentbit_values" {
+  template = "${file("${path.module}/values/fluent-bit.values.yaml")}"
+
+  vars {
+    monitoring_cluster = "${var.monitoring_dns_name}"
+  }
+}
+
 # https://github.com/helm/charts/tree/master/stable/fluent-bit
 resource "helm_release" "fluent_bit" {
+  version   = "1.1.0"
   name      = "fluent-bit"
   chart     = "stable/fluent-bit"
   namespace = "logging"
@@ -65,18 +71,7 @@ resource "helm_release" "fluent_bit" {
   # workaround to stop CI from complaining about keyring change
   keyring = ""
 
-  set {
-    name  = "rbac.create"
-    value = "false"
-  }
-
-  set {
-    name  = "backend.forward.host"
-    value = "sghydra-logging-ykqvkzid.northeurope.azurecontainer.io"
-  }
-
-  set {
-    name  = "backend.forward.port"
-    value = "24224"
-  }
+  values = [
+    "${data.template_file.fluentbit_values.rendered}",
+  ]  
 }

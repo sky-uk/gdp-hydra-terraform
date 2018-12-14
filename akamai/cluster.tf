@@ -1,4 +1,3 @@
-
 resource "akamai_gtm_data_center" "azure_1" {
   count     = "${var.enabled}"
   name      = "azure_1"
@@ -153,4 +152,3 @@ resource "akamai_gtm_property" "hydra_property" {
   #   servers = ["${var.cluster_ips[count.index]}"]
   # }
 }
-

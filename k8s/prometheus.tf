@@ -39,7 +39,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
     namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
     annotations {
-      "kubernetes.io/ingress.class"               = "traefik"      
+      "kubernetes.io/ingress.class"               = "traefik"
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "prometheus-metrics"
     }

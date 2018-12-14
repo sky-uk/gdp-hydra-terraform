@@ -2,9 +2,10 @@ resource "kubernetes_service" "workers" {
   metadata {
     name      = "hydra-workers"
     namespace = "monitoring"
+
     labels {
       hydra_role = "worker"
-    }    
+    }
   }
 
   spec {
@@ -66,7 +67,6 @@ resource "helm_release" "worker_endpoints" {
   }
 }
 
-
 resource "kubernetes_secret" "prometheus_password" {
   metadata {
     name      = "prometheus"
@@ -113,6 +113,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
 
     rule {
       host = "${var.monitoring_dns_name}"
+
       http {
         path {
           path_regex = "/prometheus"

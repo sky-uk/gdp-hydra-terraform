@@ -1,4 +1,3 @@
-
 resource "akamai_gtm_data_center" "monitoring" {
   count     = "${var.enabled}"
   name      = "monitoring"

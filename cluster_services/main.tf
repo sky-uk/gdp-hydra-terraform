@@ -15,9 +15,8 @@ output "depends_on_hack" {
   value = "${var.depends_on_hack}"
 }
 
-
 data "template_file" "traefik_values" {
-  template = "${file("${path.module}/values/traefik.values.yaml.tpl")}"
+  template = "${file("${path.module}/values/traefik.values.yaml")}"
 
   vars {
     replicas_count = "${var.traefik_replica_count}"

@@ -5,3 +5,8 @@ variable "host" {}
 variable "enable_traefik" {}
 variable "enable_prometheus" {}
 variable "cluster_name" {}
+
+variable "monitoring_dns_name" {
+  type        = "string"
+  description = "DNS name for monitoring cluster ingress"
+}

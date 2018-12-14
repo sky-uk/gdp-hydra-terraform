@@ -19,14 +19,27 @@ env: {}
 
 service:
   type: ClusterIP
-  externalPort: 80
+  externalPort: 24224
   ports:
     - name: "monitor-agent"
       protocol: TCP
-      containerPort: 24220
+      containerPort: 24224
 
 ingress:
-  enabled: false  
+  enabled: true
+  # Used to create an Ingress and Service record.
+  hosts:
+    - name: "hydra-monitoring.sky-gdp-hydra.akadns.net"
+      protocol: TCP
+      serviceName: fluentd-ingest
+      servicePort: 24224
+  annotations:
+    kubernetes.io/ingress.class: traefik    
+    # kubernetes.io/tls-acme: "true"
+  tls:
+    # Secrets must be manually created in the namespace.
+    # - secretName: http-input-tls
+    #   hosts:
 
 configMaps:
   general.conf: |
