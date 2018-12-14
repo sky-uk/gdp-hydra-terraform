@@ -2,6 +2,9 @@ resource "kubernetes_service" "workers" {
   metadata {
     name      = "hydra-workers"
     namespace = "monitoring"
+    labels {
+      hydra_role = "worker"
+    }    
   }
 
   spec {

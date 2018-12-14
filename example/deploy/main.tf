@@ -37,11 +37,6 @@ resource "kubernetes_ingress" "example" {
   }
 
   spec {
-    backend {
-      service_name = "echoserver"
-      service_port = 8080
-    }
-
     rule {
       http {
         path {

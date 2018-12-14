@@ -39,9 +39,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
     namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
     annotations {
-      "kubernetes.io/ingress.class"               = "traefik"
-      "ingress.kubernetes.io/rewrite-target"      = "/federate"
-      "traefik.ingress.kubernetes.io/rule-type"   = "PathPrefixStrip"
+      "kubernetes.io/ingress.class"               = "traefik"      
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "prometheus-metrics"
     }
@@ -53,11 +51,6 @@ resource "kubernetes_ingress" "prometheus-ingress" {
   }
 
   spec {
-    backend {
-      service_name = "prometheus"
-      service_port = 9090
-    }
-
     rule {
       http {
         path {
