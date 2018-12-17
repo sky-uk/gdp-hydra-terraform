@@ -13,50 +13,51 @@ locals {
   elasticsearch_host = "elascticsearch-elasticsearch-coordinating-only"
 }
 
-resource "helm_release" "fluentd" {
-  name      = "fluentd"
-  chart     = "stable/fluentd-elasticsearch"
+# resource "helm_release" "elasticsearch" {
+#   name       = "elascticsearch"
+#   repository = "https://charts.bitnami.com/bitnami"
+#   chart      = "elasticsearch"
+#   namespace  = "logging"
+
+#   # workaround to stop CI from complaining about keyring change
+#   keyring = ""
+
+#   set {
+#     name  = "rbac.create"
+#     value = "false"
+#   }
+# }
+
+data "template_file" "fluentbit_values" {
+  template = "${file("${path.module}/values/fluent-bit.values.yaml")}"
+}
+
+# fluent-bit installed as a deamonset to colelct logs from the cluster and send them to the 
+# fluentd instance that will push them to elasticsearch
+resource "helm_release" "fluent_bit" {
+  version   = "1.1.0"
+  name      = "fluent-bit"
+  chart     = "stable/fluent-bit"
   namespace = "logging"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
 
-  set {
-    name  = "rbac.create"
-    value = "false"
-  }
-
-  set {
-    name  = "elasticsearch.host"
-    value = "${local.elasticsearch_host}"
-  }
+  values = [
+    "${data.template_file.fluentbit_values.rendered}",
+  ]  
 }
 
-resource "helm_release" "elasticsearch" {
-  name       = "elascticsearch"
-  repository = "https://charts.bitnami.com/bitnami"
-  chart      = "elasticsearch"
-  namespace  = "logging"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  set {
-    name  = "rbac.create"
-    value = "false"
-  }
-}
-
-data "template_file" "fluentd_ingress_values" {
-  template = "${file("${path.module}/values/fluentd-ingress.values.yaml")}"
+data "template_file" "fluentd_values" {
+  template = "${file("${path.module}/values/fluentd.values.yaml")}"
 
   vars {
     elasticsearch_host = "${local.elasticsearch_host}"
   }
 }
 
-resource "helm_release" "fluentd_ingest" {
-  name      = "fluentd-ingest"
+resource "helm_release" "fluentd" {
+  name      = "fluentd"
   chart     = "stable/fluentd"
   namespace = "logging"
 
@@ -64,7 +65,7 @@ resource "helm_release" "fluentd_ingest" {
   keyring = ""
 
   values = [
-    "${data.template_file.fluentd_ingress_values.rendered}",
+    "${data.template_file.fluentd_values.rendered}",
   ]
 
   # depends_on = [
@@ -72,35 +73,9 @@ resource "helm_release" "fluentd_ingest" {
   # ]
 }
 
-# resource "kubernetes_ingress" "fluentd-ingress" {
-#   metadata {
-#     name      = "fluentd"
-#     namespace = "logging"
-
-#     annotations {
-#       "kubernetes.io/ingress.class"             = "traefik"
-#     }
-
-#     labels = {
-#       createdby = "terraform"
-#     }
-#   }
-
-#   spec {
-#     rule {
-#       host = "${var.monitoring_dns_name}"
-
-#       http {
-#         path {
-#           path_regex = "/"
-
-#           backend {
-#             protocol = "TCP"
-#             service_name = "http-input"
-#             service_port = 9880
-#           }
-#         }
-#       }
-#     }
-#   }
-# }
+data "kubernetes_service" "fluentd" {
+  metadata {
+    name      = "fluentd"
+    namespace = "logging"
+  }
+}

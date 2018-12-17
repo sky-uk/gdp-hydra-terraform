@@ -26,29 +26,9 @@ trackOffsets: false
 backend:
   type: forward
 
-  forward:    
-    host: ${fluentd_ingress_ip}
+  forward:
+    host: fluentd
     port: 24224
-    tls: off
-    tls_verify: on
-    tls_debug: 4
-    #shared_key: shhhhhh
-
-  ##
-  ## Ref: http://fluentbit.io/documentation/current/output/http.html
-  ##
-  http:
-    host: 35.246.73.155 
-    port: 443
-    uri: "/"
-    http_user:
-    http_passwd:
-    tls: on
-    tls_verify: on
-    tls_debug: 1
-    ## Specify the data format to be used in the HTTP request body
-    ## Can be either 'msgpack' or 'json'
-    format: msgpack
 
 parsers:
   enabled: false
@@ -89,8 +69,9 @@ extraEntries:
 #     # >=1 additional Key/Value entrie(s) for existing Input section
   filter: |-
 #     # >=1 additional Key/Value entrie(s) for existing Filter section
-  output: |-
+  output: |-    
 #     # >=1 additional Key/Value entrie(s) for existing Ouput section
+
 
 ## Extra ports to add to the daemonset ports section
 extraPorts: []

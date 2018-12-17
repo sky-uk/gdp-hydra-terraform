@@ -10,6 +10,8 @@ module "helm_aks1" {
   cluster_name           = "aks1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
+  fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
+
   // This forces the helm config to run after the
   // initial Kubernetes configuration module 
   // to prevent race configuration
@@ -50,6 +52,8 @@ module "helm_aks2" {
   cluster_name           = "aks2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
+  fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
+
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
 
@@ -83,6 +87,8 @@ module "helm_gke1" {
   cluster_name           = "gke1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 
+  fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
+
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
 
@@ -115,6 +121,8 @@ module "helm_gke2" {
   host                   = "${module.gke_cluster_2.host}"
   cluster_name           = "gke2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+
+  fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }

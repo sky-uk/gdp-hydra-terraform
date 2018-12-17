@@ -10,3 +10,7 @@ variable "monitoring_dns_name" {
   type        = "string"
   description = "DNS name for monitoring cluster ingress"
 }
+
+variable "fluentd_ingress_ip" {
+  
+}

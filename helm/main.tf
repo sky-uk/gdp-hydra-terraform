@@ -57,7 +57,7 @@ data "template_file" "fluentbit_values" {
   template = "${file("${path.module}/values/fluent-bit.values.yaml")}"
 
   vars {
-    monitoring_cluster = "${var.monitoring_dns_name}"
+    fluentd_ingress_ip = "${var.fluentd_ingress_ip}"
   }
 }
 

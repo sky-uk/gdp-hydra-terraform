@@ -18,10 +18,12 @@ output:
 env: {}
 
 service:
-  type: ClusterIP
-  externalPort: 24224
+  type: LoadBalancer
   ports:
     - name: "monitor-agent"
+      protocol: TCP
+      containerPort: 24220
+    - name: "forward"
       protocol: TCP
       containerPort: 24224
 
@@ -29,9 +31,9 @@ ingress:
   enabled: true
   # Used to create an Ingress and Service record.
   hosts:
-    - name: "hydra-monitoring.sky-gdp-hydra.akadns.net"
+    - name: hydra-monitoring.sky-gdp-hydra.akadns.net
       protocol: TCP
-      serviceName: fluentd-ingest
+      serviceName: fluentd
       servicePort: 24224
   annotations:
     kubernetes.io/ingress.class: traefik    
@@ -74,32 +76,35 @@ configMaps:
     <source>
       @type forward
       port 24224
-      bind 0.0.0.0
+      bind 0.0.0.0      
     </source>
   output.conf: |
     <match **>
-      @id elasticsearch
-      @type elasticsearch
-      @log_level info
-      include_tag_key true
-      # Replace with the host/port to your Elasticsearch cluster.
-      host "#{ENV['OUTPUT_HOST']}"
-      port "#{ENV['OUTPUT_PORT']}"
-      logstash_format true
-      <buffer>
-        @type file
-        path /var/log/fluentd-buffers/kubernetes.system.buffer
-        flush_mode interval
-        retry_type exponential_backoff
-        flush_thread_count 2
-        flush_interval 5s
-        retry_forever
-        retry_max_interval 30
-        chunk_limit_size "#{ENV['OUTPUT_BUFFER_CHUNK_LIMIT']}"
-        queue_limit_length "#{ENV['OUTPUT_BUFFER_QUEUE_LIMIT']}"
-        overflow_action block
-      </buffer>
+      @type stdout
     </match>
+    # <match **>
+    #   @id elasticsearch
+    #   @type elasticsearch
+    #   @log_level info
+    #   include_tag_key true
+    #   # Replace with the host/port to your Elasticsearch cluster.
+    #   host "#{ENV['OUTPUT_HOST']}"
+    #   port "#{ENV['OUTPUT_PORT']}"
+    #   logstash_format true
+    #   <buffer>
+    #     @type file
+    #     path /var/log/fluentd-buffers/kubernetes.system.buffer
+    #     flush_mode interval
+    #     retry_type exponential_backoff
+    #     flush_thread_count 2
+    #     flush_interval 5s
+    #     retry_forever
+    #     retry_max_interval 30
+    #     chunk_limit_size "#{ENV['OUTPUT_BUFFER_CHUNK_LIMIT']}"
+    #     queue_limit_length "#{ENV['OUTPUT_BUFFER_QUEUE_LIMIT']}"
+    #     overflow_action block
+    #   </buffer>
+    # </match>
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
