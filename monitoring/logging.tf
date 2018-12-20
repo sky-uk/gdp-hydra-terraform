@@ -9,24 +9,7 @@ provider "helm" {
   }
 }
 
-locals {
-  elasticsearch_host = "elascticsearch-elasticsearch-coordinating-only"
-}
 
-# resource "helm_release" "elasticsearch" {
-#   name       = "elascticsearch"
-#   repository = "https://charts.bitnami.com/bitnami"
-#   chart      = "elasticsearch"
-#   namespace  = "logging"
-
-#   # workaround to stop CI from complaining about keyring change
-#   keyring = ""
-
-#   set {
-#     name  = "rbac.create"
-#     value = "false"
-#   }
-# }
 
 data "template_file" "fluentbit_values" {
   template = "${file("${path.module}/values/fluent-bit.values.yaml")}"
