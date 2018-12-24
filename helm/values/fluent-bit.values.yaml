@@ -38,17 +38,17 @@ backend:
   ## Ref: http://fluentbit.io/documentation/current/output/http.html
   ##
   http:
-    host: 35.246.73.155 
+    host: ${monitoring_dns_name}
     port: 443
-    uri: "/"
-    http_user:
-    http_passwd:
-    tls: on
-    tls_verify: on
+    uri: "/cluster"
+    # http_user:
+    # http_passwd:
+    tls: "on"
+    tls_verify: "on"
     tls_debug: 1
     ## Specify the data format to be used in the HTTP request body
     ## Can be either 'msgpack' or 'json'
-    format: msgpack
+    format: json
 
 parsers:
   enabled: false

@@ -58,6 +58,7 @@ data "template_file" "fluentbit_values" {
 
   vars {
     fluentd_ingress_ip = "${var.fluentd_ingress_ip}"
+    monitoring_dns_name = "${var.monitoring_dns_name}"
   }
 }
 

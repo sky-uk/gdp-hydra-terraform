@@ -61,4 +61,40 @@ data "kubernetes_service" "fluentd" {
     name      = "fluentd"
     namespace = "logging"
   }
+
+  depends_on = ["helm_release.fluentd"]
+}
+
+resource "kubernetes_service" "fluentd_http" {
+  metadata {
+    name      = "fluentd-http"
+    namespace = "logging"
+
+    labels = {
+      createdby  = "terraform"
+      app        = "fluentd"
+    }
+    
+    annotations = {
+      "traefik.ingress.kubernetes.io/buffering" = <<EOF
+maxrequestbodybytes: 10485760
+memrequestbodybytes: 2097153
+      EOF
+    }
+  }
+
+  spec {
+    selector {
+      app     = "fluentd"
+      release = "fluentd"
+    }
+
+    port {
+      name        = "http"
+      port        = 8080
+      target_port = 8080
+    }    
+
+    type = "ClusterIP"
+  }
 }
