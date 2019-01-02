@@ -66,3 +66,11 @@ output "kubeconfig_url" {
 output "monitoring_kubeconfig" {
   value = "${module.monitoring.kubeconfig}"
 }
+
+output "cluster_dns_name" {
+  value = "${module.akamai_config.cluster_dns_name}"
+}
+
+output "monitoring_dns_name" {
+  value = "${module.akamai_config.monitoring_dns_name}"
+}

@@ -5,5 +5,12 @@ variable "host" {}
 variable "enable_traefik" {}
 variable "enable_prometheus" {}
 variable "cluster_name" {}
-variable "traefik_replica_count" {}
-variable "registry_url" {}
+
+variable "monitoring_dns_name" {
+  type        = "string"
+  description = "DNS name for monitoring cluster ingress"
+}
+
+variable "fluentd_ingress_ip" {
+  
+}

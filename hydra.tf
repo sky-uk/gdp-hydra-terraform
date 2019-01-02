@@ -196,6 +196,8 @@ module "akamai_config" {
   aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
+
+  monitoring_cluster_ips = "${module.monitoring.monitoring_cluster_ips}"
 }
 
 module "cloudflare" {
@@ -247,4 +249,8 @@ module "monitoring" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  prometheus_ui_password = "${var.prometheus_ui_password}"
+  cluster_issuer_email   = "${var.cluster_issuer_email}"
+  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 }
