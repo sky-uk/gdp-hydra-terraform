@@ -2,7 +2,7 @@
 
 ## Independent Registries
 
-To ensure there is isolation between prividers and that each provider is individually resilient the Hydra module will provision a docker registry within each provider. 
+To ensure there is isolation between providers and that each provider is individually resilient the Hydra module will provision a docker registry within each provider. 
 
 It will also provision push credentials for each registry and return them as part of the outputs for the module.
 
@@ -16,7 +16,7 @@ The following outputs can be used to access the individual docker registries.
 | gcr_url | The URL of the docker registry for GCP clusters |
 | gcr_credentials | JSON credentials file for the docker registry for GCP clusters |
 
-You can use these outputs as part of your terraform script to configure CI or other functionality. It is possible that some changes in the configuration could cause a re-build of the registries. So it will make sense to try and automate the downstream configuration if possible. There is a [terraform provider](https://github.com/mrolla/terraform-provider-circleci) for CircleCI that could be useful for updating environment variables.
+You can use these outputs as part of your terraform script to configure CI or other functionality. It is possible that some changes in the configuration could cause a re-build of the registries so it would be sensible to automate the downstream configuration if possible. There is a [terraform provider](https://github.com/mrolla/terraform-provider-circleci) for CircleCI that could be useful for updating environment variables.
 
 ## Automatic local registry injection
 

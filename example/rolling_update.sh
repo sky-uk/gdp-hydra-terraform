@@ -1,5 +1,5 @@
 #!/bin/bash
-# Run TF and connect to each cluster listing it's pods
+# Run TF and connect to each cluster listing it’s pods
 set -eu
 
 function log {
@@ -58,7 +58,7 @@ function update_cluster {
         log "Unsupported network provider: $NETWORK_PROVIDER"
     fi
 
-    # [Placeholder] Does you app have long running sessions of user state which isn't share between clusters
+    # [Placeholder] Does you app have long running sessions of user state which isn’t share between clusters
     # if so you need to look at gracefully draining the traffic here.
 
     log "Updating cluster $CLUSTER_NAME"
@@ -69,7 +69,7 @@ function update_cluster {
     export KUBECONFIG=./kubeconfig_$CLUSTER_NAME
     kubectl get pods
 
-    # Hit the deployed nginx service to check it's available
+    # Hit the deployed nginx service to check it’s available
     log "Hitting ingress endpoint to check cluster responds"
     curl --silent --output /dev/null --fail $(terraform output -json ips | jq -r ".value.$CLUSTER_NAME")/healthz
     log "Health endpoint responded correctly!"
@@ -94,6 +94,6 @@ update_cluster "aks_cluster_2" "cloudflare"
 update_cluster "gke_cluster_1" "cloudflare"
 update_cluster "gke_cluster_2" "cloudflare"
 
-# Update any additional TF resources that haven't been handled by the 
+# Update any additional TF resources that haven’t been handled by the 
 # targetted cluster update
 terraform apply -auto-approve
