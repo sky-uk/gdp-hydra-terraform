@@ -7,7 +7,7 @@ replicas: ${replicas_count}
 # permissions
 rbac:
   enabled: false
-# Enabling the dashboard will allow you to view Traefik's
+# Enabling the dashboard will allow you to view Traefik’s
 # current configuration and health.
 dashboard:
   domain: "traefik.local"

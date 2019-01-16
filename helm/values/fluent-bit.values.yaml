@@ -60,7 +60,7 @@ parsers:
 
 env: []
 
-## Annotations to add to the DaemonSet's Pods
+## Annotations to add to the DaemonSet’s Pods
 podAnnotations: {}
 
 ## By default there different 'files' provides in the config
@@ -114,7 +114,7 @@ resources: {}
   #   cpu: 10m
   #   memory: 8Mi
 
-# When enabled, pods will bind to the node's network namespace.
+# When enabled, pods will bind to the node’s network namespace.
 hostNetwork: false
 
 # Which DNS policy to use for the pod.

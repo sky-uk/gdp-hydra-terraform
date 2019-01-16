@@ -116,20 +116,20 @@ Terraform supports targeting specific resources during an `tf apply` command. Th
 
 There are a number of limitations to the current script, called out in-line with the `[Placeholder]` calls:
 
-1. It doesn't wait for requests to stop arriving before updating the cluster. For example Akamai uses DNS based routing so some requests may continue to arrive even after the change has been made to Akamai's config due to the DNS TTL.
+1. It doesn’t wait for requests to stop arriving before updating the cluster. For example Akamai uses DNS based routing so some requests may continue to arrive even after the change has been made to Akamai’s config due to the DNS TTL.
 2. The health check is limited to K8s infrastructure, if this is being used to roll out an app you would want to also check the apps health. 
 
-It serves to demonstrate how a zero-downtime rollout, for example updating K8's versions, could be handled but for a production system this flow would best be split out into a CD pipeline with more checks, automated approval steps and possibly manual ones too. 
+It serves to demonstrate how a zero-downtime rollout, for example updating K8’s versions, could be handled but for a production system this flow would best be split out into a CD pipeline with more checks, automated approval steps and possibly manual ones too. 
 
 > Note: There is currently an issue with Cloudflare which prevents rolling update performing as expected. See the [issue here](https://github.com/terraform-providers/terraform-provider-cloudflare/issues/108).
 
 ## Responding to Failures
 
-Terraform uses a state file to reconcile its world view with any of the providers. This can sometime create issues, if for example a set of manual changes are made that can't be reconciled or create an issue for the dependency graph in Terraform. 
+Terraform uses a state file to reconcile its world view with any of the providers. This can sometime create issues, if for example a set of manual changes are made that can’t be reconciled or create an issue for the dependency graph in Terraform. 
 
-One example is when a Kubernetes cluster has been deleted without using Terraform (e.g. through the portal or cloud provider's CLI).
+One example is when a Kubernetes cluster has been deleted without using Terraform (e.g. through the portal or cloud provider’s CLI).
 
-When attempting the `terraform plan` or `apply` command Terraform will attempt to connect to the cluster to refresh it's view of the cluster's deployments. Given the cluster no longer exists you will see an error. To work around this issue, you can run your commands with `terraform plan -refresh=false`. This will allow you to run plan, you may need further manipulation of the state file to progress, see below. 
+When attempting the `terraform plan` or `apply` command Terraform will attempt to connect to the cluster to refresh it’s view of the cluster’s deployments. Given the cluster no longer exists you will see an error. To work around this issue, you can run your commands with `terraform plan -refresh=false`. This will allow you to run plan, you may need further manipulation of the state file to progress, see below. 
 
 Here is how to investigate:
 
