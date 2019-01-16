@@ -112,7 +112,7 @@ Terraform supports targeting specific resources during an `tf apply` command. Th
 - Disables the cluster from Akamai or Cloudflare to stop new traffic using the cluster
 - Applies any required updates to that cluster 
 - Checks the `/healthz` endpoint in the cluster, provided by the [k8s-healthcheck](https://github.com/emrekenci/k8s-healthcheck) project. 
-- If that endpoint returns healthy: Reenables the cluster in Akamai or Cloudflare
+- If that endpoint returns healthy: Re-enables the cluster in Akamai or Cloudflare
 
 There are a number of limitations to the current script, called out in-line with the `[Placeholder]` calls:
 
@@ -125,9 +125,9 @@ It serves to demonstrate how a zero-downtime rollout, for example updating K8's 
 
 ## Responding to Failures
 
-Terraform uses a state file to reconcile its world view with any of the providers. This can sometime create issues, if for example, a set of manual changes are made which can't be reconciled or create an issue for the dependency graph in Terraform. 
+Terraform uses a state file to reconcile its world view with any of the providers. This can sometime create issues, if for example a set of manual changes are made that can't be reconciled or create an issue for the dependency graph in Terraform. 
 
-One example is when a Kubernetes cluster has been deleted outside of the Terraform module (through the portal or CLI).
+One example is when a Kubernetes cluster has been deleted without using Terraform (e.g. through the portal or cloud provider's CLI).
 
 When attempting the `terraform plan` or `apply` command Terraform will attempt to connect to the cluster to refresh it's view of the cluster's deployments. Given the cluster no longer exists you will see an error. To work around this issue, you can run your commands with `terraform plan -refresh=false`. This will allow you to run plan, you may need further manipulation of the state file to progress, see below. 
 
@@ -158,7 +158,7 @@ terraform apply && terraform apply
 ## Variables
 ### Azure Authentication
 
-The following properties are required for authenticating into the Azure platform to create resources. See the Authenticating section above for more information on creating credentials
+The following properties are required for authenticating with the Azure platform to create resources. See the Authenticating section above for more information on creating credentials
 
  Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
@@ -186,7 +186,7 @@ These variables are required configuration to create resources within GCP. See t
 | akamai_client_token |  | string | - | yes |
 | akamai_host | Host for the Akamai API | string | - | yes |
 | edge_dns_zone | The DNS zone the edge should use e.g. example.com | string | - | yes |
-| edge_dns_name | The DNS name the edge should use (Akamai or Cloudflare) eg. `hydraclusters` is combined with the zone to create `hydraclusters.example.com` | string | - | yes |
+| edge_dns_name | The DNS name the edge should use (Akamai or Cloudflare) e.g. `hydraclusters` is combined with the zone to create `hydraclusters.example.com` | string | - | yes |
 
 ### Cloudflare API Authentication
 
@@ -195,8 +195,8 @@ These variables are required configuration to create resources within GCP. See t
 | cloudflare_enabled | Whether to enable Cloudflare for routing | string | - | yes |
 | cloudflare_email | Cloudflare email token used for authentication | string | `` | no |
 | cloudflare_token | Cloudflare api token used for authentication | string | `` | no |
-| edge_dns_name | The DNS name the edge should use (Akamai or Cloudflare) eg. `hydraclusters` is combined with zone to create `hydraclusters.example.com` | string | - | yes |
-| edge_dns_zone | The DNS zone the edge should use eg. example.com | string | - | yes |
+| edge_dns_name | The DNS name the edge should use (Akamai or Cloudflare) e.g. `hydraclusters` is combined with zone to create `hydraclusters.example.com` | string | - | yes |
+| edge_dns_zone | The DNS zone the edge should use e.g. example.com | string | - | yes |
 
 ### Cluster Configuration
 
@@ -206,7 +206,7 @@ These variables are used to configure aspects of the clusters that are created b
 |------|-------------|:----:|:-----:|:-----:|
 | project_name | Name of the project that is used across the deployment for naming resources. This will be used in cluster names, DNS entries and all other configuration and will enable you to identify resources. | string | - | yes |
 | azure_node_ssh_key | SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N '' -C aks-key` | string | - | yes |
-| azure_resource_locations | List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to `westeurope` and `northeurope`. | string | `<list>` | no |
+| azure_resource_locations | List of locations used for deploying resources. The first location is the default location in which any tooling such as the docker registry will be created. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to `westeurope` and `northeurope`. | string | `<list>` | no |
 | kubernetes_version | The version of Kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5 | string | `1.10.5` | no |
 | node_count | Number of nodes in each cluster. | string | `3` | no |
 | node_type | Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters. | string | `small` | no |
@@ -224,7 +224,7 @@ The following variables configure which clusters should be active in the Akamai 
 
 ### Cluster Setup 
 
-The following variables configure components inside the cluster such as the Traefik ingress controller, Prometheus monitoring and the [Health check app](https://github.com/emrekenci/k8s-healthcheck) used to monitor cluster health.  
+The following variables configure components inside the cluster such as the Traefik ingress controller, Prometheus monitoring, and the [Health check app](https://github.com/emrekenci/k8s-healthcheck) used to monitor cluster health.  
 
  Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|

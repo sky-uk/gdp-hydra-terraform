@@ -37,7 +37,7 @@ variable "client_secret" {
 
 variable "cluster_prefix" {
   type        = "string"
-  description = "The cluster name prefix. This will be joined with the index of the cluster eg. cluster_prefix_1, cluster_prefix_2"
+  description = "The cluster name prefix. This will be joined with the index of the cluster e.g. cluster_prefix_1, cluster_prefix_2"
 }
 
 variable "linux_admin_username" {

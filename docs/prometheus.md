@@ -12,7 +12,7 @@ This is done via a custom chart that is embedded in this module. [You can see mo
 
 The Prometheus dashboard is also available in the monitoring cluster and is secured via basic auth. The password is generated as part of hydra and is one of the outputs of the module.
 
-Due to some limitation with terraform should you need to change the password to the Prometheus dashbaord you will need to run a command to trigger the change to be pushed out to the cluster. First change the password that you have in your variables and then
+Should you need to change the password for the Prometheus dashbaord you will need to run a command to trigger the change to be pushed out to the cluster. This is due to a limitation with Terraform. First change the password that you have in your variables and then
 
 ``` bash
 terraform taint -module hydra.monitoring kubernetes_secret.prometheus_password

@@ -27,11 +27,11 @@ variable "google_creds_base64" {
 }
 
 variable "edge_dns_zone" {
-  description = "The dns zone the edge should use eg. example.com"
+  description = "The dns zone the edge should use e.g. example.com"
 }
 
 variable "edge_dns_name" {
-  description = "The dns name the edge should use (akamai or cloudflare) eg. hydraclusters is combined with zone to create hydraclusters.example.com"
+  description = "The dns name the edge should use (akamai or cloudflare) e.g. hydraclusters is combined with zone to create hydraclusters.example.com"
 }
 
 variable "akamai_host" {
