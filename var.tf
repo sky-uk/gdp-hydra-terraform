@@ -27,11 +27,11 @@ variable "google_creds_base64" {
 }
 
 variable "edge_dns_zone" {
-  description = "The dns zone the edge should use eg. example.com"
+  description = "The dns zone the edge should use e.g. example.com"
 }
 
 variable "edge_dns_name" {
-  description = "The dns name the edge should use (akamai or cloudflare) eg. hydraclusters is combined with zone to create hydraclusters.example.com"
+  description = "The dns name the edge should use (akamai or cloudflare) e.g. hydraclusters is combined with zone to create hydraclusters.example.com"
 }
 
 variable "akamai_host" {
@@ -128,6 +128,14 @@ variable "node_count" {
 variable "prom_metrics_username" {
   description = "Username used for basic auth on each worked cluster metrics endpoint"
   default     = "metrics"
+}
+
+variable "prometheus_ui_password" {
+  description = "Password used on the monitoring cluster prometheus instance"
+}
+
+variable "cluster_issuer_email" {
+  description = "Email used for the cert manager ClusterIssuer. Should be accessible as it will receive expiration notifications"
 }
 
 locals {

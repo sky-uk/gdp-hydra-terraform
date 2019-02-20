@@ -48,7 +48,7 @@ serviceMonitors:
         params: 
           'match[]':
             - '{job="prometheus"}'
-            - '{__name__=~"traefik.*"}'
+            - '{__name__=~".+"}'
     interval: 15s
   - name: traefik-ingress
     selector:

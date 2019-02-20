@@ -26,11 +26,6 @@ resource "kubernetes_ingress" "hc-ingress" {
   }
 
   spec {
-    backend {
-      service_name = "hc-service"
-      service_port = 8080
-    }
-
     rule {
       http {
         path {

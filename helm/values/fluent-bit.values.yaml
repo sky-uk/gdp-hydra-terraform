@@ -1,0 +1,171 @@
+# Minikube stores its logs in a separate directory.
+# enable if started in minikube.
+on_minikube: false
+
+image:
+  fluent_bit:
+    repository: fluent/fluent-bit
+    tag: 0.14.9
+  pullPolicy: Always
+
+# When enabled, exposes json and prometheus metrics on {{ .Release.Name }}-metrics service
+metrics:
+  enabled: true
+  service:
+    annotations: {}
+    # In order for Prometheus to consume metrics automatically use the following annotations:
+    prometheus.io/path: "/api/v1/metrics/prometheus"
+    prometheus.io/port: "2020"
+    prometheus.io/scrape: "true"
+    port: 2020
+    type: ClusterIP
+
+# When enabled, fluent-bit will keep track of tailing offsets across pod restarts.
+trackOffsets: false
+
+backend:
+  type: forward
+
+  forward:    
+    host: ${fluentd_ingress_ip}
+    port: 24224
+    tls: off
+    tls_verify: on
+    tls_debug: 4
+    #shared_key: shhhhhh
+
+  ##
+  ## Ref: http://fluentbit.io/documentation/current/output/http.html
+  ##
+  http:
+    host: ${monitoring_dns_name}
+    port: 443
+    uri: "/cluster"
+    # http_user:
+    # http_passwd:
+    tls: "on"
+    tls_verify: "on"
+    tls_debug: 1
+    ## Specify the data format to be used in the HTTP request body
+    ## Can be either 'msgpack' or 'json'
+    format: json
+
+parsers:
+  enabled: false
+  ## List the respective parsers in key: value format per entry
+  ## Regex required fields are name and regex. JSON required field
+  ## is name.
+  regex: []
+  json: []
+
+env: []
+
+## Annotations to add to the DaemonSet’s Pods
+podAnnotations: {}
+
+## By default there different 'files' provides in the config
+## (fluent-bit.conf, custom_parsers.conf). This defeats
+## changing a configmap (since it uses subPath). If this
+## variable is set, the user is assumed to have provided,
+## in 'existingConfigMap' the entire config (etc/*) of fluent-bit,
+## parsers and system config. In this case, no subPath is
+## used
+fullConfigMap: false
+
+## ConfigMap override where fullname is {{.Release.Name}}-{{.Values.existingConfigMap}}
+## Defining existingConfigMap will cause templates/config.yaml
+## to NOT generate a ConfigMap resource
+##
+existingConfigMap: ""
+
+rawConfig: |-
+  @INCLUDE fluent-bit-service.conf
+  @INCLUDE fluent-bit-input.conf
+  @INCLUDE fluent-bit-filter.conf
+  @INCLUDE fluent-bit-output.conf
+
+extraEntries:
+  input: |-
+#     # >=1 additional Key/Value entrie(s) for existing Input section
+  filter: |-
+#     # >=1 additional Key/Value entrie(s) for existing Filter section
+  output: |-
+#     # >=1 additional Key/Value entrie(s) for existing Ouput section
+
+## Extra ports to add to the daemonset ports section
+extraPorts: []
+
+## Extra volumes containing additional files required for fluent-bit to work
+## (e.g. CA certificates)
+## Ref: https://kubernetes.io/docs/concepts/storage/volumes/
+##
+extraVolumes: []
+
+## Extra volume mounts for the fluent-bit pod.
+## Ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-volume-storage/
+##
+extraVolumeMounts: []
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 10m
+  #   memory: 8Mi
+
+# When enabled, pods will bind to the node’s network namespace.
+hostNetwork: false
+
+# Which DNS policy to use for the pod.
+# Consider switching to 'ClusterFirstWithHostNet' when 'hostNetwork' is enabled.
+dnsPolicy: ClusterFirst
+
+## Node tolerations for fluent-bit scheduling to nodes with taints
+## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+##
+tolerations: []
+# - key: "key"
+#  operator: "Equal|Exists"
+#  value: "value"
+#  effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+
+## Node labels for fluent-bit pod assignment
+## Ref: https://kubernetes.io/docs/user-guide/node-selection/
+##
+nodeSelector: {}
+
+input:
+  tail:
+    memBufLimit: 5MB
+    path: /var/log/containers/*.log
+
+
+filter:
+  kubeURL: https://kubernetes.default.svc:443
+  kubeCAFile: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+  kubeTokenFile: /var/run/secrets/kubernetes.io/serviceaccount/token
+  kubeTag: kube
+# If true, check to see if the log field content is a JSON string map, if so,
+# it append the map fields as part of the log structure.
+  mergeJSONLog: true
+
+# If true, enable the use of monitoring for a pod annotation of
+# fluentbit.io/parser: parser_name. parser_name must be the name
+# of a parser contained within parsers.conf
+  enableParser: true
+
+# If true, enable the use of monitoring for a pod annotation of
+# fluentbit.io/exclude: true. If present, discard logs from that pod.
+  enableExclude: true
+
+rbac:
+  # Specifies whether RBAC resources should be created
+  create: false
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: true
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:

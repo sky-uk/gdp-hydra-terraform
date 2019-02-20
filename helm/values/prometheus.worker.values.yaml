@@ -30,7 +30,7 @@ rules:
 serviceMonitors:
   - name: traefik-ingress
     labels:
-      prometheus: prometheus-slave
+      prometheus: prometheus
     selector:
       matchLabels:
         app: traefik

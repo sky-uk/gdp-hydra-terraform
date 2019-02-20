@@ -23,6 +23,34 @@ module "monitoring_cluster" {
   machine_type       = "${var.machine_type}"
 }
 
+module "cluster_services_monitoring" {
+  source = "../cluster_services"
+
+  enable_traefik = true
+
+  client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
+  client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
+  cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+  host                   = "${module.monitoring_cluster.host}"
+  cluster_name           = "gke2"
+
+  traefik_replica_count = "2"
+
+  # TODO pass in the right registry URL here
+  registry_url = "TBC"
+
+  cluster_issuer_email = "${var.cluster_issuer_email}"
+
+  depends_on_hack = "${data.kubernetes_service.ingress.load_balancer_ingress.0.ip}"
+}
+
+data "kubernetes_service" "ingress" {
+  metadata {
+    name      = "traefik-ingress-controller"
+    namespace = "kube-system"
+  }
+}
+
 variable "cluster_prefix" {}
 
 variable "google_project" {}

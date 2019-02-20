@@ -3,6 +3,11 @@ variable "cluster_ips" {
   type        = "map"
 }
 
+variable "monitoring_cluster_ips" {
+  description = "IP address to the ingress of the monitoring cluster"
+  type        = "string"
+}
+
 variable "enabled" {}
 
 variable "zone" {}
