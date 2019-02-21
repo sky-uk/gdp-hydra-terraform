@@ -6,6 +6,11 @@ data "template_file" "jaeger_values" {
   }
 }
 
+resource "helm_repository" "incubator" {
+  name = "incubator"
+  url  = "https://kubernetes-charts-incubator.storage.googleapis.com"
+}
+
 resource "helm_release" "jaeger" {  
   name      = "jaeger"
   chart     = "incubator/jaeger"
@@ -19,7 +24,8 @@ resource "helm_release" "jaeger" {
   ]  
 
   depends_on = [
-    "helm_release.elasticsearch"
+    "helm_release.elasticsearch",
+    "helm_repository.incubator"
   ]
 }
 
