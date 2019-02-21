@@ -41,7 +41,7 @@ module "cluster_services_monitoring" {
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
-  depends_on_hack = "${data.kubernetes_service.ingress.load_balancer_ingress.0.ip}"
+  depends_on_hack = ""
 }
 
 data "kubernetes_service" "ingress" {
@@ -49,6 +49,7 @@ data "kubernetes_service" "ingress" {
     name      = "traefik-ingress-controller"
     namespace = "kube-system"
   }
+  depends_on = ["module.cluster_services_monitoring"]
 }
 
 variable "cluster_prefix" {}
