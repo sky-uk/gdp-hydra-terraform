@@ -3,6 +3,7 @@ provider "kubernetes" {
   client_key             = "${var.cluster_client_key}"
   cluster_ca_certificate = "${var.cluster_ca_certificate}"
   host                   = "${var.host}"
+  load_config_file       = false
 }
 
 resource "kubernetes_service" "ingress_service" {

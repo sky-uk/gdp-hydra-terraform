@@ -6,6 +6,7 @@ provider "helm" {
     client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
     cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
     host                   = "${module.monitoring_cluster.host}"
+    config_context         = "nothing"
   }
 }
 

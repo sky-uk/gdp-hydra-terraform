@@ -6,6 +6,7 @@ provider "helm" {
     client_key             = "${var.client_key}"
     cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
+    config_context         = "nothing"
   }
 }
 
