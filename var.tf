@@ -147,6 +147,7 @@ locals {
 
   node_match = {
     "small"  = "n1-standard-2,Standard_D2_v3"
+    "small_m" = "n1-highmem-2,Standard_A2m_v2"
     "medium" = "n1-standard-4,Standard_D4_v3"
     "large"  = "n1-standard-16,Standard_D16_v3"
   }

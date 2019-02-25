@@ -89,6 +89,7 @@ resource "helm_release" "cert_manager" {
   name      = "cert-manager"
   chart     = "stable/cert-manager"
   namespace = "kube-system"
+  version   = "v0.5.2"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""

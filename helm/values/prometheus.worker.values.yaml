@@ -43,6 +43,17 @@ serviceMonitors:
     endpoints:
       - port: metrics
     interval: 15s
+  - name: metrics
+    labels:
+      prometheus: prometheus
+    selector:
+      matchLabels:
+        monitoring: prometheus
+    namespaceSelector:
+      any: true
+    endpoints:
+      - targetPort: 80
+        path: /metrics
 service:
   sessionAffinity: None
   annotations: {}
