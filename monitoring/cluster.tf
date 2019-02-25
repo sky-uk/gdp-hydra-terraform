@@ -49,6 +49,14 @@ data "kubernetes_service" "ingress" {
     name      = "traefik-ingress-controller"
     namespace = "kube-system"
   }
+  depends_on = ["null_resource.cluster"]
+}
+
+resource "null_resource" "cluster" {
+  # Changes to any instance of the cluster requires re-provisioning
+  triggers {
+    cluster_instance_ids = "${module.monitoring_cluster.host}"
+  }
 }
 
 variable "cluster_prefix" {}
