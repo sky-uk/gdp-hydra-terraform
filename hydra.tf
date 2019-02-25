@@ -17,10 +17,10 @@ provider "akamai" {
   client_secret = "${var.akamai_client_secret}"
 }
 
-#provider "cloudflare" {
-#  email = "${var.cloudflare_email}"
-#  token = "${var.cloudflare_token}"
-#}
+provider "cloudflare" {
+  email = "${var.cloudflare_email}"
+  token = "${var.cloudflare_token}"
+}
 
 module "acr" {
   source       = "acr"
@@ -200,21 +200,21 @@ module "akamai_config" {
   monitoring_cluster_ips = "${module.monitoring.monitoring_cluster_ips}"
 }
 
-#module "cloudflare" {
-#  source  = "cloudflare"
-#  enabled = "${var.cloudflare_enabled}"
+module "cloudflare" {
+  source  = "cloudflare"
+  enabled = "${var.cloudflare_enabled}"
 
-#  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-#  cluster_ips = "${local.cluster_ips}"
-#  zone        = "${var.edge_dns_zone}"
-#  dns_name    = "${var.edge_dns_name}"
+  cluster_ips = "${local.cluster_ips}"
+  zone        = "${var.edge_dns_zone}"
+  dns_name    = "${var.edge_dns_name}"
 
-#  aks_cluster_1_enabled = "${var.traffic_manager_aks_cluster_1_enabled}"
-#  aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
-#  gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
-#  gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
-#}
+  aks_cluster_1_enabled = "${var.traffic_manager_aks_cluster_1_enabled}"
+  aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
+  gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
+  gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
+}
 
 module "gcr" {
   source = "gcr"
