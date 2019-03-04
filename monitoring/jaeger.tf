@@ -6,7 +6,7 @@ data "template_file" "jaeger_values" {
   }
 }
 
-resource "helm_release" "jaeger" {  
+resource "helm_release" "jaeger" {
   name      = "jaeger"
   chart     = "incubator/jaeger"
   namespace = "monitoring"
@@ -16,14 +16,12 @@ resource "helm_release" "jaeger" {
 
   values = [
     "${data.template_file.jaeger_values.rendered}",
-  ]  
+  ]
 
   depends_on = [
-    "helm_release.elasticsearch"
+    "helm_release.elasticsearch",
   ]
 }
-
-
 
 resource "kubernetes_ingress" "jaeger-ui" {
   metadata {
@@ -74,13 +72,15 @@ resource "kubernetes_ingress" "jaeger-collector" {
     namespace = "monitoring"
 
     annotations {
-      "kubernetes.io/ingress.class"               = "traefik"
+      "kubernetes.io/ingress.class" = "traefik"
+
       # "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       # "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
-      "kubernetes.io/tls-acme"                    = "true"
-      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-production"
-      "ingress.kubernetes.io/ssl-redirect"        = "true"
-      "traefik.ingress.kubernetes.io/rule-type"   = "PathPrefixStrip"
+      "kubernetes.io/tls-acme" = "true"
+
+      "certmanager.k8s.io/cluster-issuer"       = "letsencrypt-production"
+      "ingress.kubernetes.io/ssl-redirect"      = "true"
+      "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
     }
 
     labels = {

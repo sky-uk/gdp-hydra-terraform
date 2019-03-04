@@ -11,6 +11,4 @@ variable "monitoring_dns_name" {
   description = "DNS name for monitoring cluster ingress"
 }
 
-variable "fluentd_ingress_ip" {
-  
-}
+variable "fluentd_ingress_ip" {}

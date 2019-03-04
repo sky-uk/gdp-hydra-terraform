@@ -9,8 +9,6 @@ provider "helm" {
   }
 }
 
-
-
 data "template_file" "fluentbit_values" {
   template = "${file("${path.module}/values/fluent-bit.values.yaml")}"
 }
@@ -28,7 +26,7 @@ resource "helm_release" "fluent_bit" {
 
   values = [
     "${data.template_file.fluentbit_values.rendered}",
-  ]  
+  ]
 }
 
 data "template_file" "fluentd_values" {
@@ -71,10 +69,10 @@ resource "kubernetes_service" "fluentd_http" {
     namespace = "logging"
 
     labels = {
-      createdby  = "terraform"
-      app        = "fluentd"
+      createdby = "terraform"
+      app       = "fluentd"
     }
-    
+
     annotations = {
       "traefik.ingress.kubernetes.io/buffering" = <<EOF
 maxrequestbodybytes: 10485760
@@ -93,7 +91,7 @@ memrequestbodybytes: 2097153
       name        = "http"
       port        = 8080
       target_port = 8080
-    }    
+    }
 
     type = "ClusterIP"
   }
