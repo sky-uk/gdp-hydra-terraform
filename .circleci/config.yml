@@ -9,7 +9,7 @@ jobs:
       - run:
           name: Check formatting
           command: |
-            terraform fmt -check=true
+            terraform fmt -check=true -diff=true -list=true
             terraform validate -check-variables=false
   plan:
     docker:
