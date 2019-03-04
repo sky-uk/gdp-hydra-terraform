@@ -21,6 +21,11 @@ data "archive_file" "kubeconfig" {
     content  = "${module.gke_cluster_2.kubeconfig}"
     filename = "kubeconfig_gke_2"
   }
+
+  source {
+    content  = "${module.monitoring.kubeconfig}"
+    filename = "kubeconfig_monitoring"
+  }
 }
 
 resource "azurerm_resource_group" "config_rg" {
