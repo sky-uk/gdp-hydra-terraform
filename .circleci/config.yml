@@ -20,8 +20,7 @@ jobs:
       - run:
           name: Plan Terraform
           command: |
-            chmod -x install.sh
-            ./install.sh
+            sh install.sh
             terraform init
             terraform plan -var-file=variables.tfvars -check=true
 
