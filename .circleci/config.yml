@@ -42,8 +42,7 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            ls -a /tmp/example
-            terraform apply /tmp/workspace/terraform.out
+            terraform apply /tmp/example/terraform.out
 
 workflows:
   version: 2
