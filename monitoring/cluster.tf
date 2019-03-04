@@ -49,6 +49,7 @@ data "kubernetes_service" "ingress" {
     name      = "traefik-ingress-controller"
     namespace = "kube-system"
   }
+
   depends_on = ["null_resource.cluster"]
 }
 
