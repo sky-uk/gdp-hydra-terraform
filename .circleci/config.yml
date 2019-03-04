@@ -29,5 +29,5 @@ workflows:
     jobs:
       - build
       - plan:
-        requires:
-          - build
+          requires:
+            - build
