@@ -7,7 +7,31 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Check Formatting
+          name: Check formatting
           command: |
             terraform fmt -check=true
             terraform validate -check-variables=false
+  plan:
+    docker:
+      - image: hashicorp/terraform:0.11.7
+    environment:
+    steps:
+      - checkout
+      - run:
+          name: Plan Terraform
+          command: |
+            terraform init
+            terraform plan -var-file=variables.tfvars -check=true
+
+workflows:
+  version: 2:
+  build_plan_deploy:
+    jobs:
+      - build
+        filters:
+          branches:
+            ignore: master
+      - plan
+        filters:
+          branches:
+            ignore: master
