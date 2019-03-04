@@ -23,12 +23,11 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            terraform plan
-            ls -a
+            terraform plan -out=terraform.out
       - persist_to_workspace:
           root: example
           paths:
-           - terraform.tfstate
+           - terraform.out
   deploy:
     docker:
       - image: hashicorp/terraform:0.11.11
@@ -41,7 +40,7 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            terraform apply -state=/tmp/example/terraform.tfstate
+            terraform apply /tmp/example/terraform.out
       - attach_workspace:
           at: /tmp/example
 
