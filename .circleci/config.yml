@@ -22,7 +22,7 @@ jobs:
           command: |
             sh install.sh
             terraform init
-            terraform plan -var-file=variables.tfvars -check=true example
+            terraform plan -var-file=vars.example.tfvars -check=true -detailed-exitcode example
 
 workflows:
   version: 2
