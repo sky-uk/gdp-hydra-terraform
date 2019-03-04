@@ -28,4 +28,6 @@ workflows:
   build_plan_deploy:
     jobs:
       - build
-      - plan
+      - plan:
+        requires:
+          - build
