@@ -21,8 +21,9 @@ jobs:
           name: Plan Terraform
           command: |
             sh install.sh
+            cd example
             terraform init
-            terraform plan -var-file=variables.tfvars -check=true
+            terraform plan -var-file=vars.example.tfvars example/
 
 workflows:
   version: 2
