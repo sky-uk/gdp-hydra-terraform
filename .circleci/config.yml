@@ -23,7 +23,26 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            terraform plan -detailed-exitcode
+            terraform plan
+      - persist_to_workspace:
+          root: /tmp/state
+          paths:
+           - example/terraform.tfstate
+  deploy:
+    docker:
+      - image: hashicorp/terraform:0.11.11
+    environment:
+    steps:
+      - checkout
+      - run:
+          name: Run Terraform
+          working_directory: example
+          command: |
+            sh ../install.sh
+            terraform init
+            terraform apply -state=/tmp/state/example/terraform.tfstate
+      - attach_workspace:
+          at: /tmp/state
 
 workflows:
   version: 2
@@ -31,6 +50,12 @@ workflows:
     jobs:
       - build
       - plan:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: master
+      - deploy:
           requires:
             - build
           filters:
