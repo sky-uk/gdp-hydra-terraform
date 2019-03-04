@@ -33,6 +33,8 @@ jobs:
       - image: hashicorp/terraform:0.11.11
     environment:
     steps:
+      - attach_workspace:
+          at: /tmp/example
       - checkout
       - run:
           name: Run Terraform
@@ -42,8 +44,6 @@ jobs:
             terraform init
             ls -a /tmp/example
             terraform apply /tmp/workspace/terraform.out
-      - attach_workspace:
-          at: /tmp/example
 
 workflows:
   version: 2
