@@ -24,13 +24,14 @@ jobs:
             terraform plan -var-file=variables.tfvars -check=true
 
 workflows:
+  version: 2
   build_plan_deploy:
     jobs:
-      - build
+      - build:
         filters:
           branches:
             ignore: master
-      - plan
+      - plan:
         requires:
           - build
         filters:
