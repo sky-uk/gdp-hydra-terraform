@@ -24,6 +24,7 @@ jobs:
             sh ../install.sh
             terraform init
             terraform plan
+            ls -a
       - persist_to_workspace:
           root: example
           paths:
