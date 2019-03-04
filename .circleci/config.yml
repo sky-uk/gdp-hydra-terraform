@@ -21,9 +21,10 @@ jobs:
           name: Plan Terraform
           command: |
             sh install.sh
-            cd example
-            terraform init
-            terraform plan -var-file=vars.example.tfvars -detailed-exitcode
+
+            git clone git@github.com:sky-uk/gdp-hydra.git
+            #terraform init
+            #terraform plan -var-file=vars.example.tfvars -detailed-exitcode
 
 workflows:
   version: 2
