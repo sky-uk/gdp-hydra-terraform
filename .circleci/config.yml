@@ -40,7 +40,7 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            terraform apply ../tmp/example/terraform.out
+            terraform apply terraform.out
       - attach_workspace:
           at: example
 
