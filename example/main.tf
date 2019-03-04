@@ -5,8 +5,6 @@ variable azure_client_id {}
 variable azure_client_secret {}
 variable azure_tenant_id {}
 variable azure_subscription_id {}
-variable cloudflare_email {}
-variable cloudflare_token {}
 variable edge_dns_zone {}
 variable edge_dns_name {}
 variable kubernetes_version {}
