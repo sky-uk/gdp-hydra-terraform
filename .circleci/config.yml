@@ -42,7 +42,7 @@ jobs:
             terraform init
             terraform apply ../tmp/example/terraform.out
       - attach_workspace:
-          at: /tmp/example
+          at: example
 
 workflows:
   version: 2
