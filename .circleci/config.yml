@@ -27,10 +27,7 @@ workflows:
   version: 2
   build_plan_deploy:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore: master
+      - build
       - plan:
           requires:
             - build
