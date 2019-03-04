@@ -25,7 +25,7 @@ jobs:
             terraform init
             terraform plan
       - persist_to_workspace:
-          root: /tmp/state
+          root: workspace
           paths:
            - example/terraform.tfstate
   deploy:
@@ -40,9 +40,9 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            terraform apply -state=/tmp/state/example/terraform.tfstate
+            terraform apply -state=/tmp/workspace/example/terraform.tfstate
       - attach_workspace:
-          at: /tmp/state
+          at: /tmp/workspace
 
 workflows:
   version: 2
@@ -57,7 +57,7 @@ workflows:
               ignore: master
       - deploy:
           requires:
-            - build
+            - plan
           filters:
             branches:
               ignore: master
