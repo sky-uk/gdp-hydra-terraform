@@ -28,12 +28,6 @@ workflows:
   build_plan_deploy:
     jobs:
       - build:
-        filters:
-          branches:
-            ignore: master
       - plan:
         requires:
           - build
-        filters:
-          branches:
-            ignore: master
