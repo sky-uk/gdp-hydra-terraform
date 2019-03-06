@@ -10,8 +10,7 @@ resource "google_service_account" "registry_user" {
   display_name = "Registry User"
   project      = "${var.google_project_id}"
 
-  provisioner "local-exec" {
-    command = "sleep 15"
+  provisioner "local-exec" {command = "sleep 15"
   }
 }
 
