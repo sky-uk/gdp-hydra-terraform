@@ -11,8 +11,8 @@ provider "google" {
 }
 
 resource "google_project_services" "project" {
-  project = "${var.google_project_id}"
-  services   = ["iam.googleapis.com", "container.googleapis.com"]
+  project  = "${var.google_project_id}"
+  services = ["iam.googleapis.com", "container.googleapis.com"]
 }
 
 provider "akamai" {
