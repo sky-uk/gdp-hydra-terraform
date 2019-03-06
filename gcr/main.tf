@@ -15,7 +15,7 @@ resource "google_project_service" "iam_api" {
 }
 
 resource "google_service_account" "registry_user" {
-  depends_on   = ["google_project_services.project_apis"]
+  depends_on   = ["google_project_service.iam_api"]
   account_id   = "registryuser"
   display_name = "Registry User"
   project      = "${var.google_project_id}"
