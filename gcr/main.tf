@@ -5,7 +5,7 @@ data "google_container_registry_repository" "registry" {
   region  = "eu"
 }
 
-resource "google_project_services" "project_apis" {
+resource "google_project_service" "iam_api" {
   project = "${var.google_project_id}"
   service = "iam.googleapis.com"
 
