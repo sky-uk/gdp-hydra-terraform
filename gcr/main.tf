@@ -5,6 +5,15 @@ data "google_container_registry_repository" "registry" {
   region  = "eu"
 }
 
+resource "google_project_services" "project_apis" {
+  project = "${var.google_project_id}"
+  service = "iam.googleapis.com"
+
+  provisioner "local-exec" {
+    command = "sleep 60"
+  }
+}
+
 resource "google_service_account" "registry_user" {
   depends_on   = ["google_project_services.project_apis"]
   account_id   = "registryuser"
