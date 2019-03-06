@@ -47,6 +47,7 @@ jobs:
           name: Cleanup
           when: always
           command: |
+            set +x
             function az_login {
                 az login --service-principal -u http://CircleCI -p $TF_VAR_azure_client_secret --tenant $TF_VAR_azure_tenant_id > /dev/null
             }
