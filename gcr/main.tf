@@ -6,6 +6,7 @@ data "google_container_registry_repository" "registry" {
 }
 
 resource "google_service_account" "registry_user" {
+  depends_on   = ["project_apis"]
   account_id   = "registryuser"
   display_name = "Registry User"
   project      = "${var.google_project_id}"
