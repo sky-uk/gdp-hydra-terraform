@@ -30,7 +30,7 @@ jobs:
            - terraform.out
   deploy:
     docker:
-      - image: hashicorp/terraform:0.11.11
+      - image: paulgrav/cloudcli
     environment:
     steps:
       - attach_workspace:
@@ -43,14 +43,9 @@ jobs:
             sh ../install.sh
             terraform init
             terraform apply /tmp/example/terraform.out
-  cleanup:
-    docker:
-      - image: paulgrav/cloudcli
-    environment:
-    when: always
-    steps:
       - run:
           name: Cleanup
+          when: always
           command: |
             function az_login {
                 az login --service-principal -u http://CircleCI -p $TF_VAR_azure_client_secret --tenant $TF_VAR_azure_tenant_id > /dev/null
@@ -136,6 +131,3 @@ workflows:
           filters:
             branches:
               ignore: master
-      - cleanup:
-          requires:
-            - deploy
