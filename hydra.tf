@@ -13,11 +13,19 @@ provider "google" {
 resource "google_project_service" "iam" {
   project = "${var.google_project_id}"
   service = "iam.googleapis.com"
+
+  provisioner "local-exec" {
+    command = "sleep 120"
+  }
 }
 
 resource "google_project_service" "k8s" {
   project = "${var.google_project_id}"
   service = "container.googleapis.com"
+
+  provisioner "local-exec" {
+    command = "sleep 120"
+  }
 }
 
 provider "akamai" {
