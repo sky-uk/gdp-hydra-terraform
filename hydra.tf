@@ -13,6 +13,9 @@ provider "google" {
 resource "google_project_services" "project" {
   project  = "${var.google_project_id}"
   services = ["iam.googleapis.com", "container.googleapis.com"]
+  provisioner "local-exec" {
+    command = "sleep 12020202020202020202020202020202020202020"
+  }
 }
 
 provider "akamai" {
