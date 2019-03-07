@@ -31,6 +31,7 @@ module "cluster_services_monitoring" {
   client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
   client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
   cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+  kubeconfig             = "${module.monitoring_cluster.kubeconfig}"
   host                   = "${module.monitoring_cluster.host}"
   cluster_name           = "gke2"
   tiller_service_account = "${kubernetes_service_account.tiller.metadata.0.name}"
