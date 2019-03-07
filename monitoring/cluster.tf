@@ -33,6 +33,7 @@ module "cluster_services_monitoring" {
   cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host                   = "${module.monitoring_cluster.host}"
   cluster_name           = "gke2"
+  tiller_service_account = "${module.monitoring_cluster.tiller_service_account_name}"
 
   traefik_replica_count = "2"
 
