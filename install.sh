@@ -24,4 +24,10 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     chmod +x ./kubectl
     mv ./kubectl /usr/local/bin/kubectl
+    
+    echo "Downloading Helm"
+    curl -LO https://storage.googleapis.com/kubernetes-helm/helm-v2.11.0-linux-amd64.tar.gz
+    tar xzvf helm-v2.11.0-linux-amd64.tar.gz
+    mv linux-amd64/helm /usr/local/bin/
+    mv linux-amd64/tiller /usr/local/bin/
 fi

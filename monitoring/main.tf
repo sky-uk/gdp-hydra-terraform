@@ -37,6 +37,8 @@ resource "null_resource" "helm_init" {
   provisioner "local-exec" {
     command = "helm init --service-account tiller --wait"
   }
+
+  depends_on = ["kubernetes_cluster_role_binding.tiller"]
 }
 
 provider "helm" {
