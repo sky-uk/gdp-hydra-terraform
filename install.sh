@@ -20,4 +20,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     curl -L -o - https://github.com/Comcast/terraform-provider-akamai/releases/download/0.2.2/terraform-provider-akamai-linux_amd64-0.2.2.tgz | tar xvfz - > terraform-provider-akamai
     chmod +x terraform-provider-akamai    
     
+    echo "Downloading kubectl"
+    curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    chmod +x ./kubectl
+    mv ./kubectl /usr/local/bin/kubectl
 fi
