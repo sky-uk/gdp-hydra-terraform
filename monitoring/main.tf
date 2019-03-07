@@ -32,3 +32,22 @@ resource "kubernetes_cluster_role_binding" "tiller" {
     namespace = "${kubernetes_service_account.tiller.metadata.0.namespace}"
   }
 }
+
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account tiller --wait"
+  }
+}
+
+provider "helm" {
+  install_tiller  = true
+  service_account = "${kubernetes_service_account.tiller.metadata.0.name}"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
+
+  kubernetes {
+    client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
+    client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
+    cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+    host                   = "${module.monitoring_cluster.host}"
+  }
+}

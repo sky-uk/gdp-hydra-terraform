@@ -1,22 +1,3 @@
-resource "null_resource" "helm_init" {
-  provisioner "local-exec" {
-    command = "helm init --service-account tiller --wait"
-  }
-}
-
-provider "helm" {
-  kubernetes {
-    client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
-    client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
-    cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-    host                   = "${module.monitoring_cluster.host}"
-  }
-
-  install_tiller  = true
-  service_account = "${var.tiller_service_account}"
-  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
-}
-
 data "template_file" "fluentbit_values" {
   template = "${file("${path.module}/values/fluent-bit.values.yaml")}"
 }
