@@ -47,8 +47,6 @@ resource "kubernetes_service" "ingress_service" {
 
 # create service account for tiller - server side of Helm
 resource "kubernetes_service_account" "tiller" {
-  automount_service_account_token = true
-
   metadata {
     name      = "tiller-service-account"
     namespace = "kube-system"
