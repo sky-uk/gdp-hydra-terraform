@@ -16,6 +16,10 @@ module "helm_aks1" {
   // initial Kubernetes configuration module 
   // to prevent race configuration
   depends_on_hack = "${module.k8s_config_aks_1.cluster_ingress_ip}"
+
+  provisioner "local-exec" {
+    command = "sleep 120"
+  }
 }
 
 module "cluster_services_aks1" {
