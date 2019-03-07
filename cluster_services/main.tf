@@ -5,7 +5,7 @@ resource "local_file" "kubeconfig" {
 
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account tiller --wait --kubeconfig ${local_file.kubeconfig.filename}"
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${local_file.kubeconfig.filename}"
   }
 }
 

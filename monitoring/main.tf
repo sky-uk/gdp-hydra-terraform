@@ -40,7 +40,7 @@ resource "local_file" "kubeconfig" {
 
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account tiller --wait --kubeconfig ${local_file.kubeconfig.filename}"
+    command = "helm init --service-account ${kubernetes_service_account.tiller.name} --wait --kubeconfig ${local_file.kubeconfig.filename}"
   }
 
   depends_on = ["kubernetes_cluster_role_binding.tiller"]
