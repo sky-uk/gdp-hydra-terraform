@@ -1,5 +1,7 @@
 provider "helm" {
-  version = "~> 0.6"
+  install_tiller  = true
+  service_account = "${var.tiller_service_acount}"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
     client_certificate     = "${var.client_certificate}"

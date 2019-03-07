@@ -15,3 +15,7 @@ output "cluster_ingress_ip" {
     "kubernetes_service.ingress_service",
   ]
 }
+
+output "tiller_service_account_name" {
+  value = "${kubernetes_service_account.tiller.metadata.0.name}"
+}

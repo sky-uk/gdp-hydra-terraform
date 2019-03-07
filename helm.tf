@@ -9,6 +9,7 @@ module "helm_aks1" {
   host                   = "${module.aks_cluster_1.host}"
   cluster_name           = "aks1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
@@ -28,6 +29,7 @@ module "cluster_services_aks1" {
   cluster_ca_certificate = "${base64decode(module.aks_cluster_1.cluster_ca)}"
   host                   = "${module.aks_cluster_1.host}"
   cluster_name           = "aks1"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.acr.url}"
@@ -51,6 +53,7 @@ module "helm_aks2" {
   host                   = "${module.aks_cluster_2.host}"
   cluster_name           = "aks2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
@@ -66,6 +69,7 @@ module "cluster_services_aks2" {
   cluster_ca_certificate = "${base64decode(module.aks_cluster_2.cluster_ca)}"
   host                   = "${module.aks_cluster_2.host}"
   cluster_name           = "aks2"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.acr.url}"
@@ -86,6 +90,7 @@ module "helm_gke1" {
   host                   = "${module.gke_cluster_1.host}"
   cluster_name           = "gke1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
@@ -102,8 +107,9 @@ module "cluster_services_gke1" {
   host                   = "${module.gke_cluster_1.host}"
   cluster_name           = "gke1"
 
-  traefik_replica_count = "${var.traefik_replicas_count}"
-  registry_url          = "${module.gcr.url}"
+  traefik_replica_count  = "${var.traefik_replicas_count}"
+  registry_url           = "${module.gcr.url}"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
@@ -121,6 +127,7 @@ module "helm_gke2" {
   host                   = "${module.gke_cluster_2.host}"
   cluster_name           = "gke2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
@@ -136,6 +143,7 @@ module "cluster_services_gke2" {
   cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                   = "${module.gke_cluster_2.host}"
   cluster_name           = "gke2"
+  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
   traefik_replica_count = "${var.traefik_replicas_count}"
   registry_url          = "${module.gcr.url}"

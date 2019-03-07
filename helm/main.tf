@@ -1,12 +1,14 @@
 provider "helm" {
-  version = "~> 0.6"
-
   kubernetes {
     client_certificate     = "${var.client_certificate}"
     client_key             = "${var.client_key}"
     cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
   }
+
+  install_tiller  = true
+  service_account = "${var.tiller_service_acount}"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 }
 
 variable "depends_on_hack" {}
@@ -36,7 +38,11 @@ data "template_file" "prom_values" {
 resource "helm_release" "prometheus" {
   count = "${var.enable_prometheus}"
 
-  name       = "prometheus"
+  /*provisioner "local-exec" {
+        command = "helm install --ca-file ${var.cluster_ca_certificate} --cert-file ${var.client_certificate} --key  --name prometheus --repo https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/ --namespace monitoring prometheus"
+      }*/
+  name = "prometheus"
+
   repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
   chart      = "prometheus"
   namespace  = "monitoring"
