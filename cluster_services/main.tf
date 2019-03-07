@@ -1,6 +1,6 @@
 provider "helm" {
   install_tiller  = true
-  service_account = "${var.tiller_service_acount}"
+  service_account = "${var.tiller_service_account}"
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
