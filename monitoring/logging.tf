@@ -1,12 +1,20 @@
-provider "helm" {
-  version = "~> 0.6"
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account tiller --wait"
+  }
+}
 
+provider "helm" {
   kubernetes {
     client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
     client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
     cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
     host                   = "${module.monitoring_cluster.host}"
   }
+
+  install_tiller  = true
+  service_account = "${var.tiller_service_account}"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 }
 
 data "template_file" "fluentbit_values" {
@@ -27,6 +35,8 @@ resource "helm_release" "fluent_bit" {
   values = [
     "${data.template_file.fluentbit_values.rendered}",
   ]
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 data "template_file" "fluentd_values" {
@@ -52,6 +62,7 @@ resource "helm_release" "fluentd" {
   # depends_on = [
   #   "helm_release.traefik",
   # ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 data "kubernetes_service" "fluentd" {

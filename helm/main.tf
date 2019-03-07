@@ -1,3 +1,9 @@
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account tiller --wait"
+  }
+}
+
 provider "helm" {
   kubernetes {
     client_certificate     = "${var.client_certificate}"
@@ -53,6 +59,7 @@ resource "helm_release" "prometheus" {
   # depends_on = [
   #   "helm_release.prometheus_operator",
   # ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 data "template_file" "fluentbit_values" {
@@ -77,4 +84,6 @@ resource "helm_release" "fluent_bit" {
   values = [
     "${data.template_file.fluentbit_values.rendered}",
   ]
+
+  depends_on = ["null_resource.helm_init"]
 }

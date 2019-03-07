@@ -1,3 +1,9 @@
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account tiller --wait"
+  }
+}
+
 provider "helm" {
   install_tiller  = true
   service_account = "${var.tiller_service_account}"
@@ -37,6 +43,8 @@ resource "helm_release" "traefik" {
   values = [
     "${data.template_file.traefik_values.rendered}",
   ]
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "prometheus_operator" {
@@ -52,6 +60,8 @@ resource "helm_release" "prometheus_operator" {
     name  = "rbacEnable"
     value = "false"
   }
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "registry_rewriter" {
@@ -83,6 +93,7 @@ resource "helm_release" "registry_rewriter" {
   }
 
   depends_on = [
+    "null_resource.helm_init",
     "helm_release.prometheus_operator",
   ]
 }
@@ -110,6 +121,8 @@ resource "helm_release" "cert_manager" {
     name  = "ingressShim.defaultIssuerKind"
     value = "ClusterIssuer"
   }
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "cluster_certificates" {
@@ -132,6 +145,7 @@ resource "helm_release" "cluster_certificates" {
   }
 
   depends_on = [
+    "null_resource.helm_init",
     "helm_release.cert_manager",
   ]
 }

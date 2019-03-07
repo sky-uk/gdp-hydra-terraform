@@ -19,6 +19,8 @@ resource "helm_release" "elasticsearch" {
   values = [
     "${data.template_file.elasticsearch_values.rendered}",
   ]
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 data "template_file" "elasticsearch_exporter_values" {
@@ -38,4 +40,6 @@ resource "helm_release" "elasticsearch_exporter" {
   values = [
     "${data.template_file.elasticsearch_exporter_values.rendered}",
   ]
+
+  depends_on = ["null_resource.helm_init"]
 }
