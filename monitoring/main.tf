@@ -33,9 +33,14 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
+resource "local_file" "kubeconfig" {
+  content  = "${module.monitoring_cluster.kubeconfig}"
+  filename = "${module.monitoring_cluster.host}.kubeconfig"
+}
+
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account tiller --wait"
+    command = "helm init --service-account tiller --wait --kubeconfig ${local_file.kubeconfig.filename}"
   }
 
   depends_on = ["kubernetes_cluster_role_binding.tiller"]

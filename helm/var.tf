@@ -14,3 +14,4 @@ variable "monitoring_dns_name" {
 variable "fluentd_ingress_ip" {}
 
 variable "tiller_service_account" {}
+variable "kubeconfig" {}
