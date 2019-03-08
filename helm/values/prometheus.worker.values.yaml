@@ -63,3 +63,6 @@ service:
 grafana:
   rbac:
     create: false
+kube-state-metrics:
+  rbac:
+    create: false
