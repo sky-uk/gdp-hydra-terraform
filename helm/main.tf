@@ -50,8 +50,8 @@ resource "helm_release" "prometheus" {
   count = "${var.enable_prometheus}"
   name  = "prometheus"
 
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "prometheus"
+  /*repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"*/
+  chart      = "prometheus-operator"
   namespace  = "monitoring"
 
   # workaround to stop CI from complaining about keyring change
