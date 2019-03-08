@@ -129,7 +129,7 @@ jobs:
             clean_az_creds
             clean_gcp_creds
             wait_for_processing
-            exit num_failures
+            exit $num_failures
 
 workflows:
   version: 2
