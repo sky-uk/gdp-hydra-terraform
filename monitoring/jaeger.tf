@@ -7,8 +7,9 @@ data "template_file" "jaeger_values" {
 }
 
 data "helm_repository" "incubator" {
-  name = "incubator"
-  url  = "https://kubernetes-charts-incubator.storage.googleapis.com/"
+  name       = "incubator"
+  url        = "https://kubernetes-charts-incubator.storage.googleapis.com/"
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "jaeger" {
