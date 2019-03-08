@@ -6,6 +6,10 @@ provider "kubernetes" {
 }
 
 resource "kubernetes_service" "ingress_service" {
+  timeouts {
+    create = "20m"
+  }
+
   metadata {
     name      = "terraform-ingress-controller"
     namespace = "kube-system"

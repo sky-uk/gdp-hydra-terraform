@@ -65,6 +65,10 @@ resource "kubernetes_service" "hc-service" {
 }
 
 resource "kubernetes_deployment" "hc-app" {
+  timeouts {
+    create = "20m"
+  }
+
   metadata {
     name      = "hc-app"
     namespace = "${kubernetes_namespace.healthcheck.metadata.0.name}"
