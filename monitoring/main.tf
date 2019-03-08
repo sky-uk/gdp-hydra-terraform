@@ -37,7 +37,7 @@ resource "kubernetes_namespace" "monitoring" {
   metadata {
     labels = {
       createdby  = "terraform"
-      datacenter = "${var.cluster_name}"
+      datacenter = "${var.cluster_prefix}"
     }
 
     name = "monitoring"
@@ -48,7 +48,7 @@ resource "kubernetes_namespace" "logging" {
   metadata {
     labels = {
       createdby  = "terraform"
-      datacenter = "${var.cluster_name}"
+      datacenter = "${var.cluster_prefix}"
     }
 
     name = "monitoring"
