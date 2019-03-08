@@ -42,9 +42,9 @@ module "hydra" {
   "node_type"                             = "medium"
   "node_count"                            = 2
   "traffic_manager_aks_cluster_1_enabled" = true
-  "traffic_manager_aks_cluster_2_enabled" = false
-  "traffic_manager_gke_cluster_1_enabled" = false
-  "traffic_manager_gke_cluster_2_enabled" = false
+  "traffic_manager_aks_cluster_2_enabled" = true
+  "traffic_manager_gke_cluster_1_enabled" = true
+  "traffic_manager_gke_cluster_2_enabled" = true
 
   "akamai_enabled"               = true
   "edge_dns_zone"                = "${var.edge_dns_zone}"
