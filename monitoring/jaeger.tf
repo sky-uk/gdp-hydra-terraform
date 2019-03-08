@@ -16,7 +16,7 @@ resource "helm_release" "jaeger" {
   name       = "jaeger"
   chart      = "jaeger"
   namespace  = "monitoring"
-  repository = "{data.helm_repository.incubator.metadata.0.name}"
+  repository = "${data.helm_repository.incubator.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
