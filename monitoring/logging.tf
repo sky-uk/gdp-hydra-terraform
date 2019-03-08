@@ -56,6 +56,8 @@ data "kubernetes_service" "fluentd" {
 }
 
 resource "kubernetes_service" "fluentd_http" {
+  depends_on = ["kubernetes_namespace.logging"]
+
   metadata {
     name      = "fluentd-http"
     namespace = "logging"

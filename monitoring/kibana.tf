@@ -37,6 +37,8 @@ resource "kubernetes_secret" "kibana_password" {
   lifecycle {
     ignore_changes = ["data.auth"]
   }
+
+  depends_on = ["kubernetes_namespace.logging"]
 }
 
 resource "kubernetes_ingress" "kibana-ingress" {
