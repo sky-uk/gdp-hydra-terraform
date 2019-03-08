@@ -35,7 +35,7 @@ resource "kubernetes_cluster_role_binding" "tiller" {
 
 resource "kubernetes_service" "ingress_service" {
   metadata {
-    name      = "terraform-ingress-controller"
+    name      = "traefik-ingress-controller"
     namespace = "kube-system"
 
     labels = {
