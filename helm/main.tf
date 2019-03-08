@@ -72,9 +72,7 @@ resource "helm_release" "prometheus" {
 }
 
 resource "helm_release" "registry_rewriter" {
-  timeouts {
-    create = "20m"
-  }
+  timeout = "1200"
 
   name      = "registry-rewriter"
   chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
