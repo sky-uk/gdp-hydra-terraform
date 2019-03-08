@@ -50,7 +50,6 @@ resource "helm_release" "prometheus" {
   count = "${var.enable_prometheus}"
   name  = "prometheus"
 
-  /*repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"*/
   chart     = "stable/prometheus-operator"
   namespace = "monitoring"
 
@@ -60,6 +59,11 @@ resource "helm_release" "prometheus" {
   values = [
     "${data.template_file.prom_values.rendered}",
   ]
+
+  set {
+    name  = "rbacEnable"
+    value = "false"
+  }
 
   # depends_on = [
   #   "helm_release.prometheus_operator",

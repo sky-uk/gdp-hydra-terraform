@@ -29,11 +29,9 @@ resource "kubernetes_secret" "prometheus_workers_password" {
 }
 
 resource "helm_release" "prometheus_master" {
-  name       = "prometheus-master"
-  version    = "0.0.51"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "prometheus"
-  namespace  = "monitoring"
+  name      = "prometheus-master"
+  chart     = "stable/prometheus-operator"
+  namespace = "monitoring"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""

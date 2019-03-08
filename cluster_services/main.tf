@@ -52,23 +52,6 @@ resource "helm_release" "traefik" {
   depends_on = ["null_resource.helm_init"]
 }
 
-resource "helm_release" "prometheus_operator" {
-  name       = "prometheus-operator"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "prometheus-operator"
-  namespace  = "monitoring"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  set {
-    name  = "rbacEnable"
-    value = "false"
-  }
-
-  depends_on = ["null_resource.helm_init"]
-}
-
 resource "helm_release" "registry_rewriter" {
   name      = "registry-rewriter"
   chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
