@@ -15,3 +15,4 @@ variable "fluentd_ingress_ip" {}
 
 variable "tiller_service_account" {}
 variable "kubeconfig" {}
+variable "registry_url" {}

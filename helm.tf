@@ -2,6 +2,7 @@ module "helm_aks1" {
   source            = "helm"
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
+  registry_url      = "${module.gcr.url}"
 
   client_certificate     = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
   client_key             = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
@@ -48,6 +49,7 @@ module "helm_aks2" {
   source            = "helm"
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
+  registry_url      = "${module.gcr.url}"
 
   client_certificate     = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
   client_key             = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
@@ -88,6 +90,7 @@ module "helm_gke1" {
   source            = "helm"
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
+  registry_url      = "${module.gcr.url}"
 
   client_certificate     = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
   client_key             = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
@@ -128,6 +131,7 @@ module "helm_gke2" {
   source            = "helm"
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
+  registry_url      = "${module.gcr.url}"
 
   client_certificate     = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
   client_key             = "${base64decode(module.gke_cluster_2.cluster_client_key)}"

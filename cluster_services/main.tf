@@ -52,7 +52,7 @@ resource "helm_release" "traefik" {
   depends_on = ["null_resource.helm_init"]
 }
 
-resource "helm_release" "registry_rewriter" {
+/*resource "helm_release" "registry_rewriter" {
   name      = "registry-rewriter"
   chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
   namespace = "kube-system"
@@ -84,7 +84,7 @@ resource "helm_release" "registry_rewriter" {
     "null_resource.helm_init",
     "helm_release.prometheus_operator",
   ]
-}
+}*/
 
 resource "helm_release" "cert_manager" {
   name      = "cert-manager"
