@@ -51,7 +51,7 @@ data "kubernetes_service" "ingress" {
     namespace = "kube-system"
   }
 
-  depends_on = ["null_resource.cluster"]
+  depends_on = ["null_resource.cluster", "kubernetes_service.ingress_service"]
 }
 
 resource "null_resource" "cluster" {

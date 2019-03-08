@@ -30,7 +30,7 @@ data "template_file" "elasticsearch_exporter_values" {
 }
 
 resource "helm_release" "elasticsearch_exporter" {
-  name      = "elascticsearch"
+  name      = "elascticsearch-exporter"
   chart     = "stable/elasticsearch-exporter"
   namespace = "elasticsearch"
 
