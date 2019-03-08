@@ -60,10 +60,10 @@ resource "helm_release" "prometheus" {
     "${data.template_file.prom_values.rendered}",
   ]
 
-  set {
+  /*set {
     name  = "rbacEnable"
     value = "false"
-  }
+  }*/
 
   # depends_on = [
   #   "helm_release.prometheus_operator",
