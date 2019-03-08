@@ -42,9 +42,9 @@ module "hydra" {
   "node_type"                             = "medium"
   "node_count"                            = 2
   "traffic_manager_aks_cluster_1_enabled" = true
-  "traffic_manager_aks_cluster_2_enabled" = true
-  "traffic_manager_gke_cluster_1_enabled" = true
-  "traffic_manager_gke_cluster_2_enabled" = true
+  "traffic_manager_aks_cluster_2_enabled" = false
+  "traffic_manager_gke_cluster_1_enabled" = false
+  "traffic_manager_gke_cluster_2_enabled" = false
 
   "akamai_enabled"               = true
   "edge_dns_zone"                = "${var.edge_dns_zone}"
@@ -58,44 +58,6 @@ module "hydra" {
   prometheus_ui_password = "${var.prometheus_ui_password}"
   cluster_issuer_email   = "${var.cluster_issuer_email}"
 }
-
-// Below we use the credentials from each of the clusters to deploy Kuberentes objects
-// you can also do the same with the helm provider https://github.com/mcuadros/terraform-provider-helm
-/*module "aks_1_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "host")}"
-}
-
-module "aks_2_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "host")}"
-}
-
-module "gke_1_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "host")}"
-}
-
-module "gke_2_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "host")}"
-}*/
 
 output "ips" {
   value = "${module.hydra.ips}"
