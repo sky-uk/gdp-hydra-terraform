@@ -60,3 +60,6 @@ service:
   labels: {}
   loadBalancerSourceRanges: []
   type: ClusterIP
+grafana:
+  rbac:
+    create: false
