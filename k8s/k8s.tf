@@ -53,6 +53,17 @@ resource "kubernetes_service_account" "tiller" {
   }
 }
 
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
+    }
+
+    name = "monitoring"
+  }
+}
+
 # allow tiller do the stuff :)
 resource "kubernetes_cluster_role_binding" "tiller" {
   metadata {

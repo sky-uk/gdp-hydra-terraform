@@ -33,6 +33,28 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
+resource "kubernetes_namespace" "monitoring" {
+  metadata {
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
+    }
+
+    name = "monitoring"
+  }
+}
+
+resource "kubernetes_namespace" "logging" {
+  metadata {
+    labels = {
+      createdby  = "terraform"
+      datacenter = "${var.cluster_name}"
+    }
+
+    name = "monitoring"
+  }
+}
+
 resource "local_file" "kubeconfig" {
   content  = "${module.monitoring_cluster.kubeconfig}"
   filename = "${module.monitoring_cluster.host}.kubeconfig"

@@ -1,14 +1,3 @@
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    labels = {
-      createdby  = "terraform"
-      datacenter = "${var.cluster_name}"
-    }
-
-    name = "monitoring"
-  }
-}
-
 resource "kubernetes_secret" "prometheus_metrics_password" {
   metadata {
     name      = "prometheus-metrics"
