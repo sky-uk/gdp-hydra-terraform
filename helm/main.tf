@@ -73,7 +73,7 @@ resource "helm_release" "prometheus" {
 
 resource "helm_release" "registry_rewriter" {
   name      = "registry-rewriter"
-  chart     = "https://github.com/paulgrav/MutatingAdmissionsController/releases/download/1.1.2-rc3/registry-rewriter-0.1.2.tgz"
+  chart     = "https://github.com/paulgrav/MutatingAdmissionsController/releases/download/1.1.2-rc4/registry-rewriter-0.1.2.tgz"
   namespace = "kube-system"
 
   # workaround to stop CI from complaining about keyring change
