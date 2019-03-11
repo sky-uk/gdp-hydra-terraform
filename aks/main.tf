@@ -56,4 +56,8 @@ resource "azurerm_kubernetes_cluster" "aks" {
   }
 
   tags = "${var.tags}"
+
+  role_based_access_control {
+    enabled = true
+  }
 }

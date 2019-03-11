@@ -5,8 +5,8 @@ replicas: ${replicas_count}
 # Enabling RBAC will create a service account, cluster role
 # and cluster role binding to give Traefik the required
 # permissions
-rbac:
-  enabled: false
+# rbac:
+#   enabled: false
 # Enabling the dashboard will allow you to view Traefik’s
 # current configuration and health.
 dashboard:

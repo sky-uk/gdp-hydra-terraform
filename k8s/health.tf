@@ -32,7 +32,7 @@ resource "kubernetes_ingress" "hc-ingress" {
           path_regex = "/healthz"
 
           backend {
-            service_name = "hc-service"
+            service_name = "${kubernetes_service.hc-service.metadata.0.name}"
             service_port = 5000
           }
         }
@@ -54,7 +54,7 @@ resource "kubernetes_service" "hc-service" {
 
   spec {
     selector {
-      app = "hc-app"
+      app = "${kubernetes_deployment.hc-app.metadata.0.name}"
     }
 
     port {
@@ -65,6 +65,10 @@ resource "kubernetes_service" "hc-service" {
 }
 
 resource "kubernetes_deployment" "hc-app" {
+  timeouts {
+    create = "20m"
+  }
+
   metadata {
     name      = "hc-app"
     namespace = "${kubernetes_namespace.healthcheck.metadata.0.name}"

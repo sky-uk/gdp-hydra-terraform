@@ -60,10 +60,10 @@ resource "helm_release" "prometheus" {
     "${data.template_file.prom_values.rendered}",
   ]
 
-  set {
+  /*set {
     name  = "rbacEnable"
     value = "false"
-  }
+  }*/
 
   # depends_on = [
   #   "helm_release.prometheus_operator",
@@ -72,6 +72,8 @@ resource "helm_release" "prometheus" {
 }
 
 resource "helm_release" "registry_rewriter" {
+  timeout = "1200"
+
   name      = "registry-rewriter"
   chart     = "https://github.com/paulgrav/MutatingAdmissionsController/releases/download/1.1.2-rc1/registry-rewriter-0.1.2.tgz"
   namespace = "kube-system"

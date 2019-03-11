@@ -140,9 +140,9 @@ filter:
 # fluentbit.io/exclude: true. If present, discard logs from that pod.
   enableExclude: true
 
-rbac:
-  # Specifies whether RBAC resources should be created
-  create: false
+# rbac:
+#   # Specifies whether RBAC resources should be created
+#   create: false
 
 serviceAccount:
   # Specifies whether a ServiceAccount should be created
