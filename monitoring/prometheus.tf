@@ -1,7 +1,7 @@
 resource "kubernetes_service" "workers" {
   metadata {
     name      = "hydra-workers"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
     labels {
       hydra_role = "worker"
@@ -17,7 +17,7 @@ resource "kubernetes_service" "workers" {
 resource "kubernetes_secret" "prometheus_workers_password" {
   metadata {
     name      = "prometheus-workers"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
   }
 
   data {
@@ -31,7 +31,7 @@ resource "kubernetes_secret" "prometheus_workers_password" {
 resource "helm_release" "prometheus_master" {
   name      = "prometheus-master"
   chart     = "stable/prometheus-operator"
-  namespace = "monitoring"
+  namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -48,7 +48,7 @@ resource "helm_release" "prometheus_master" {
 resource "helm_release" "worker_endpoints" {
   name      = "workerendpoints"
   chart     = "${path.module}/charts/monitoringendpoints"
-  namespace = "monitoring"
+  namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -68,7 +68,7 @@ resource "helm_release" "worker_endpoints" {
 resource "kubernetes_secret" "prometheus_password" {
   metadata {
     name      = "prometheus"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
   }
 
   data {
@@ -87,7 +87,7 @@ resource "kubernetes_secret" "prometheus_password" {
 resource "kubernetes_ingress" "prometheus-ingress" {
   metadata {
     name      = "prometheus"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
     annotations {
       "kubernetes.io/ingress.class"               = "traefik"

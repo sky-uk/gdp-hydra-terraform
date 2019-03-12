@@ -15,7 +15,7 @@ data "helm_repository" "incubator" {
 resource "helm_release" "jaeger" {
   name       = "jaeger"
   chart      = "jaeger"
-  namespace  = "monitoring"
+  namespace  = "${kubernetes_namespace.monitoring.metadata.0.name}"
   repository = "${data.helm_repository.incubator.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
@@ -33,7 +33,7 @@ resource "helm_release" "jaeger" {
 resource "kubernetes_ingress" "jaeger-ui" {
   metadata {
     name      = "jaeger-ui"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
     annotations {
       "kubernetes.io/ingress.class"               = "traefik"

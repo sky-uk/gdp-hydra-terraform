@@ -8,7 +8,7 @@ resource "helm_release" "fluent_bit" {
   version   = "1.1.0"
   name      = "fluent-bit"
   chart     = "stable/fluent-bit"
-  namespace = "logging"
+  namespace = "${kubernetes_namespace.logging.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -31,7 +31,7 @@ data "template_file" "fluentd_values" {
 resource "helm_release" "fluentd" {
   name      = "fluentd"
   chart     = "stable/fluentd"
-  namespace = "logging"
+  namespace = "${kubernetes_namespace.logging.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -60,7 +60,7 @@ resource "kubernetes_service" "fluentd_http" {
 
   metadata {
     name      = "fluentd-http"
-    namespace = "logging"
+    namespace = "${kubernetes_namespace.logging.metadata.0.name}"
 
     labels = {
       createdby = "terraform"
