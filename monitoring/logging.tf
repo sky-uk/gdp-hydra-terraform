@@ -49,15 +49,13 @@ resource "helm_release" "fluentd" {
 data "kubernetes_service" "fluentd" {
   metadata {
     name      = "fluentd"
-    namespace = "logging"
+    namespace = "${kubernetes_namespace.logging.metadata.0.name}"
   }
 
   depends_on = ["helm_release.fluentd"]
 }
 
 resource "kubernetes_service" "fluentd_http" {
-  depends_on = ["kubernetes_namespace.logging"]
-
   metadata {
     name      = "fluentd-http"
     namespace = "${kubernetes_namespace.logging.metadata.0.name}"

@@ -13,6 +13,8 @@ module "helm_aks1" {
   cluster_name           = "aks1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
   tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
+  monitoring_namespace   = "${module.k8s_config_aks_1.monitoring_namespace}"
+  logging_namespace      = "${module.k8s_config_aks_1.logging_namespace}"
 
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
@@ -59,6 +61,8 @@ module "helm_aks2" {
   cluster_name           = "aks2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
   tiller_service_account = "${module.k8s_config_aks_2.tiller_service_account_name}"
+  monitoring_namespace   = "${module.k8s_config_aks_2.monitoring_namespace}"
+  logging_namespace      = "${module.k8s_config_aks_2.logging_namespace}"
 
   kubeconfig = "${module.aks_cluster_2.kubeconfig}"
 
@@ -103,8 +107,9 @@ module "helm_gke1" {
   cluster_name           = "gke1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
   tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
-
-  fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
+  monitoring_namespace   = "${module.k8s_config_gke_1.monitoring_namespace}"
+  logging_namespace      = "${module.k8s_config_gke_1.logging_namespace}"
+  fluentd_ingress_ip     = "${module.monitoring.fluentd_ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
@@ -144,6 +149,8 @@ module "helm_gke2" {
   cluster_name           = "gke2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
   tiller_service_account = "${module.k8s_config_gke_2.tiller_service_account_name}"
+  monitoring_namespace   = "${module.k8s_config_gke_2.monitoring_namespace}"
+  logging_namespace      = "${module.k8s_config_gke_2.logging_namespace}"
 
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 

@@ -76,7 +76,7 @@ resource "kubernetes_ingress" "jaeger-ui" {
 resource "kubernetes_ingress" "jaeger-collector" {
   metadata {
     name      = "jaeger-collector"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
     annotations {
       "kubernetes.io/ingress.class" = "traefik"

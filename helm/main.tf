@@ -51,7 +51,7 @@ resource "helm_release" "prometheus" {
   name  = "prometheus"
 
   chart     = "stable/prometheus-operator"
-  namespace = "monitoring"
+  namespace = "${var.monitoring_namespace}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -85,7 +85,7 @@ resource "helm_release" "fluent_bit" {
   version   = "1.1.0"
   name      = "fluent-bit"
   chart     = "stable/fluent-bit"
-  namespace = "logging"
+  namespace = "${var.logging_namespace}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
