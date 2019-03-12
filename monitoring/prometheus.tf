@@ -29,6 +29,8 @@ resource "kubernetes_secret" "prometheus_workers_password" {
 }
 
 resource "helm_release" "prometheus_master" {
+  timeout = "900"
+
   name      = "prometheus-master"
   chart     = "stable/prometheus-operator"
   namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
@@ -47,6 +49,8 @@ resource "helm_release" "prometheus_master" {
 }
 
 resource "helm_release" "worker_endpoints" {
+  timeout = "900"
+
   name      = "workerendpoints"
   chart     = "${path.module}/charts/monitoringendpoints"
   namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
@@ -64,6 +68,8 @@ resource "helm_release" "worker_endpoints" {
   lifecycle {
     ignore_changes = ["chart"]
   }
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "kubernetes_secret" "prometheus_password" {

@@ -41,6 +41,7 @@ resource "helm_release" "traefik" {
   name      = "traefik-ingress-controller"
   chart     = "stable/traefik"
   namespace = "kube-system"
+  timeout   = "900"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -53,6 +54,8 @@ resource "helm_release" "traefik" {
 }
 
 resource "helm_release" "cert_manager" {
+  timeout = "900"
+
   name      = "cert-manager"
   chart     = "stable/cert-manager"
   namespace = "kube-system"
@@ -78,6 +81,8 @@ resource "helm_release" "cert_manager" {
 }
 
 resource "helm_release" "cluster_certificates" {
+  timeout = "900"
+
   name      = "cluster-certificates"
   chart     = "${path.module}/charts/cluster-certs"
   namespace = "kube-system"

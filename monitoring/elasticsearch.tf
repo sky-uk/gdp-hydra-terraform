@@ -9,6 +9,8 @@ data "template_file" "elasticsearch_values" {
 }
 
 resource "helm_release" "elasticsearch" {
+  timeout = "900"
+
   name      = "elascticsearch"
   chart     = "stable/elasticsearch"
   namespace = "elasticsearch"
@@ -30,6 +32,8 @@ data "template_file" "elasticsearch_exporter_values" {
 }
 
 resource "helm_release" "elasticsearch_exporter" {
+  timeout = "900"
+
   name      = "elascticsearch-exporter"
   chart     = "stable/elasticsearch-exporter"
   namespace = "elasticsearch"

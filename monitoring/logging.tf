@@ -5,6 +5,8 @@ data "template_file" "fluentbit_values" {
 # fluent-bit installed as a deamonset to colelct logs from the cluster and send them to the 
 # fluentd instance that will push them to elasticsearch
 resource "helm_release" "fluent_bit" {
+  timeout = "900"
+
   version   = "1.1.0"
   name      = "fluent-bit"
   chart     = "stable/fluent-bit"
@@ -29,6 +31,8 @@ data "template_file" "fluentd_values" {
 }
 
 resource "helm_release" "fluentd" {
+  timeout = "900"
+
   name      = "fluentd"
   chart     = "stable/fluentd"
   namespace = "${kubernetes_namespace.logging.metadata.0.name}"

@@ -13,6 +13,8 @@ data "helm_repository" "incubator" {
 }
 
 resource "helm_release" "jaeger" {
+  timeout = "900"
+
   name       = "jaeger"
   chart      = "jaeger"
   namespace  = "${kubernetes_namespace.monitoring.metadata.0.name}"

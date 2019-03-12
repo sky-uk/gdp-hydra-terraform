@@ -47,6 +47,8 @@ data "template_file" "prom_values" {
 }
 
 resource "helm_release" "prometheus" {
+  timeout = "900"
+
   count = "${var.enable_prometheus}"
   name  = "prometheus"
 
@@ -82,6 +84,8 @@ data "template_file" "fluentbit_values" {
 
 # https://github.com/helm/charts/tree/master/stable/fluent-bit
 resource "helm_release" "fluent_bit" {
+  timeout = "900"
+
   version   = "1.1.0"
   name      = "fluent-bit"
   chart     = "stable/fluent-bit"
