@@ -73,7 +73,7 @@ resource "helm_release" "prometheus" {
 
 resource "helm_release" "registry_rewriter" {
   name      = "registry-rewriter"
-  chart     = "https://github.com/paulgrav/MutatingAdmissionsController/releases/download/1.1.2-rc4/registry-rewriter-0.1.2.tgz"
+  chart     = "https://github.com/paulgrav/MutatingAdmissionsController/releases/download/1.1.2-rc5/registry-rewriter-0.1.2.tgz"
   namespace = "kube-system"
 
   # workaround to stop CI from complaining about keyring change
@@ -97,6 +97,16 @@ resource "helm_release" "registry_rewriter" {
   set {
     name  = "imagePullSecretName"
     value = "${substr(var.cluster_name, 0, 3) == "gke" ? "" : "cluster-local-image-secret"}"
+  }
+
+  set {
+    name  = "rbac.create"
+    value = "false"
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = "${var.registry_rewriter_serviceaccount_name}"
   }
 
   depends_on = [

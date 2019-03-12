@@ -19,3 +19,7 @@ output "cluster_ingress_ip" {
 output "tiller_service_account_name" {
   value = "${kubernetes_service_account.tiller.metadata.0.name}"
 }
+
+output "registry_rewriter_serviceaccount_name" {
+  value = "${kubernetes_service_account.registry_rewriter.metadata.0.name}"
+}

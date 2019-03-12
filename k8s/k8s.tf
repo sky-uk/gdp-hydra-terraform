@@ -45,6 +45,32 @@ resource "kubernetes_service" "ingress_service" {
   }
 }
 
+resource "kubernetes_service_account" "registry_rewriter" {
+  metadata {
+    name      = "registry-rewriter-service-account"
+    namespace = "kube-system"
+  }
+}
+
+resource "kubernetes_cluster_role_binding" "registry_rewriter" {
+  metadata {
+    name = "registry-rewriter-clusterrolebinding"
+  }
+
+  role_ref {
+    api_group = ""
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
+  }
+
+  subject {
+    kind      = "ServiceAccount"
+    name      = "${kubernetes_service_account.registry_rewriter.metadata.0.name}"
+    api_group = ""
+    namespace = "${kubernetes_service_account.registry_rewriter.metadata.0.namespace}"
+  }
+}
+
 # create service account for tiller - server side of Helm
 resource "kubernetes_service_account" "tiller" {
   metadata {
