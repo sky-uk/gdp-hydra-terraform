@@ -18,6 +18,7 @@ resource "helm_release" "kibana" {
   # depends_on = [
   #   "helm_release.traefik",
   # ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "kubernetes_secret" "kibana_password" {

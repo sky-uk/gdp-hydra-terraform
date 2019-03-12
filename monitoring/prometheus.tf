@@ -43,6 +43,7 @@ resource "helm_release" "prometheus_master" {
   # depends_on = [
   #   "helm_release.prometheus_operator",
   # ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "worker_endpoints" {

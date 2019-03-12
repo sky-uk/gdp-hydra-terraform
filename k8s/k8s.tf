@@ -71,7 +71,7 @@ resource "kubernetes_namespace" "logging" {
       datacenter = "${var.cluster_name}"
     }
 
-    name = "monitoring"
+    name = "logging"
   }
 }
 
