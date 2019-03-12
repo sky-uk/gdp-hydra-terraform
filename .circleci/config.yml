@@ -44,10 +44,6 @@ jobs:
             terraform init
             terraform apply /tmp/example/terraform.out
       - run:
-          name: Debugging
-          command: |
-            sleep 7200
-      - run:
           name: Cleanup
           when: always
           command: |
