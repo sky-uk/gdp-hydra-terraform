@@ -45,7 +45,7 @@ jobs:
             terraform apply /tmp/example/terraform.out
       - run:
           name: Cleanup
-          when: always
+          # when: always
           command: |
             set +x
             num_failures=0
