@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "healthcheck" {
+/*resource "kubernetes_namespace" "healthcheck" {
   metadata {
     labels = {
       createdby  = "terraform"
@@ -81,7 +81,9 @@ resource "kubernetes_deployment" "hc-app" {
 
   spec {
     selector {
-      app = "hc-app"
+      matchLabels {
+        app = "hc-app"
+      }
     }
 
     replicas = "${var.node_count}"
@@ -125,7 +127,7 @@ resource "kubernetes_deployment" "hc-app" {
           }
 
           env {
-            # Use this to exclude some monitors from the result. Must be string deliminated. 
+            # Use this to exclude some monitors from the result. Must be string deliminated.
             # Add the property name as you see in the result json .
             # Ex: "apiServer,etcd,controllerManager,scheduler,nodes,deployments"
             name = "EXCLUDE"
@@ -141,4 +143,5 @@ resource "kubernetes_deployment" "hc-app" {
       }
     }
   }
-}
+}*/
+
