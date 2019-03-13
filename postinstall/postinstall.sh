@@ -24,7 +24,3 @@ for conf in $(find . -type f -name 'kubeconfig_*' | grep -v monitoring)
 do
   install_hc_app $conf
 done
-
-
-
-
