@@ -63,6 +63,6 @@ output "ips" {
   value = "${module.hydra.ips}"
 }
 
-output "url" {
+output "kubeconfig_url" {
   value = "${module.hydra.kubeconfig_url}"
 }
