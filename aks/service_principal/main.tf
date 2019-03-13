@@ -1,11 +1,11 @@
 variable "sp_name" {}
 
-resource "azurerm_azuread_application" "aks_app" {
+resource "azuread_application" "aks_app" {
   name = "${var.sp_name}"
 }
 
-resource "azurerm_azuread_service_principal" "aks_sp" {
-  application_id = "${azurerm_azuread_application.aks_app.application_id}"
+resource "azuread_service_principal" "aks_sp" {
+  application_id = "${azuread_application.aks_app.application_id}"
 }
 
 resource "random_string" "aks_sp_password" {
@@ -13,12 +13,12 @@ resource "random_string" "aks_sp_password" {
   special = true
 
   keepers = {
-    service_principal = "${azurerm_azuread_service_principal.aks_sp.id}"
+    service_principal = "${azuread_service_principal.aks_sp.id}"
   }
 }
 
-resource "azurerm_azuread_service_principal_password" "aks_sp_password" {
-  service_principal_id = "${azurerm_azuread_service_principal.aks_sp.id}"
+resource "azuread_service_principal_password" "aks_sp_password" {
+  service_principal_id = "${azuread_service_principal.aks_sp.id}"
   value                = "${random_string.aks_sp_password.result}"
   end_date             = "${timeadd(timestamp(), "8760h")}"
 
@@ -37,22 +37,22 @@ resource "null_resource" "delay" {
   }
 
   triggers = {
-    "runafter" = "${azurerm_azuread_service_principal_password.aks_sp_password.service_principal_id}"
+    "runafter" = "${azuread_service_principal_password.aks_sp_password.service_principal_id}"
   }
 }
 
 output "sp_object_id" {
   depends_on = ["null_resource.delay"]
-  value      = "${azurerm_azuread_service_principal.aks_sp.id}"
+  value      = "${azuread_service_principal.aks_sp.id}"
 }
 
 output "application_id" {
   depends_on = ["null_resource.delay"]
 
-  value = "${azurerm_azuread_service_principal.aks_sp.application_id}"
+  value = "${azuread_service_principal.aks_sp.application_id}"
 
   depends_on = [
-    "${azurerm_azuread_service_principal.aks_sp}",
+    "${azuread_service_principal.aks_sp}",
   ]
 }
 
