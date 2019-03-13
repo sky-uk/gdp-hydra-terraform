@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hc-app
+  namespsace: healthcheck
+  labels:
+    createdby: terraform
+    datacenter: cluster # "${var.cluster_name}"
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hc-app
+  template:
+    metadata:
+      labels:
+        app: hc-app
+        createdby: terraform
+        datacenter: cluster # "${var.cluster_name}"
+    spec:
+      containers:
+      - name: hc
+        image: emrekenci/k8s-healthcheck:v1
+        ports:
+        - containerPort: 5000
+        env:
+          - name: USERNAME
+            value: admin
+          - name: PASSWORD
+            value: randmon
+          - name: CACHE_DURATION_IN_SECONDS
+            value: 30
+          - name: NODE_ENV
+            value: production
+          - name: EXCLUDE
+            value: controllerManager,scheduler
+          - name: DEPLOYMENTS_NAMESPACE
+            value: default

@@ -1,0 +1,16 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: hc-service
+  namespace: healthcheck
+  
+  labels:
+    createdby: terraform
+    datacenter: cluster # ${var.cluster_name}
+spec:
+  selector:
+    app: hc-app
+  ports:
+  - protocol: TCP
+    port: 5000
+    targetPort: 5000

@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: hashicorp/terraform:0.11.11
+      - image: hashicorp/terraform:0.11.13
     environment:
     steps:
       - checkout
@@ -13,7 +13,7 @@ jobs:
             terraform validate -check-variables=false
   plan:
     docker:
-      - image: hashicorp/terraform:0.11.11
+      - image: hashicorp/terraform:0.11.13
     environment:
     steps:
       - checkout
@@ -43,6 +43,11 @@ jobs:
             sh ../install.sh
             terraform init
             terraform apply /tmp/example/terraform.out
+      - run:
+          name: Postinstall software
+          working_directory: postinstall
+          command: |
+            sh postinstall.sh example/terraform.tfstate
       - run:
           name: Cleanup
           when: always
@@ -130,7 +135,7 @@ jobs:
             clean_gcp_creds
             wait_for_processing
             exit $num_failures
-
+    
 workflows:
   version: 2
   build_plan_deploy:
