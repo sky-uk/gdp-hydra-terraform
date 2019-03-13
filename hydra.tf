@@ -10,7 +10,12 @@ provider "google" {
   credentials = "${base64decode(var.google_creds_base64)}"
 }
 
-provider "azuread" {}
+provider "azuread" {
+  client_id       = "${var.azure_client_id}"
+  client_secret   = "${var.azure_client_secret}"
+  subscription_id = "${var.azure_subscription_id}"
+  tenant_id       = "${var.azure_tenant_id}"
+}
 
 resource "google_project_services" "project_apis" {
   project  = "${var.google_project_id}"
