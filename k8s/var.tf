@@ -24,3 +24,5 @@ variable "monitoring_endpoint_password" {}
 variable "prom_metrics_credentials" {
   type = "map"
 }
+
+variable "node_count" {}

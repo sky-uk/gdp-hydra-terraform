@@ -84,7 +84,7 @@ resource "kubernetes_deployment" "hc-app" {
       app = "hc-app"
     }
 
-    replicas = 3
+    replicas = "${var.node_count}"
 
     template {
       metadata {

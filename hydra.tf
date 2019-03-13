@@ -125,6 +125,7 @@ module "k8s_config_aks_1" {
   cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
   host                       = "${module.aks_cluster_1.host}"
+  node_count                 = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -148,6 +149,7 @@ module "k8s_config_aks_2" {
   cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.aks_cluster_2.cluster_ca)}"
   host                       = "${module.aks_cluster_2.host}"
+  node_count                 = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -166,6 +168,7 @@ module "k8s_config_gke_1" {
   cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                       = "${module.gke_cluster_1.host}"
+  node_count                 = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -184,6 +187,7 @@ module "k8s_config_gke_2" {
   cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                       = "${module.gke_cluster_2.host}"
+  node_count                 = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
