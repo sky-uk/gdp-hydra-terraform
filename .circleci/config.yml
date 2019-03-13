@@ -47,7 +47,7 @@ jobs:
           name: Postinstall software
           working_directory: postinstall
           command: |
-            sh postinstall.sh example/terraform.tfstate
+            sh postinstall.sh ../example/terraform.tfstate
       - run:
           name: Cleanup
           when: always
