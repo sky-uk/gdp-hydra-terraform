@@ -20,8 +20,11 @@ function install_hc_app {
 }
 
 get_configs
-for kconfig in $(find kubeconfig -type f)
+for conf in $(find . -type f -name 'kubeconfig_*' | grep -v monitoring)
 do
-  install_hc_app $kconfig
+  install_hc_app $conf
 done
+
+
+
 

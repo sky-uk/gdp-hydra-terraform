@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hc-app
-  namespsace: healthcheck
+  namespace: healthcheck
   labels:
     createdby: terraform
     datacenter: cluster # "${var.cluster_name}"
