@@ -25,7 +25,3 @@ do
   echo "Installing hc-app for kubeconf: $conf"
   install_hc_app $conf
 done
-
-
-
-

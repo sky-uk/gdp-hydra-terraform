@@ -30,7 +30,7 @@ spec:
           - name: PASSWORD
             value: randmon
           - name: CACHE_DURATION_IN_SECONDS
-            value: 30
+            value: "30"
           - name: NODE_ENV
             value: production
           - name: EXCLUDE
