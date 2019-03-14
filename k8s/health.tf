@@ -146,3 +146,4 @@ resource "kubernetes_deployment" "hc-app" {
     }
   }
 }*/
+
