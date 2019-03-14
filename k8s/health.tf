@@ -85,9 +85,7 @@ resource "kubernetes_deployment" "hc-app" {
 
   spec {
     selector {
-      matchLabels {
-        app = "hc-app"
-      }
+      app = "hc-app"
     }
 
     replicas = "${var.node_count}"
