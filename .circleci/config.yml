@@ -159,8 +159,6 @@ workflows:
               ignore: master
       - hold:
           type: approval
-          requires:
-            - deploy
           filters:
             branches:
               ignore: master
