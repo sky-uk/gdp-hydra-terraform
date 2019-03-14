@@ -16,7 +16,7 @@ function get_configs {
 
 function install_hc_app {
   kubeconfig=$1
-  kubectl apply -f hc-app/ --kubeconfig=$kubeconfig
+  kubectl create -f hc-app/ --kubeconfig=$kubeconfig
 }
 
 get_configs
