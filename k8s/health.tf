@@ -7,6 +7,7 @@ resource "kubernetes_namespace" "healthcheck" {
 
     name = "healthcheck"
   }
+
   provisioner "local-exec" {
     command = "sleep 5"
   }
@@ -147,4 +148,3 @@ resource "kubernetes_deployment" "hc-app" {
     }
   }
 }
-

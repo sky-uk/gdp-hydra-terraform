@@ -62,6 +62,10 @@ resource "kubernetes_namespace" "monitoring" {
 
     name = "monitoring"
   }
+
+  provisioner "local-exec" {
+    command = "sleep 5"
+  }
 }
 
 resource "kubernetes_namespace" "logging" {
@@ -72,6 +76,10 @@ resource "kubernetes_namespace" "logging" {
     }
 
     name = "logging"
+  }
+
+  provisioner "local-exec" {
+    command = "sleep 5"
   }
 }
 
