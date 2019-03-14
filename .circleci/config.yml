@@ -50,7 +50,6 @@ jobs:
             sh postinstall.sh ../example/terraform.tfstate
       - run:
           name: Cleanup
-          when: always
           command: |
             set +x
             num_failures=0
