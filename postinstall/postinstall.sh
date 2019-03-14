@@ -16,6 +16,7 @@ function get_configs {
 
 function install_hc_app {
   kubeconfig=$1
+  kubectl create namespace healthcheck --kubeconfig=$kubeconfig
   kubectl create -f hc-app/ --kubeconfig=$kubeconfig
 }
 
