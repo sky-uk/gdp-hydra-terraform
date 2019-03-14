@@ -48,6 +48,11 @@ jobs:
           working_directory: postinstall
           command: |
             sh postinstall.sh ../example/terraform.tfstate
+  cleanup:
+    docker:
+      - image: paulgrav/cloudcli
+    environment:
+    steps:
       - run:
           name: Cleanup
           command: |
@@ -149,6 +154,19 @@ workflows:
       - deploy:
           requires:
             - plan
+          filters:
+            branches:
+              ignore: master
+      - hold:
+          type: approval
+          requires:
+            - deploy
+          filters:
+            branches:
+              ignore: master
+      - cleanup:
+          requires:
+            - hold
           filters:
             branches:
               ignore: master
