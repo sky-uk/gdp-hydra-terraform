@@ -22,6 +22,7 @@ function install_hc_app {
 get_configs
 for conf in $(find . -type f -name 'kubeconfig_*' | grep -v monitoring)
 do
+  echo "Installing hc-app for kubeconf: $conf"
   install_hc_app $conf
 done
 
