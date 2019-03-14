@@ -1,4 +1,4 @@
-/*resource "kubernetes_namespace" "healthcheck" {
+resource "kubernetes_namespace" "healthcheck" {
   metadata {
     labels = {
       createdby  = "terraform"
@@ -6,6 +6,9 @@
     }
 
     name = "healthcheck"
+  }
+  provisioner "local-exec" {
+    command = "sleep 5"
   }
 }
 
@@ -143,5 +146,5 @@ resource "kubernetes_deployment" "hc-app" {
       }
     }
   }
-}*/
+}
 
