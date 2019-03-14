@@ -63,6 +63,34 @@ output "ips" {
   value = "${module.hydra.ips}"
 }
 
+output "gcr_url" {
+  value = "${module.hydra.gcr_url}"
+}
+
+output "gcr_creds" {
+  value = "${module.hydra.gcr_credentials}"
+}
+
+output "acr_url" {
+  value = "${module.hydra.acr_url}"
+}
+
+output "acr_username" {
+  value = "${module.hydra.acr_username}"
+}
+
+output "acr_password" {
+  value = "${module.hydra.acr_password}"
+}
+
 output "kubeconfig_url" {
   value = "${module.hydra.kubeconfig_url}"
+}
+
+output "cluster_dns_name" {
+  value = "${module.hydra.cluster_dns_name}"
+}
+
+output "monitoring_dns_name" {
+  value = "${module.hydra.monitoring_dns_name}"
 }
