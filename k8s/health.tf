@@ -1,4 +1,4 @@
-resource "kubernetes_namespace" "healthcheck" {
+/*resource "kubernetes_namespace" "healthcheck" {
   metadata {
     labels = {
       createdby  = "terraform"
@@ -145,4 +145,4 @@ resource "kubernetes_deployment" "hc-app" {
       }
     }
   }
-}
+}*/
