@@ -119,10 +119,12 @@ jobs:
             }
             
             function clean_gcp_disks {
-              disks=$(gcloud compute disks list --filter="labels.hydra_project='hydraint'" --format="value(id)")
+              disks=$(gcloud compute disks list --filter="labels.hydra_project='hydraint'" --format="value[separator=','](id, zone)")
               for d in $disks
               do
-                gcloud compute disks delete -q $d & pids+=( $! )
+                id=$(echo $d | cut -f 1 -d,)
+                zone=$(echo $d | cut -f 2 -d,)
+                gcloud compute disks delete -q $id --zone $zone & pids+=( $! )
               done
             }
 
