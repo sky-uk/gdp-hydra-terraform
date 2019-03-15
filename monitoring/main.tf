@@ -33,7 +33,7 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
-resource "kubernetes_service" "ingress_service" {
+/*resource "kubernetes_service" "ingress_service" {
   metadata {
     name      = "traefik-ingress-controller"
     namespace = "kube-system"
@@ -71,7 +71,7 @@ resource "kubernetes_service" "ingress_service" {
 
     type = "LoadBalancer"
   }
-}
+}*/
 
 resource "kubernetes_namespace" "monitoring" {
   metadata {
