@@ -124,7 +124,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
           path_regex = "/prometheus"
 
           backend {
-            service_name = "prometheus-master"
+            service_name = "prometheus-master-promethe-prometheus"
             service_port = 9090
           }
         }
