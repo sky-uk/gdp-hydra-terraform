@@ -27,7 +27,7 @@ backend:
   type: forward
 
   forward:
-    host: fluentd
+    host: fluentd.logging
     port: 24224
 
 parsers:

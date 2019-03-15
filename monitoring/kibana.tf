@@ -1,5 +1,9 @@
 data "template_file" "kibana_values" {
   template = "${file("${path.module}/values/kibana.values.yaml")}"
+
+  vars {
+    elasticsearch_host = "${local.elasticsearch_host}"
+  }
 }
 
 resource "helm_release" "kibana" {

@@ -3,6 +3,7 @@ data "template_file" "jaeger_values" {
 
   vars {
     monitoring_dns_name = "${var.monitoring_dns_name}"
+    elasticsearch_host  = "${local.elasticsearch_host}"
   }
 }
 

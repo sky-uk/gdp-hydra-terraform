@@ -1,5 +1,5 @@
 locals {
-  elasticsearch_host = "elascticsearch-elasticsearch-coordinating-only"
+  elasticsearch_host = "elasticsearch-client.elasticsearch"
 }
 
 data "template_file" "elasticsearch_values" {
@@ -10,7 +10,7 @@ data "template_file" "elasticsearch_values" {
 }
 
 resource "helm_release" "elasticsearch" {
-  name       = "elascticsearch"  
+  name       = "elasticsearch"
   chart      = "stable/elasticsearch"
   namespace  = "elasticsearch"
 
@@ -30,7 +30,7 @@ data "template_file" "elasticsearch_exporter_values" {
 }
 
 resource "helm_release" "elasticsearch_exporter" {
-  name       = "elascticsearch"  
+  name       = "elasticsearch-exporter"
   chart      = "stable/elasticsearch-exporter"
   namespace  = "elasticsearch"
 

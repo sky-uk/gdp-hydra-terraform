@@ -18,7 +18,7 @@ storage:
     password: password
   elasticsearch:
     scheme: http
-    host: elascticsearch-elasticsearch-client.elasticsearch
+    host: ${elasticsearch_host}
     port: 9200
     user: elastic
     password: changeme
