@@ -29,8 +29,9 @@ output "depends_on_hack" {
 }
 
 resource "helm_release" "jaeger" {
-  name  = "jaeger"
-  chart = "stable/jaeger-operator"
+  name       = "jaeger"
+  chart      = "stable/jaeger-operator"
+  depends_on = ["null_resource.helm_init"]
 }
 
 data "template_file" "prom_values" {
