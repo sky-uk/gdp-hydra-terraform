@@ -94,3 +94,11 @@ output "cluster_dns_name" {
 output "monitoring_dns_name" {
   value = "${module.hydra.monitoring_dns_name}"
 }
+
+output "monitoring_username" {
+  value = "${module.hydra.monitoring_prometheus_username}"
+}
+
+output "monitoring_password" {
+  value = "${module.hydra.monitoring_prometheus_username}"
+}
