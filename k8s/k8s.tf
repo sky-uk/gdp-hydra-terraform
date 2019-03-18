@@ -131,3 +131,27 @@ resource "kubernetes_secret" "image_pull_secret" {
     ".dockerconfigjson" = "${data.template_file.image_pull_config.rendered}"
   }
 }
+
+resource "kubernetes_config_map" "elasticsearch" {
+  metadata {
+    name      = "elastic-secrets"
+    namespace = "monitoring"
+  }
+
+  data {
+    username = "${var.elasticsearch_credentials["username"]}"
+    password = "${var.elasticsearch_credentials["password"]}"
+  }
+}
+
+resource "kubernetes_service" "elasticsearch" {
+  metadata {
+    name      = "elasticsearch"
+    namespace = "monitoring"
+  }
+
+  spec {
+    type         = "ExternalName"
+    externalName = "${var.elasticsearch_credentials["url"]}"
+  }
+}

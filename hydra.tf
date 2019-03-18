@@ -126,6 +126,12 @@ module "k8s_config_aks_1" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  elasticsearch_credentials = {
+    url      = "${var.es_url}"
+    username = "${var.es_username}"
+    password = "${var.es_password}"
+  }
 }
 
 module "k8s_config_aks_2" {
@@ -147,6 +153,12 @@ module "k8s_config_aks_2" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  elasticsearch_credentials = {
+    url      = "${var.es_url}"
+    username = "${var.es_username}"
+    password = "${var.es_password}"
+  }
 }
 
 module "k8s_config_gke_1" {
@@ -166,6 +178,12 @@ module "k8s_config_gke_1" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  elasticsearch_credentials = {
+    url      = "${var.es_url}"
+    username = "${var.es_username}"
+    password = "${var.es_password}"
+  }
 }
 
 module "k8s_config_gke_2" {
@@ -184,6 +202,12 @@ module "k8s_config_gke_2" {
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
+  }
+
+  elasticsearch_credentials = {
+    url      = "${var.es_url}"
+    username = "${var.es_username}"
+    password = "${var.es_password}"
   }
 }
 

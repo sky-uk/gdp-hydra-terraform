@@ -31,6 +31,7 @@ output "depends_on_hack" {
 resource "helm_release" "jaeger" {
   name       = "jaeger"
   chart      = "stable/jaeger-operator"
+  namespace  = "monitoring"
   depends_on = ["null_resource.helm_init"]
 }
 

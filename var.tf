@@ -166,3 +166,15 @@ locals {
     "hydra_project" = "${var.project_name}"
   }
 }
+
+variable "es_url" {
+  description = "URL of an Elasticsearch instance"
+}
+
+variable "es_username" {
+  description = "username for an Elasticsearch instance"
+}
+
+variable "es_password" {
+  description = "password for an Elasticsearch instance"
+}
