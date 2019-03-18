@@ -29,8 +29,8 @@ output "depends_on_hack" {
 }
 
 resource "helm_release" "jaeger" {
-  name      = "jaeger"
-  chart     = "stable/jaeger-operator"
+  name  = "jaeger"
+  chart = "stable/jaeger-operator"
 }
 
 data "template_file" "prom_values" {
