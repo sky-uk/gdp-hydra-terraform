@@ -28,15 +28,10 @@ output "depends_on_hack" {
   value = "${var.depends_on_hack}"
 }
 
-# resource "helm_release" "jaeger" {
-#   name      = "jaeger"
-#   chart     = "stable/traefik"
-#   namespace = "kube-system"
-
-#   values = [
-#     "${file("${path.module}/values/traefik.values.yaml")}",
-#   ]
-# }
+resource "helm_release" "jaeger" {
+  name      = "jaeger"
+  chart     = "stable/jaeger-operator"
+}
 
 data "template_file" "prom_values" {
   template = "${file("${path.module}/values/prometheus.worker.values.yaml")}"
