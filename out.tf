@@ -74,3 +74,11 @@ output "cluster_dns_name" {
 output "monitoring_dns_name" {
   value = "${module.akamai_config.monitoring_dns_name}"
 }
+
+output "monitoring_prometheus_username" {
+  value = "${var.prom_metrics_username}"
+}
+
+output "monitoring_prometheus_password" {
+  value = "${random_string.prom_metrics_password.result}"
+}
