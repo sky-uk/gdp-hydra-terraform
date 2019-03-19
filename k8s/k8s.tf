@@ -1,3 +1,6 @@
+# This module defines Kubernetes-specific configuration that apply to 
+# all clusters except for the monitoring cluster.
+
 provider "kubernetes" {
   client_certificate     = "${var.cluster_client_certificate}"
   client_key             = "${var.cluster_client_key}"
@@ -104,6 +107,9 @@ resource "kubernetes_cluster_role_binding" "tiller" {
 }
 
 resource "kubernetes_config_map" "elasticsearch" {
+  # Only create this configmap if we have valid details
+  count = "${var.elasticsearch_credentials["username"] == "empty" ? 0 : 1}"
+
   metadata {
     name      = "elastic-secrets"
     namespace = "monitoring"
@@ -116,6 +122,9 @@ resource "kubernetes_config_map" "elasticsearch" {
 }
 
 resource "kubernetes_service" "elasticsearch" {
+  # Only create this configmap if we have valid details
+  count = "${var.elasticsearch_credentials["url"] == "empty" ? 0 : 1}"
+
   metadata {
     name      = "elasticsearch"
     namespace = "monitoring"
@@ -124,5 +133,17 @@ resource "kubernetes_service" "elasticsearch" {
   spec {
     type         = "ExternalName"
     externalName = "${var.elasticsearch_credentials["url"]}"
+  }
+}
+
+resource "kubernetes_service" "jaeger_collector" {
+  metadata {
+    name      = "ext-jaeger-collector"
+    namespace = "monitoring"
+  }
+
+  spec {
+    type         = "ExternalName"
+    externalName = "${var.monitoring_dns_name}"
   }
 }

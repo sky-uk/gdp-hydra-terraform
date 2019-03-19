@@ -167,14 +167,17 @@ locals {
   }
 }
 
-variable "es_url" {
+variable "elasticsearch_url" {
   description = "URL of an Elasticsearch instance"
+  default     = "empty"
 }
 
-variable "es_username" {
+variable "elasticsearch_username" {
   description = "username for an Elasticsearch instance"
+  default     = "empty"
 }
 
-variable "es_password" {
+variable "elasticsearch_password" {
   description = "password for an Elasticsearch instance"
+  default     = "empty"
 }

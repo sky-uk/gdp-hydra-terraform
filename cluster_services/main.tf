@@ -1,3 +1,6 @@
+# This module defines services/configuration that are common to all clusters
+# including the monitoring cluster.
+
 resource "local_file" "kubeconfig" {
   content  = "${var.kubeconfig}"
   filename = "${var.host}.kubeconfig"

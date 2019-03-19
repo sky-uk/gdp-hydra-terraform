@@ -1,3 +1,10 @@
+# This module provisions/configs the following:
+#
+# - AKS and GKE clusters
+# - CDN GTM
+# - K8S config to the 4 clusters (minus monitoring)
+# - Monitoring cluster
+
 provider "azurerm" {
   client_id       = "${var.azure_client_id}"
   client_secret   = "${var.azure_client_secret}"
@@ -113,6 +120,7 @@ module "k8s_config_aks_1" {
   cluster_name = "aks_1"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
   cluster_client_certificate = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
@@ -126,9 +134,9 @@ module "k8s_config_aks_1" {
   }
 
   elasticsearch_credentials = {
-    url      = "${var.es_url}"
-    username = "${var.es_username}"
-    password = "${var.es_password}"
+    url      = "${var.elasticsearch_url}"
+    username = "${var.elasticsearch_username}"
+    password = "${var.elasticsearch_password}"
   }
 }
 
@@ -138,6 +146,7 @@ module "k8s_config_aks_2" {
   cluster_name = "aks_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
   cluster_client_certificate = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
@@ -151,9 +160,9 @@ module "k8s_config_aks_2" {
   }
 
   elasticsearch_credentials = {
-    url      = "${var.es_url}"
-    username = "${var.es_username}"
-    password = "${var.es_password}"
+    url      = "${var.elasticsearch_url}"
+    username = "${var.elasticsearch_username}"
+    password = "${var.elasticsearch_password}"
   }
 }
 
@@ -163,6 +172,7 @@ module "k8s_config_gke_1" {
   cluster_name = "gke_1"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
   cluster_client_certificate = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
@@ -176,9 +186,9 @@ module "k8s_config_gke_1" {
   }
 
   elasticsearch_credentials = {
-    url      = "${var.es_url}"
-    username = "${var.es_username}"
-    password = "${var.es_password}"
+    url      = "${var.elasticsearch_url}"
+    username = "${var.elasticsearch_username}"
+    password = "${var.elasticsearch_password}"
   }
 }
 
@@ -188,6 +198,7 @@ module "k8s_config_gke_2" {
   cluster_name = "gke_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
   cluster_client_certificate = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
@@ -201,9 +212,9 @@ module "k8s_config_gke_2" {
   }
 
   elasticsearch_credentials = {
-    url      = "${var.es_url}"
-    username = "${var.es_username}"
-    password = "${var.es_password}"
+    url      = "${var.elasticsearch_url}"
+    username = "${var.elasticsearch_username}"
+    password = "${var.elasticsearch_password}"
   }
 }
 
