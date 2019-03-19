@@ -131,8 +131,8 @@ resource "kubernetes_service" "elasticsearch" {
   }
 
   spec {
-    type         = "ExternalName"
-    externalName = "${var.elasticsearch_credentials["url"]}"
+    type          = "ExternalName"
+    external_name = "${var.elasticsearch_credentials["url"]}"
   }
 }
 
@@ -143,7 +143,7 @@ resource "kubernetes_service" "jaeger_collector" {
   }
 
   spec {
-    type         = "ExternalName"
-    externalName = "${var.monitoring_dns_name}"
+    type          = "ExternalName"
+    external_name = "${var.monitoring_dns_name}"
   }
 }
