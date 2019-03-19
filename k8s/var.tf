@@ -11,5 +11,8 @@ variable "prom_metrics_credentials" {
 
 variable "node_count" {}
 
-variable "elasticsearch_credentials" {}
+variable "elasticsearch_credentials" {
+  type = "map"
+}
+
 variable "monitoring_dns_name" {}
