@@ -114,8 +114,6 @@ module "k8s_config_aks_1" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  enable_image_pull_secret = true
-
   cluster_client_certificate = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
@@ -140,8 +138,6 @@ module "k8s_config_aks_2" {
   cluster_name = "aks_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
-
-  enable_image_pull_secret = true
 
   cluster_client_certificate = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"

@@ -103,35 +103,6 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
-data "template_file" "image_pull_config" {
-  template = "${file("${path.module}/templates/imagepullconfig.json.tpl")}"
-
-  vars {
-    username = "${var.image_pull_username}"
-    password = "${var.image_pull_password}"
-    server   = "${var.image_pull_server}"
-    auth     = "${base64encode(format("%s:%s", var.image_pull_username, var.image_pull_password))}"
-  }
-}
-
-resource "kubernetes_secret" "image_pull_secret" {
-  count = "${var.enable_image_pull_secret}"
-  type  = "kubernetes.io/dockerconfigjson"
-
-  metadata {
-    name      = "cluster-local-image-secret"
-    namespace = "default"
-
-    labels = {
-      createdby = "terraform"
-    }
-  }
-
-  data {
-    ".dockerconfigjson" = "${data.template_file.image_pull_config.rendered}"
-  }
-}
-
 resource "kubernetes_config_map" "elasticsearch" {
   metadata {
     name      = "elastic-secrets"
