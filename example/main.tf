@@ -84,5 +84,5 @@ output "monitoring_username" {
 }
 
 output "monitoring_password" {
-  value = "${module.hydra.monitoring_prometheus_username}"
+  value = "${module.hydra.monitoring_prometheus_password}"
 }

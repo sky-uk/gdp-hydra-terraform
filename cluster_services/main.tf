@@ -74,7 +74,7 @@ resource "helm_release" "cert_manager" {
 
   set {
     name  = "ingressShim.defaultIssuerName"
-    value = "letsencrypt-staging"
+    value = "letsencrypt-${var.letsencrypt_environment}"
   }
 
   set {

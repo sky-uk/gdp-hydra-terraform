@@ -181,3 +181,8 @@ variable "elasticsearch_password" {
   description = "password for an Elasticsearch instance"
   default     = "empty"
 }
+
+variable "letsencrypt_environment" {
+  description = "Specifies the whether the environment is production or not."
+  default     = "staging"
+}

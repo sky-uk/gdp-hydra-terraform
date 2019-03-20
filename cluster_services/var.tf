@@ -8,3 +8,4 @@ variable "traefik_replica_count" {}
 variable "cluster_issuer_email" {}
 variable "tiller_service_account" {}
 variable "kubeconfig" {}
+variable "letsencrypt_environment" {}

@@ -18,7 +18,7 @@ module "helm_aks1" {
   fluentd_ingress_ip = "${module.monitoring.fluentd_ingress_ip}"
 
   // This forces the helm config to run after the
-  // initial Kubernetes configuration module 
+  // initial Kubernetes configuration module
   // to prevent race configuration
   depends_on_hack = "${module.k8s_config_aks_1.cluster_ingress_ip}"
 }
@@ -40,8 +40,10 @@ module "cluster_services_aks1" {
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
+  letsencrypt_environment = "${var.letsencrypt_environment}"
+
   // This forces the helm config to run after the
-  // initial Kubernetes configuration module 
+  // initial Kubernetes configuration module
   // to prevent race configuration
   depends_on_hack = "${module.k8s_config_aks_1.cluster_ingress_ip}"
 }
@@ -85,6 +87,8 @@ module "cluster_services_aks2" {
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
+  letsencrypt_environment = "${var.letsencrypt_environment}"
+
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
 
@@ -124,6 +128,8 @@ module "cluster_services_gke1" {
   tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
+
+  letsencrypt_environment = "${var.letsencrypt_environment}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
@@ -165,6 +171,8 @@ module "cluster_services_gke2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
+
+  letsencrypt_environment = "${var.letsencrypt_environment}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }

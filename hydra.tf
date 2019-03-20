@@ -280,6 +280,8 @@ module "monitoring" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
+  letsencrypt_environment = "${var.letsencrypt_environment}"
+
   prometheus_ui_password = "${var.prometheus_ui_password}"
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"

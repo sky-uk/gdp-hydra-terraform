@@ -39,6 +39,8 @@ module "cluster_services_monitoring" {
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
+  letsencrypt_environment = "${var.letsencrypt_environment}"
+
   depends_on_hack = "${data.kubernetes_service.ingress.load_balancer_ingress.0.ip}"
 }
 
