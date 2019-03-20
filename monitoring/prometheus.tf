@@ -101,7 +101,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
       "kubernetes.io/tls-acme"                    = "true"
-      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-production"
+      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-staging"
       "ingress.kubernetes.io/ssl-redirect"        = "true"
     }
 

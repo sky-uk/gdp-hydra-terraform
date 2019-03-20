@@ -42,7 +42,7 @@ resource "kubernetes_ingress" "jaeger-ui" {
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
       "kubernetes.io/tls-acme"                    = "true"
-      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-production"
+      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-staging"
       "ingress.kubernetes.io/ssl-redirect"        = "true"
       "traefik.ingress.kubernetes.io/rule-type"   = "PathPrefixStrip"
     }
@@ -87,7 +87,7 @@ resource "kubernetes_ingress" "jaeger-collector" {
       # "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
       "kubernetes.io/tls-acme" = "true"
 
-      "certmanager.k8s.io/cluster-issuer"       = "letsencrypt-production"
+      "certmanager.k8s.io/cluster-issuer"       = "letsencrypt-staging"
       "ingress.kubernetes.io/ssl-redirect"      = "true"
       "traefik.ingress.kubernetes.io/rule-type" = "PathPrefixStrip"
     }
