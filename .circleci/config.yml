@@ -119,7 +119,7 @@ jobs:
             }
             
             function clean_gcp_disks {
-              disks=$(gcloud compute disks list --filter="name~'TF_VAR_project_name'" --format="value[separator=','](id, zone)")
+              disks=$(gcloud compute disks list --filter="name~'$TF_VAR_project_name'" --format="value[separator=','](id, zone)")
               for d in $disks
               do
                 id=$(echo $d | cut -f 1 -d,)
