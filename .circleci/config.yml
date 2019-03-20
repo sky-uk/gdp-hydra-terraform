@@ -21,6 +21,7 @@ jobs:
           name: Plan Terraform
           working_directory: example
           command: |
+            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
             sh ../install.sh
             terraform init
             terraform plan -out=terraform.out
@@ -37,13 +38,10 @@ jobs:
           at: /tmp/example
       - checkout
       - run:
-          name: Set project name
-          command: |
-            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
-      - run:
           name: Run Terraform
           working_directory: example
           command: |
+            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
             sh ../install.sh
             terraform init
             terraform apply /tmp/example/terraform.out
@@ -58,14 +56,10 @@ jobs:
     environment:
     steps:
       - run:
-          name: Set project name
-          command: |
-            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
-            source $TF_VAR_project_name
-      - run:
           name: Cleanup
           command: |
             set +x
+            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
             num_failures=0
             pids=( )
 
