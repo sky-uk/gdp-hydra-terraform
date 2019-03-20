@@ -6,7 +6,7 @@ replicas: ${replicas_count}
 # and cluster role binding to give Traefik the required
 # permissions
 rbac:
-  enabled: false
+  enabled: true
 # Enabling the dashboard will allow you to view Traefik’s
 # current configuration and health.
 dashboard:
