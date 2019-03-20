@@ -40,7 +40,6 @@ jobs:
           name: Set project name
           command: |
             TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
-            source $TF_VAR_project_name
       - run:
           name: Run Terraform
           working_directory: example
