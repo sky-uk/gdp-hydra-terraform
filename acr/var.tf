@@ -1,0 +1,18 @@
+variable "resource_group_name" {
+  type        = "string"
+  description = "Name of the azure resource group the Azure Container Service will be created in"
+}
+
+variable "resource_group_location" {
+  type        = "string"
+  description = "Location of the azure resource group."
+}
+
+variable "project_name" {
+  description = "Name of the project"
+}
+
+variable "tags" {
+  type        = "map"
+  description = "Tags to apply to all resources"
+}

@@ -20,6 +20,33 @@ output "edge_url" {
   value       = "${var.edge_dns_name}.${var.edge_dns_zone}"
 }
 
+output "gcr_url" {
+  description = "The URL of the docker registry for GCP clusters"
+  value       = "${module.gcr.url}"
+}
+
+output "gcr_credentials" {
+  description = "JSON credentials file for the docker registry for GCP clusters"
+  sensitive   = true
+  value       = "${module.gcr.credentials}"
+}
+
+output "acr_url" {
+  description = "The URL of the docker registry for Azure clusters"
+  value       = "${module.acr.url}"
+}
+
+output "acr_username" {
+  description = "The username for the docker registry for Azure clusters"
+  value       = "${module.acr.username}"
+}
+
+output "acr_password" {
+  description = "The password for the docker registry for Azure clusters"
+  sensitive   = true
+  value       = "${module.acr.password}"
+}
+
 output "kubeconfig_url" {
   description = "URL for zip file containing all of the cluster kubeconfigs, this link includes a SAS token and will grant access to all users. This can be used as part of CI processes to access all clusters."
   sensitive   = true
