@@ -176,8 +176,6 @@ workflows:
             branches:
               ignore: master
       - hold:
-          requires:
-            - deploy
           type: approval
           filters:
             branches:
