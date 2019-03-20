@@ -12,7 +12,7 @@ image:
   tag: v2.2.1
 paused: false
 global:
-  # rbacEnable: false
+  rbacEnable: true
   pspEnable: false
 serviceAccount:
   create: true

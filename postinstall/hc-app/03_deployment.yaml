@@ -19,9 +19,16 @@ spec:
         createdby: terraform
         datacenter: cluster # "${var.cluster_name}"
     spec:
+      serviceAccountName: healthcheck
       containers:
       - name: hc
         image: emrekenci/k8s-healthcheck:v1
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 3
+          periodSeconds: 3
         ports:
         - containerPort: 5000
         env:

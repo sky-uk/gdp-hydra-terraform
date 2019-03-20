@@ -1,3 +1,6 @@
+# This module defines Helm-specific config that applies to all clusters
+# except for the monitoring cluster.
+
 resource "local_file" "kubeconfig" {
   content  = "${var.kubeconfig}"
   filename = "${var.host}.kubeconfig"
@@ -61,7 +64,7 @@ resource "helm_release" "prometheus" {
 
   set {
     name  = "rbacEnable"
-    value = "false"
+    value = "true"
   }
 
   # depends_on = [

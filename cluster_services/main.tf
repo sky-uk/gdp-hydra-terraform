@@ -67,19 +67,21 @@ resource "helm_release" "cert_manager" {
   # workaround to stop CI from complaining about keyring change
   keyring = ""
 
-  /*set {
+  set {
     name  = "rbac.create"
-    value = "false"
-  }*/
+    value = "true"
+  }
 
   set {
     name  = "ingressShim.defaultIssuerName"
     value = "letsencrypt-staging"
   }
+
   set {
     name  = "ingressShim.defaultIssuerKind"
     value = "ClusterIssuer"
   }
+
   depends_on = ["null_resource.helm_init"]
 }
 
