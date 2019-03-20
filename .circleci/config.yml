@@ -21,9 +21,8 @@ jobs:
           name: Plan Terraform
           working_directory: example
           command: |
-            PROJECT_NAME="${TF_VAR_project_name}-${CIRCLE_BUILD_NUM}"
+            echo "${TF_VAR_project_name}-${CIRCLE_BUILD_NUM}" > PROJECT_NAME
             export TF_VAR_project_name=$(cat PROJECT_NAME)
-            echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
             terraform plan -out=terraform.out
@@ -31,6 +30,8 @@ jobs:
           root: example
           paths:
            - terraform.out
+           - PROJECT_NAME
+
   deploy:
     docker:
       - image: paulgrav/cloudcli
