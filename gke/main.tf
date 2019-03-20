@@ -7,7 +7,6 @@ resource "google_container_cluster" "cluster" {
   name               = "${local.cluster_name}"
   zone               = "${var.region}"
   initial_node_count = "${var.node_count}"
-  enable_legacy_abac = true
   min_master_version = "${var.kubernetes_version}"
   node_version       = "${var.kubernetes_version}"
 
