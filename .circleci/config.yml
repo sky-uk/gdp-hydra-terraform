@@ -37,6 +37,11 @@ jobs:
           at: /tmp/example
       - checkout
       - run:
+          name: Set project name
+          command: |
+            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
+            source $TF_VAR_project_name
+      - run:
           name: Run Terraform
           working_directory: example
           command: |
@@ -53,6 +58,11 @@ jobs:
       - image: paulgrav/cloudcli
     environment:
     steps:
+      - run:
+          name: Set project name
+          command: |
+            TF_VAR_project_name="${TF_VAR_project_name}-${CIRCLE_WORKFLOW_ID}"
+            source $TF_VAR_project_name
       - run:
           name: Cleanup
           command: |
@@ -79,7 +89,7 @@ jobs:
             }
 
             function clean_azure {
-                groups=$(az group list --query "[?tags.hydra_project=='$TF_VAR_project_name' && properties.provisioningState != 'Deleting'].name" -o tsv)
+                groTF_VAR_project_nameups=$(az group list --query "[?tags.hydra_project=='$TF_VAR_project_name' && properties.provisioningState != 'Deleting'].name" -o tsv)
                 for g in $groups
                 do
                     az group delete -y --name $g & pids+=( $! )
