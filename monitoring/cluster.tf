@@ -37,9 +37,6 @@ module "cluster_services_monitoring" {
   tiller_service_account = "${kubernetes_service_account.tiller.metadata.0.name}"
   traefik_replica_count  = "2"
 
-  # TODO pass in the right registry URL here
-  registry_url = "TBC"
-
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
   depends_on_hack = "${data.kubernetes_service.ingress.load_balancer_ingress.0.ip}"
