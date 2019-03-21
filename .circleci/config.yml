@@ -54,13 +54,9 @@ jobs:
           working_directory: postinstall
           command: |
             sh postinstall.sh ../example/terraform.tfstate
-  cleanup:
-    docker:
-      - image: paulgrav/cloudcli
-    environment:
-    steps:
       - run:
           name: Cleanup
+          when: always
           command: |
             set +x
             export TF_VAR_project_name=$(cat PROJECT_NAME)
@@ -72,7 +68,7 @@ jobs:
             }
 
             function gcp_login {
-                gcloud auth activate-service-account --key-file=<(echo $TF_VAR_google_creds_base64 | base64 -d) --project=$TF_VAR_google_project_id 
+                gcloud auth activate-service-account --key-file=<(echo $TF_VAR_google_creds_base64 | base64 -d) --project=$TF_VAR_google_project_id
             }
 
             function clean_gcp {
@@ -117,14 +113,14 @@ jobs:
             }
 
             function clean_gcp_creds {
-  
+
                 users=$(gcloud iam service-accounts list --filter="displayName='Registry User'" --format="value(email)")
                 for u in $users
                 do
                   gcloud iam service-accounts delete -q --project $TF_VAR_google_project_id $u & pids+=( $! )
                 done
             }
-            
+
             function clean_gcp_disks {
               disks=$(gcloud compute disks list --filter="name~'$TF_VAR_project_name'" --format="value[separator=','](id, zone)")
               for d in $disks
@@ -157,7 +153,7 @@ jobs:
             clean_gcp_creds
             wait_for_processing
             exit $num_failures
-    
+
 workflows:
   version: 2
   build_plan_deploy:
@@ -172,17 +168,6 @@ workflows:
       - deploy:
           requires:
             - plan
-          filters:
-            branches:
-              ignore: master
-      - hold:
-          type: approval
-          filters:
-            branches:
-              ignore: master
-      - cleanup:
-          requires:
-            - hold
           filters:
             branches:
               ignore: master
