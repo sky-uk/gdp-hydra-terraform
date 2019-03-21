@@ -184,7 +184,6 @@ workflows:
               ignore: master
       - cleanup:
           requires:
-            - deploy
             - hold
           filters:
             branches:
