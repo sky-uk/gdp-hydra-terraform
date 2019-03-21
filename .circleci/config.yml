@@ -59,6 +59,8 @@ jobs:
       - image: paulgrav/cloudcli
     environment:
     steps:
+      - attach_workspace:
+          at: /tmp/example
       - run:
           name: Cleanup
           command: |
@@ -182,6 +184,7 @@ workflows:
               ignore: master
       - cleanup:
           requires:
+            - deploy
             - hold
           filters:
             branches:
