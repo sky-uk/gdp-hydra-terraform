@@ -4,7 +4,7 @@ variable "azure_tenant_id" {}
 variable "azure_subscription_id" {}
 
 variable "azure_resource_locations" {
-  description = "List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. "
+  description = "List of locations used for deploying resources. The first location is the default location that any tooling. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. "
 
   default = [
     "westeurope",

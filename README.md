@@ -206,7 +206,7 @@ These variables are used to configure aspects of the clusters that are created b
 |------|-------------|:----:|:-----:|:-----:|
 | project_name | Name of the project that is used across the deployment for naming resources. This will be used in cluster names, DNS entries and all other configuration and will enable you to identify resources. | string | - | yes |
 | azure_node_ssh_key | SSH key for nodes created in AKS. This SSH key is used as the access key for each of the nodes created in AKS. Keep this safe as it will allow you to remote onto nodes should you need to. You can create a new key with `ssh-keygen -f ./id_rsa -N '' -C aks-key` | string | - | yes |
-| azure_resource_locations | List of locations used for deploying resources. The first location is the default location in which any tooling such as the docker registry will be created. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to `westeurope` and `northeurope`. | string | `<list>` | no |
+| azure_resource_locations | List of locations used for deploying resources. The first location is the default location in which any tooling will be created. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to `westeurope` and `northeurope`. | string | `<list>` | no |
 | kubernetes_version | The version of Kubernetes to deploy. You should ensure that this version is available in each region. Changing this property will result in an upgrade of clusters. Defaults to 1.10.5 | string | `1.10.5` | no |
 | node_count | Number of nodes in each cluster. | string | `3` | no |
 | node_type | Size of nodes to provision in each cluster, options are small, medium, large. Defaults to small. Changing this will result in a full rebuild of all clusters. | string | `small` | no |
@@ -245,12 +245,7 @@ There are a number of configuration options needed to set up the monitoring for 
 
 | Name | Description |
 |------|-------------|
-| acr_password | The password for the docker registry for Azure clusters |
-| acr_url | The URL of the docker registry for Azure clusters |
-| acr_username | The username for the docker registry for Azure clusters |
 | edge_url | The URL of the Akamai Traffic Manager edge |
-| gcr_credentials | JSON credentials file for the docker registry for GCP clusters |
-| gcr_url | The URL of the docker registry for GCP clusters |
 | ips | Map of the cluster IPs |
 | kubeconfig_url | URL for zip file containing all of the cluster kubeconfigs, this link includes a SAS token and will grant access to all users. This can be used as part of CI processes to access all clusters. |
 | kubeconfigs | Map of the Kubernetes config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url |
