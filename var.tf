@@ -141,8 +141,6 @@ variable "cluster_issuer_email" {
 locals {
   resource_group_name_clusters = "${var.project_name}-clusters"
 
-  resource_group_name_acr = "${var.project_name}-registry"
-
   resource_group_name_config = "${var.project_name}-config"
 
   node_match = {
