@@ -15,6 +15,8 @@ variable akamai_access_token {}
 variable akamai_client_token {}
 variable akamai_host {}
 variable akamai_client_secret {}
+variable node_count {}
+variable node_type {}
 
 # generate passowrd for monitoring endpoint
 resource "random_string" "monitoring_password" {
