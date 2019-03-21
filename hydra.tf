@@ -29,15 +29,6 @@ provider "cloudflare" {
   token = "${var.cloudflare_token}"
 }
 
-module "acr" {
-  source       = "acr"
-  project_name = "${var.project_name}"
-  tags         = "${local.tags}"
-
-  resource_group_name     = "${local.resource_group_name_acr}"
-  resource_group_location = "${var.azure_resource_locations[0]}"
-}
-
 module "aks_cluster_1" {
   source = "aks"
 
@@ -114,11 +105,6 @@ module "k8s_config_aks_1" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  enable_image_pull_secret = true
-  image_pull_server        = "${module.acr.url}"
-  image_pull_username      = "${module.acr.username}"
-  image_pull_password      = "${module.acr.password}"
-
   cluster_client_certificate = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
@@ -137,11 +123,6 @@ module "k8s_config_aks_2" {
   cluster_name = "aks_2"
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
-
-  enable_image_pull_secret = true
-  image_pull_server        = "${module.acr.url}"
-  image_pull_username      = "${module.acr.username}"
-  image_pull_password      = "${module.acr.password}"
 
   cluster_client_certificate = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
   cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
@@ -225,12 +206,6 @@ module "cloudflare" {
   aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
-}
-
-module "gcr" {
-  source = "gcr"
-
-  google_project_id = "${var.google_project_id}"
 }
 
 module "monitoring" {
