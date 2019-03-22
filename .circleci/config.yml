@@ -21,8 +21,7 @@ jobs:
           name: Plan Terraform
           working_directory: example
           command: |
-            echo "${TF_VAR_project_name}${CIRCLE_BUILD_NUM}" > PROJECT_NAME
-            export TF_VAR_project_name=$(cat PROJECT_NAME)
+            export "${TF_VAR_project_name}${CIRCLE_BUILD_NUM}"
             echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
@@ -45,7 +44,8 @@ jobs:
           name: Run Terraform
           working_directory: example
           command: |
-            export TF_VAR_project_name=$(cat PROJECT_NAME)
+            export TF_VAR_project_name="${TF_VAR_project_name}${CIRCLE_PREVIOUS_BUILD_NUM}"
+            echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
             terraform apply /tmp/example/terraform.out
@@ -59,8 +59,8 @@ jobs:
           when: always
           command: |
             set +x
+            export TF_VAR_project_name="${TF_VAR_project_name}${CIRCLE_PREVIOUS_BUILD_NUM}"
             echo $TF_VAR_project_name
-            export TF_VAR_project_name=$(cat PROJECT_NAME)
             num_failures=0
             pids=( )
 
