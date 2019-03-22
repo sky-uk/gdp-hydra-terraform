@@ -59,6 +59,7 @@ jobs:
           when: always
           command: |
             set +x
+            echo $TF_VAR_project_name
             export TF_VAR_project_name=$(cat PROJECT_NAME)
             num_failures=0
             pids=( )
