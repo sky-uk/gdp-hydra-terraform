@@ -3,9 +3,11 @@ jobs:
 - job: build
   pool:
       vmImage: 'ubuntu-16.04'
-  container: hashicorp/terraform:0.11.13
+  container: ubuntu:16.04
   steps:
   - script: |
+      curl -LO https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+      unzip terraform_0.11.13_linux_amd64.zip
       terraform fmt -check=true -diff=true -list=true
       terraform validate -check-variables=false
     displayName: Check formatting
@@ -19,6 +21,10 @@ jobs:
   dependsOn: plan
   steps:
   - script: echo hello from the Release build
+
+
+https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
+
 
 
 #version: 2
