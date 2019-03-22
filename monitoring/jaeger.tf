@@ -9,9 +9,9 @@ data "template_file" "jaeger_values" {
 resource "helm_release" "jaeger" {
   timeout = "900"
 
-  name       = "jaeger"
-  chart      = "stable/jaeger-operator"
-  namespace  = "${kubernetes_namespace.monitoring.metadata.0.name}"
+  name      = "jaeger"
+  chart     = "stable/jaeger-operator"
+  namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""

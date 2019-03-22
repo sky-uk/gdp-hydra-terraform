@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -exu
 
 if [ "$(uname)" == "Darwin" ]; then
     echo "Downloading custom providers for MacOS"
