@@ -13,7 +13,10 @@ jobs:
 - job: plan
   dependsOn: build
   steps:
-  - script: echo hello from the Release build
+  - script: |
+       sh ../install.sh
+       terraform init
+       terraform plan -out=terraform.out
 
 - job: deploy
   dependsOn: plan
