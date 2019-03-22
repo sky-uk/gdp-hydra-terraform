@@ -3,7 +3,7 @@ jobs:
 - job: build
   pool:
       vmImage: 'ubuntu-16.04'
-  container: ubuntu:16.04
+  container: hashicorp/terraform:0.11.13
   steps:
   - script: |
       terraform fmt -check=true -diff=true -list=true
