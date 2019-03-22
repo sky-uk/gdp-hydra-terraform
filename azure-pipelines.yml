@@ -3,11 +3,9 @@ jobs:
 - job: build
   pool:
       vmImage: 'ubuntu-16.04'
-  container: "ubuntu:16.04"
+  container: "paulgrav/cloudcli:latest"
   steps:
   - script: |
-      curl -LO https://releases.hashicorp.com/terraform/0.11.13/terraform_0.11.13_linux_amd64.zip
-      unzip terraform_0.11.13_linux_amd64.zip
       terraform fmt -check=true -diff=true -list=true
       terraform validate -check-variables=false
     displayName: Check formatting
