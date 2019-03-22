@@ -23,7 +23,7 @@ jobs:
           command: |
             export "${TF_VAR_project_name}${CIRCLE_BUILD_NUM}"
             echo $TF_VAR_project_name
-            sh ../install.sh
+            ./install.sh
             terraform init
             terraform plan -out=terraform.out
       - persist_to_workspace:
@@ -46,7 +46,7 @@ jobs:
           command: |
             export TF_VAR_project_name="${TF_VAR_project_name}${CIRCLE_PREVIOUS_BUILD_NUM}"
             echo $TF_VAR_project_name
-            sh ../install.sh
+            ./install.sh
             terraform init
             terraform apply /tmp/example/terraform.out
       - run:
