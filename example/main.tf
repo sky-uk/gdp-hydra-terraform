@@ -15,6 +15,8 @@ variable akamai_access_token {}
 variable akamai_client_token {}
 variable akamai_host {}
 variable akamai_client_secret {}
+variable node_count {}
+variable node_type {}
 
 # generate passowrd for monitoring endpoint
 resource "random_string" "monitoring_password" {
@@ -39,8 +41,8 @@ module "hydra" {
   "akamai_client_token"   = "${var.akamai_client_token}"
   "kubernetes_version"    = "${var.kubernetes_version}"
 
-  "node_type"                             = "medium"
-  "node_count"                            = 2
+  "node_type"                             = "${var.node_type}"
+  "node_count"                            = "${var.node_count}"
   "traffic_manager_aks_cluster_1_enabled" = true
   "traffic_manager_aks_cluster_2_enabled" = true
   "traffic_manager_gke_cluster_1_enabled" = true
