@@ -1,19 +1,20 @@
-pool:
-  vmImage: 'Ubuntu-16.04'
-
-container: hashicorp/terraform:0.11.13
-
 jobs:
+
 - job: build
+  pool:
+      vmImage: 'ubuntu-16.04'
+  container: hashicorp/terraform:0.11.13
   steps:
   - script: |
       terraform fmt -check=true -diff=true -list=true
       terraform validate -check-variables=false
     displayName: Check formatting
+
 - job: plan
   dependsOn: build
   steps:
   - script: echo hello from the Release build
+
 - job: deploy
   dependsOn: plan
   steps:
