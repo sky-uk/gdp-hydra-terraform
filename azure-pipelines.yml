@@ -3,7 +3,7 @@ jobs:
 - job: build
   pool:
       vmImage: 'ubuntu-16.04'
-  container: paulgrav/cloudcli:latest
+  container: ubuntu:16.04
   steps:
   - script: |
       terraform fmt -check=true -diff=true -list=true
