@@ -23,14 +23,13 @@ jobs:
           command: |
             export "${TF_VAR_project_name}${CIRCLE_BUILD_NUM}"
             echo $TF_VAR_project_name
-            bash ../install.sh
+            sh ../install.sh
             terraform init
             terraform plan -out=terraform.out
       - persist_to_workspace:
           root: example
           paths:
            - terraform.out
-           - PROJECT_NAME
 
   deploy:
     docker:
