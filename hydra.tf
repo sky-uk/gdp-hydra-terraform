@@ -106,9 +106,9 @@ module "k8s_config_aks_1" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   config_path            = "${module.aks_cluster_1.kubeconfig}"
-  cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
-  host                       = "${module.aks_cluster_1.host}"
-  node_count                 = "${var.node_count}"
+  cluster_ca_certificate = "${base64decode(module.aks_cluster_1.cluster_ca)}"
+  host                   = "${module.aks_cluster_1.host}"
+  node_count             = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -124,9 +124,9 @@ module "k8s_config_aks_2" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   config_path            = "${module.aks_cluster_2.kubeconfig}"
-  cluster_ca_certificate     = "${base64decode(module.aks_cluster_2.cluster_ca)}"
-  host                       = "${module.aks_cluster_2.host}"
-  node_count                 = "${var.node_count}"
+  cluster_ca_certificate = "${base64decode(module.aks_cluster_2.cluster_ca)}"
+  host                   = "${module.aks_cluster_2.host}"
+  node_count             = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
