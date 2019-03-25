@@ -1,9 +1,9 @@
 variable "cluster_client_certificate" {
-  default = [""]
+  default = ""
 }
 
 variable "cluster_client_key" {
-  default = [""]
+  default = ""
 }
 
 variable "cluster_ca_certificate" {}
