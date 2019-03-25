@@ -30,8 +30,10 @@ resource "google_container_cluster" "cluster" {
 
   master_auth {
     client_certificate_config {
-      issue_client_certificate = true
+      issue_client_certificate = false
     }
+    username = ""
+    password = ""
   }
 
   resource_labels = "${var.tags}"
@@ -44,7 +46,5 @@ data "template_file" "kubeconfig" {
     cluster_name               = "${google_container_cluster.cluster.name}"
     certificate_authority_data = "${google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate}"
     server                     = "https://${google_container_cluster.cluster.0.endpoint}"
-    client_cert                = "${google_container_cluster.cluster.0.master_auth.0.client_certificate}"
-    client_key                 = "${google_container_cluster.cluster.0.master_auth.0.client_key}"
   }
 }
