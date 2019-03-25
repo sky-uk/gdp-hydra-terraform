@@ -17,6 +17,6 @@ variable "prom_metrics_credentials" {
 
 variable "node_count" {}
 
-varible "config_path" {
+variable "config_path" {
   default = ""
 }
