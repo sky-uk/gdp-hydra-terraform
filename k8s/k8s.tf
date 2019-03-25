@@ -1,6 +1,4 @@
 provider "kubernetes" {
-  client_certificate     = "${var.cluster_client_certificate}"
-  client_key             = "${var.cluster_client_key}"
   config_path            = "${var.config_path}"
   cluster_ca_certificate = "${var.cluster_ca_certificate}"
   host                   = "${var.host}"
