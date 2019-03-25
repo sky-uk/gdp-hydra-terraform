@@ -61,4 +61,3 @@ resource "azurerm_kubernetes_cluster" "aks" {
     enabled = true
   }
 }
-
