@@ -40,10 +40,13 @@ resource "google_container_cluster" "cluster" {
   resource_labels = "${var.tags}"
 }
 
+data "google_client_config" "current" {}
+
 data "template_file" "kubeconfig" {
   template = "${file("${path.module}/templates/kubeconfig.cert.tpl")}"
 
   vars {
+    access_token               = "${data.google_client_config.current.access_token}"
     cluster_name               = "${google_container_cluster.cluster.name}"
     certificate_authority_data = "${google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate}"
     server                     = "https://${google_container_cluster.cluster.0.endpoint}"
