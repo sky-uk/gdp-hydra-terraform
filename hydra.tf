@@ -143,8 +143,6 @@ module "k8s_config_gke_1" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  cluster_client_certificate = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
-  cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                       = "${module.gke_cluster_1.host}"
   node_count                 = "${var.node_count}"
@@ -162,8 +160,6 @@ module "k8s_config_gke_2" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  cluster_client_certificate = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
-  cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
   cluster_ca_certificate     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                       = "${module.gke_cluster_2.host}"
   node_count                 = "${var.node_count}"
