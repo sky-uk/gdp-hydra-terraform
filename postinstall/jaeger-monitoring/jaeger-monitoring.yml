@@ -1,0 +1,15 @@
+# setup an elasticsearch with `make es`
+apiVersion: io.jaegertracing/v1alpha1
+kind: Jaeger
+metadata:
+  name: jaeger
+  namespace: monitoring
+spec:
+  strategy: production
+  agent:
+    strategy: DaemonSet
+  storage:
+    type: elasticsearch
+    options:
+      es:
+        server-urls: http://elascticsearch-elasticsearch-client.elasticsearch:9200
