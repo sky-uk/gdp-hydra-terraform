@@ -18,17 +18,6 @@ data "kubernetes_service" "ingress" {
   depends_on = ["null_resource.cluster"]
 }
 
-resource "null_resource" "cluster" {
-  # Changes to any instance of the cluster requires re-provisioning
-  triggers {
-    cluster_instance_ids = "${module.monitoring_cluster.host}"
-  }
-
-  provisioner "local-exec" {
-    command = "echo ${module.cluster_services_monitoring.helm_traefik_name}"
-  }
-}
-
 variable "cluster_prefix" {}
 
 variable "google_project" {}

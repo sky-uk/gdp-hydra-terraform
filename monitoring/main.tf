@@ -70,6 +70,6 @@ provider "helm" {
 
   kubernetes {
     cluster_ca_certificate = "${base64decode(var.cluster_ca)}"
-    host                   = "${module.monitoring_cluster.host}"
+    host                   = "${var.host}"
   }
 }
