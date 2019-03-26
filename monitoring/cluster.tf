@@ -29,7 +29,6 @@ module "cluster_services_monitoring" {
   enable_traefik = true
 
   cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-  config_path            = "${module.monitoring_cluster.host}.kubeconfig"
   host                   = "${module.monitoring_cluster.host}"
   cluster_name           = "gke2"
   tiller_service_account = "${kubernetes_service_account.tiller.metadata.0.name}"

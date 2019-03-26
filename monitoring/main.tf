@@ -1,5 +1,5 @@
 provider "kubernetes" {
-  config_path            = "${var.host}.kubeconfig"
+  config_path            = "${module.monitoring_cluster.host}.kubeconfig"
   load_config_file       = true
   cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host                   = "${module.monitoring_cluster.host}"
@@ -97,7 +97,7 @@ resource "kubernetes_namespace" "logging" {
 
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${kubernetes_service_account.tiller.metadata.0.name} --wait --kubeconfig ${var.host}.kubeconfig"
+    command = "helm init --service-account ${kubernetes_service_account.tiller.metadata.0.name} --wait --kubeconfig ${module.monitoring_cluster.host}.kubeconfig"
   }
 
   depends_on = ["kubernetes_cluster_role_binding.tiller"]
