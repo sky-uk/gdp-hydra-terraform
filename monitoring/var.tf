@@ -39,3 +39,5 @@ variable "cluster_ca" {
   type        = "string"
   description = "CA Cert for the cluster"
 }
+
+variable "cluster_prefix" {}

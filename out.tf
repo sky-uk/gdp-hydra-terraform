@@ -1,3 +1,10 @@
+data "kubernetes_service" "ingress" {
+  metadata {
+    name      = "traefik-ingress-controller"
+    namespace = "kube-system"
+  }
+}
+
 output "ips" {
   description = "Map of the cluster IPs"
   value       = "${local.cluster_ips}"
