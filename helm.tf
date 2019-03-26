@@ -5,7 +5,7 @@ module "helm_aks1" {
 
   cluster_ca_certificate = "${base64decode(module.aks_cluster_1.cluster_ca)}"
   host                   = "${module.aks_cluster_1.host}"
-  kubeconfig             = "${module.aks_cluster_1.kubeconfig}"
+  config_path           = "aks_cluster_1.kubeconfig"
 
   cluster_name           = "aks1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
