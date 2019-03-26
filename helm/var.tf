@@ -12,6 +12,5 @@ variable "monitoring_dns_name" {
 variable "fluentd_ingress_ip" {}
 
 variable "tiller_service_account" {}
-variable "config_path" {}
 variable "monitoring_namespace" {}
 variable "logging_namespace" {}

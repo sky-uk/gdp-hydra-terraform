@@ -8,7 +8,3 @@ variable "prom_metrics_credentials" {
 }
 
 variable "node_count" {}
-
-variable "config_path" {
-  default = ""
-}
