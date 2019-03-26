@@ -1,8 +1,3 @@
-resource "local_file" "kubeconfig" {
-  content  = "${var.kubeconfig}"
-  filename = "${var.host}.kubeconfig"
-}
-
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
     command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${local_file.kubeconfig.filename}"
@@ -11,6 +6,7 @@ resource "null_resource" "helm_init" {
 
 provider "helm" {
   kubernetes {
+    config_path            = "${var,config_path}"
     cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
   }
