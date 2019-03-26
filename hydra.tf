@@ -225,7 +225,7 @@ module "monitoring_config" {
 
   cluster_ips = "${local.cluster_ips}"
 
-  cluster_prefix     = "${var.project_name}-monitoring"
+  cluster_prefix = "${var.project_name}-monitoring"
 
   prometheus_scrape_credentials = {
     username = "${var.prom_metrics_username}"
