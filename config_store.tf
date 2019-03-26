@@ -23,7 +23,7 @@ data "archive_file" "kubeconfig" {
   }
 
   source {
-    content  = "${module.monitoring.kubeconfig}"
+    content  = "${module.monitoring_cluster.kubeconfig}"
     filename = "kubeconfig_monitoring"
   }
 }

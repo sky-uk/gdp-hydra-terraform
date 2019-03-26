@@ -37,7 +37,7 @@ output "kubeconfig_url" {
 # }
 
 output "monitoring_kubeconfig" {
-  value = "${module.monitoring.kubeconfig}"
+  value = "${module.monitoring_cluster.kubeconfig}"
 }
 
 output "cluster_dns_name" {
