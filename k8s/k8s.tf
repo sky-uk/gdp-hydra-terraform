@@ -1,6 +1,5 @@
 provider "kubernetes" {
   config_path            = "${var.config_path}"
-  config_context         = "default-context"
   cluster_ca_certificate = "${var.cluster_ca_certificate}"
   host                   = "${var.host}"
 }
