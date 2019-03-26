@@ -236,26 +236,3 @@ module "monitoring_config" {
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
 }
-
-module "monitoring_config_part2" {
-  source = "monitoring"
-
-  cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-  host                   = "${module.monitoring_cluster.host}"
-
-  project_name = "${var.project_name}"
-  tags         = "${local.tags}"
-
-  cluster_ips = "${local.cluster_ips}"
-
-  cluster_prefix = "${var.project_name}-monitoring"
-
-  prometheus_scrape_credentials = {
-    username = "${var.prom_metrics_username}"
-    password = "${random_string.prom_metrics_password.result}"
-  }
-
-  prometheus_ui_password = "${var.prometheus_ui_password}"
-  cluster_issuer_email   = "${var.cluster_issuer_email}"
-  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
-}
