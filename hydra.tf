@@ -142,6 +142,7 @@ module "k8s_config_gke_1" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   config_path            = "kubeconfig_gke_1"
+  config_context         = "default-context"
   cluster_ca_certificate = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                   = "${module.gke_cluster_1.host}"
   node_count             = "${var.node_count}"
@@ -160,6 +161,7 @@ module "k8s_config_gke_2" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   config_path            = "kubeconfig_gke_2"
+  config_context         = "default-context"
   cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                   = "${module.gke_cluster_2.host}"
   node_count             = "${var.node_count}"
@@ -227,7 +229,8 @@ module "monitoring" {
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
 
-  config_path = "kubeconfig_monitoring"
+  config_path    = "kubeconfig_monitoring"
+  config_context = "default-context"
 
   prometheus_scrape_credentials = {
     username = "${var.prom_metrics_username}"
