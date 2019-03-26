@@ -11,6 +11,6 @@ output "tiller_service_account_name" {
 }
 
 output "kubeconfig" {
-  value     = "${module.monitoring_cluster.kubeconfig}"
+  value     = "${module.monitoring_config.kubeconfig}"
   sensitive = true
 }
