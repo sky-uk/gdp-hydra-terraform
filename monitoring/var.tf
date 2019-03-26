@@ -32,3 +32,13 @@ variable "monitoring_dns_name" {
   type        = "string"
   description = "DNS name for monitoring cluster ingress"
 }
+
+variable "host" {
+  type        = "string"
+  description = "Host for the cluster API"
+}
+
+variable "cluster_ca" {
+  type        = "string"
+  description = "CA Cert for the cluster"
+}

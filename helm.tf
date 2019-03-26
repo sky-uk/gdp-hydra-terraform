@@ -156,6 +156,4 @@ module "cluster_services_monitoring" {
   traefik_replica_count  = "2"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-
-  depends_on_hack = "${module.monitoring_config.cluster_ingress_ip}"
 }

@@ -1,8 +1,8 @@
 provider "kubernetes" {
-  config_path            = "${module.monitoring_cluster.host}.kubeconfig"
+  config_path            = "${var.host}.kubeconfig"
   load_config_file       = true
-  cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-  host                   = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate = "${base64decode(var.cluster_ca)}"
+  host                   = "${var.host}"
 }
 
 # create service account for tiller - server side of Helm
@@ -33,46 +33,6 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   }
 }
 
-/*resource "kubernetes_service" "ingress_service" {
-  metadata {
-    name      = "traefik-ingress-controller"
-    namespace = "kube-system"
-
-    labels = {
-      createdby  = "terraform"
-      app        = "traefik"
-      datacenter = "${var.cluster_prefix}"
-    }
-  }
-
-  spec {
-    selector {
-      app     = "traefik"
-      release = "traefik-ingress-controller"
-    }
-
-    port {
-      name        = "http"
-      port        = 80
-      target_port = 80
-    }
-
-    port {
-      name        = "https"
-      port        = 443
-      target_port = 443
-    }
-
-    port {
-      name        = "metrics"
-      port        = 8080
-      target_port = 8080
-    }
-
-    type = "LoadBalancer"
-  }
-}*/
-
 resource "kubernetes_namespace" "monitoring" {
   metadata {
     labels = {
@@ -97,7 +57,7 @@ resource "kubernetes_namespace" "logging" {
 
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${kubernetes_service_account.tiller.metadata.0.name} --wait --kubeconfig ${module.monitoring_cluster.host}.kubeconfig"
+    command = "helm init --service-account ${kubernetes_service_account.tiller.metadata.0.name} --wait --kubeconfig ${var.host}.kubeconfig"
   }
 
   depends_on = ["kubernetes_cluster_role_binding.tiller"]
@@ -109,7 +69,7 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+    cluster_ca_certificate = "${base64decode(var.cluster_ca)}"
     host                   = "${module.monitoring_cluster.host}"
   }
 }
