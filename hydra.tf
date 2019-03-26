@@ -215,10 +215,10 @@ module "monitoring_cluster" {
 }
 
 module "monitoring_config" {
-  source = "monitoring"
+  source = "k8s"
 
-  cluster_ca = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-  host       = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+  host                   = "${module.monitoring_cluster.host}"
 
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
