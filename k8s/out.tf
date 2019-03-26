@@ -3,14 +3,11 @@ output "cluster_ingress_ip" {
 
   //The helm elements depend on some of the items created in this module
   // as modules don’t support the depends_on syntax we abuse this output variable
-  // to have the same effect. 
+  // to have the same effect.
   depends_on = [
-    "kubernetes_deployment.hc-app",
-    "kubernetes_ingress.hc-ingress",
     "kubernetes_ingress.prometheus-ingress",
     "kubernetes_namespace.healthcheck",
     "kubernetes_namespace.monitoring",
-    "kubernetes_service.hc-service",
     "kubernetes_service.ingress_service",
   ]
 }

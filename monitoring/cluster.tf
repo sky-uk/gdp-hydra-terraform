@@ -16,7 +16,7 @@ module "monitoring_cluster" {
   tags         = "${var.tags}"
 
   cluster_prefix     = "${var.cluster_prefix}"
-  region             = "europe-west2-a"
+  region             = "europe-west2-b"
   google_project     = "${var.google_project}"
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"

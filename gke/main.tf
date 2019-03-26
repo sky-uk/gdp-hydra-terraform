@@ -21,6 +21,8 @@ resource "google_container_cluster" "cluster" {
     ]
   }
 
+  logging_service = "none"
+
   enable_legacy_abac = "true"
 
   // Offset each cluster maintance windows by 2 hours from each other

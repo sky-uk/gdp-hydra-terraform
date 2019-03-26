@@ -6,24 +6,24 @@ data "template_file" "jaeger_values" {
   }
 }
 
-resource "helm_release" "jaeger" {
-  timeout = "900"
-
-  name      = "jaeger"
-  chart     = "stable/jaeger-operator"
-  namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  values = [
-    "${data.template_file.jaeger_values.rendered}",
-  ]
-
-  depends_on = [
-    "helm_release.elasticsearch",
-  ]
-}
+#resource "helm_release" "jaeger" {
+#  timeout = "900"
+#
+#  name      = "jaeger-operator"
+#  chart     = "stable/jaeger-operator"
+#  namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
+#
+#  # workaround to stop CI from complaining about keyring change
+#  keyring = ""
+#
+##  values = [
+##    "${data.template_file.jaeger_values.rendered}",
+##  ]
+#
+#  depends_on = [
+#    "helm_release.elasticsearch",
+#  ]
+#}
 
 resource "kubernetes_ingress" "jaeger-ui" {
   metadata {
@@ -60,7 +60,7 @@ resource "kubernetes_ingress" "jaeger-ui" {
 
           backend {
             service_name = "jaeger-query"
-            service_port = 80
+            service_port = 16686
           }
         }
       }

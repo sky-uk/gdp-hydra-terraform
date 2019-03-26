@@ -14,7 +14,7 @@ files:
     server.name: kibana
     server.host: "0"
     server.basePath: "/kibana"
-    elasticsearch.url: http://elascticsearch-elasticsearch-client:9200
+    elasticsearch.url: http://elascticsearch-elasticsearch-client.elasticsearch:9200
 
     ## Custom config properties below
     ## Ref: https://www.elastic.co/guide/en/kibana/current/settings.html

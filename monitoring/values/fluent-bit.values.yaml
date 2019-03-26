@@ -28,7 +28,7 @@ backend:
 
   forward:
     host: fluentd
-    port: 24224
+    port: 24220
 
 parsers:
   enabled: false
@@ -69,7 +69,7 @@ extraEntries:
 #     # >=1 additional Key/Value entrie(s) for existing Input section
   filter: |-
 #     # >=1 additional Key/Value entrie(s) for existing Filter section
-  output: |-    
+  output: |-
 #     # >=1 additional Key/Value entrie(s) for existing Ouput section
 
 

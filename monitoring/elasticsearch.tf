@@ -1,5 +1,5 @@
 locals {
-  elasticsearch_host = "elascticsearch-elasticsearch-client"
+  elasticsearch_host = "elascticsearch-elasticsearch-client.elasticsearch"
 }
 
 data "template_file" "elasticsearch_values" {

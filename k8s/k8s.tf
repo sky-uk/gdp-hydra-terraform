@@ -1,4 +1,4 @@
-# This module defines Kubernetes-specific configuration that apply to 
+# This module defines Kubernetes-specific configuration that apply to
 # all clusters except for the monitoring cluster.
 
 provider "kubernetes" {
@@ -112,7 +112,7 @@ resource "kubernetes_config_map" "elasticsearch" {
 
   metadata {
     name      = "elastic-secrets"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
   }
 
   data {
@@ -127,7 +127,7 @@ resource "kubernetes_service" "elasticsearch" {
 
   metadata {
     name      = "elasticsearch"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
   }
 
   spec {
@@ -139,7 +139,7 @@ resource "kubernetes_service" "elasticsearch" {
 resource "kubernetes_service" "jaeger_collector" {
   metadata {
     name      = "ext-jaeger-collector"
-    namespace = "monitoring"
+    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
   }
 
   spec {

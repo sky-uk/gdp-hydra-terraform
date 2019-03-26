@@ -24,15 +24,6 @@ provider "azuread" {
   tenant_id       = "${var.azure_tenant_id}"
 }
 
-resource "google_project_services" "project_apis" {
-  project  = "${var.google_project_id}"
-  services = ["iam.googleapis.com", "container.googleapis.com", "compute.googleapis.com", "logging.googleapis.com", "monitoring.googleapis.com", "cloudresourcemanager.googleapis.com", "bigquery-json.googleapis.com", "datastore.googleapis.com", "oslogin.googleapis.com", "pubsub.googleapis.com", "sql-component.googleapis.com", "storage-component.googleapis.com", "containerregistry.googleapis.com", "cloudapis.googleapis.com", "storage-api.googleapis.com", "iamcredentials.googleapis.com", "servicemanagement.googleapis.com", "serviceusage.googleapis.com", "clouddebugger.googleapis.com", "cloudtrace.googleapis.com"]
-
-  provisioner "local-exec" {
-    command = "sleep 120"
-  }
-}
-
 provider "akamai" {
   host          = "${var.akamai_host}"
   access_token  = "${var.akamai_access_token}"
@@ -88,7 +79,7 @@ module "gke_cluster_1" {
   tags         = "${local.tags}"
 
   cluster_prefix     = "${local.resource_group_name_clusters}"
-  region             = "europe-west2-a"
+  region             = "europe-west2-b"
   google_project     = "${var.google_project_id}"
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
