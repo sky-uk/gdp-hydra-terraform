@@ -1,6 +1,6 @@
 provider "kubernetes" {
   config_path            = "${var.config_path}"
-  config_context         = "default-context"
+  load_config_file       = true
   cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host                   = "${module.monitoring_cluster.host}"
 }

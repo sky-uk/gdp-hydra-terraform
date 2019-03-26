@@ -1,5 +1,6 @@
 provider "kubernetes" {
   config_path            = "${var.config_path}"
+  load_config_file       = true
   cluster_ca_certificate = "${var.cluster_ca_certificate}"
   host                   = "${var.host}"
 }
