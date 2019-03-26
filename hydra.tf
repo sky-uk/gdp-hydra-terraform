@@ -217,7 +217,7 @@ module "monitoring_cluster" {
 module "monitoring_config" {
   source = "monitoring"
 
-  cluster_ca = "${module.monitoring_cluster.cluster_ca}"
+  cluster_ca = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host       = "${module.monitoring_cluster.host}"
 
   project_name = "${var.project_name}"

@@ -1,7 +1,7 @@
 provider "kubernetes" {
   config_path            = "${var.host}.kubeconfig"
   load_config_file       = true
-  cluster_ca_certificate = "${base64decode(var.cluster_ca)}"
+  cluster_ca_certificate = "${var.cluster_ca}"
   host                   = "${var.host}"
 }
 
@@ -69,7 +69,7 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    cluster_ca_certificate = "${base64decode(var.cluster_ca)}"
+    cluster_ca_certificate = "${var.cluster_ca}"
     host                   = "${var.host}"
   }
 }
