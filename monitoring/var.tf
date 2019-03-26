@@ -32,3 +32,8 @@ variable "monitoring_dns_name" {
   type        = "string"
   description = "DNS name for monitoring cluster ingress"
 }
+
+variable "config_path" {
+  type        = "string"
+  description = "Path to the kubeconfig file"
+}
