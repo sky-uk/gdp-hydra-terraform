@@ -201,17 +201,17 @@ module "cloudflare" {
 }
 
 module "monitoring_cluster" {
-  source = "../gke"
+  source = "gke"
 
   project_name = "${var.project_name}"
-  tags         = "${var.tags}"
+  tags         = "${local.tags}"
 
-  cluster_prefix     = "${var.cluster_prefix}"
+  cluster_prefix     = "${local.resource_group_name_clusters}"
   region             = "europe-west2-a"
-  google_project     = "${var.google_project}"
+  google_project     = "${var.google_project_id}"
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
-  machine_type       = "${var.machine_type}"
+  machine_type       = "${local.gke_node}"
 }
 
 module "monitoring" {
