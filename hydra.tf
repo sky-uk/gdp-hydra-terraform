@@ -200,7 +200,21 @@ module "cloudflare" {
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
 }
 
-module "monitoring" {
+module "monitoring_cluster" {
+  source = "gke"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${local.resource_group_name_clusters}"
+  region             = "europe-west2-a"
+  google_project     = "${var.google_project}"
+  kubernetes_version = "${var.kubernetes_version}"
+  node_count         = "${var.node_count}"
+  machine_type       = "${local.gke_node}"
+}
+
+module "monitoring_config" {
   source = "monitoring"
 
   project_name = "${var.project_name}"

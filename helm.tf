@@ -143,3 +143,19 @@ module "cluster_services_gke2" {
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }
+
+module "cluster_services_monitoring" {
+  source = "cluster_services"
+
+  enable_traefik = true
+
+  cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+  host                   = "${module.monitoring_cluster.host}"
+  cluster_name           = "gke2"
+  tiller_service_account = "${module.monitoring_config.tiller_service_account_name}"
+  traefik_replica_count  = "2"
+
+  cluster_issuer_email = "${var.cluster_issuer_email}"
+
+  depends_on_hack = "${module.monitoring_config.cluster_ingress_ip}"
+}
