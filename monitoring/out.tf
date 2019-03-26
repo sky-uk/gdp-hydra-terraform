@@ -9,3 +9,8 @@ output "fluentd_ingress_ip" {
 output "tiller_service_account_name" {
   value = "${kubernetes_service_account.tiller.metadata.0.name}"
 }
+
+output "kubeconfig" {
+  value     = "${module.monitoring_cluster.kubeconfig}"
+  sensitive = true
+}

@@ -227,6 +227,8 @@ module "monitoring" {
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
 
+  config_path = "monitoring_cluster.kubeconfig"
+
   prometheus_scrape_credentials = {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
