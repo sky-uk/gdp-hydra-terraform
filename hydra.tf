@@ -208,7 +208,7 @@ module "monitoring_cluster" {
 
   cluster_prefix     = "${local.resource_group_name_clusters}"
   region             = "europe-west2-a"
-  google_project     = "${var.google_project}"
+  google_project     = "${var.google_project_id}"
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
