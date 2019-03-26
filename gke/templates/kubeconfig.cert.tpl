@@ -20,7 +20,7 @@ users:
         access-token: ${access_token}
         cmd-args: config config-helper --format=json
         cmd-path: /usr/local/google-cloud-sdk/bin/gcloud
-        expiry: "2019-03-07T17:25:37Z"
+        expiry: "${timeadd(timestamp(), "1h")}
         expiry-key: '{.credential.token_expiry}'
         token-key: '{.credential.access_token}'
       name: gcp
