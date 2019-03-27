@@ -25,10 +25,12 @@ jobs:
             echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
+            terraform plan -target=aks_cluster_1 -target=aks_cluster_2 -target=gke_cluster_1 -target=gke_cluster_2 -target=monitoring_cluster clusters.out
             terraform plan -out=terraform.out
       - persist_to_workspace:
           root: example
           paths:
+           - clusters.out
            - terraform.out
 
   deploy:
@@ -47,7 +49,7 @@ jobs:
             echo $TF_VAR_project_name
             bash ../install.sh
             terraform init
-            terraform apply -target=aks_cluster_1 -target=aks_cluster_2 -target=gke_cluster_1 -target=gke_cluster_2 -target=monitoring_cluster /tmp/example/terraform.out
+            terraform apply /tmp/example/clusters.out
             terraform apply /tmp/example/terraform.out
       - run:
           name: Postinstall software
