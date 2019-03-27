@@ -1,4 +1,3 @@
-variable "host" {}
 variable "enable_traefik" {}
 variable "enable_prometheus" {}
 variable "cluster_name" {}

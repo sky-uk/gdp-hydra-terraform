@@ -33,8 +33,6 @@ variable "monitoring_dns_name" {
   description = "DNS name for monitoring cluster ingress"
 }
 
-variable "host" {}
-
 variable "cluster_prefix" {}
 
 variable "tiller_service_account" {}

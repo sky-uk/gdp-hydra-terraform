@@ -232,14 +232,12 @@ module "monitoring_k8s" {
 
   kubeconfig_path = "${local.monitoring}"
 
-  host           = "${module.gke_cluster_2.host}"
   cluster_prefix = "${var.project_name}-monitoring"
 }
 
 module "monitoring_config" {
   source = "monitoring"
 
-  host            = "${module.monitoring_cluster.host}"
   kubeconfig_path = "${local.monitoring}"
 
   project_name = "${var.project_name}"

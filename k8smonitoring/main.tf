@@ -1,4 +1,3 @@
-variable "host" {}
 variable "cluster_prefix" {}
 
 variable "traefik_replica_count" {

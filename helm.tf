@@ -3,7 +3,6 @@ module "helm_aks1" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  host            = "${module.aks_cluster_1.host}"
   kubeconfig_path = "{local.aks1}"
 
   cluster_name           = "aks1"
@@ -25,7 +24,6 @@ module "cluster_services_aks1" {
 
   enable_traefik = "${var.enable_traefik}"
 
-  host                   = "${module.aks_cluster_1.host}"
   cluster_name           = "aks1"
   tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
 
@@ -45,7 +43,6 @@ module "helm_aks2" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  host            = "${module.aks_cluster_2.host}"
   kubeconfig_path = "${local.aks2}"
 
   cluster_name           = "aks2"
@@ -63,7 +60,6 @@ module "cluster_services_aks2" {
   source         = "cluster_services"
   enable_traefik = "${var.enable_traefik}"
 
-  host                   = "${module.aks_cluster_2.host}"
   cluster_name           = "aks2"
   tiller_service_account = "${module.k8s_config_aks_2.tiller_service_account_name}"
 
@@ -80,7 +76,6 @@ module "helm_gke1" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  host            = "${module.gke_cluster_1.host}"
   kubeconfig_path = "{local.gke1}"
 
   cluster_name           = "gke1"
@@ -97,7 +92,6 @@ module "cluster_services_gke1" {
   source         = "cluster_services"
   enable_traefik = "${var.enable_traefik}"
 
-  host         = "${module.gke_cluster_1.host}"
   cluster_name = "gke1"
 
   traefik_replica_count  = "${var.traefik_replicas_count}"
@@ -114,7 +108,6 @@ module "helm_gke2" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  host            = "${module.gke_cluster_2.host}"
   kubeconfig_path = "{local.gke2}"
 
   cluster_name           = "gke2"
@@ -132,7 +125,6 @@ module "cluster_services_gke2" {
   source         = "cluster_services"
   enable_traefik = "${var.enable_traefik}"
 
-  host                   = "${module.gke_cluster_2.host}"
   cluster_name           = "gke2"
   tiller_service_account = "${module.k8s_config_gke_2.tiller_service_account_name}"
 
@@ -149,12 +141,11 @@ module "cluster_services_monitoring" {
 
   enable_traefik = true
 
-  host                   = "${module.monitoring_cluster.host}"
   cluster_name           = "gke2"
   tiller_service_account = "${module.monitoring_k8s.tiller_service_account_name}"
   traefik_replica_count  = "2"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
   kubeconfig_path      = "${local.monitoring}"
-  depends_on_hack      = "${module.monitoring_cluster.host}"
+  depends_on_hack      = "${module.monitoring_k8s.ingress_ip}"
 }
