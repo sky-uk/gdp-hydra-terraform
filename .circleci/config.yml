@@ -25,7 +25,7 @@ jobs:
             echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
-            terraform plan -target=aks_cluster_1.google_container_cluster.cluster -target=aks_cluster_2 -target=gke_cluster_1 -target=gke_cluster_2 -target=monitoring_cluster -out=clusters.out
+            terraform plan -target=aks_cluster_1-.azurerm_kubernetes_cluster.aks target=aks_cluster_2.azurerm_kubernetes_cluster.aks -target=gke_cluster_1.google_container_cluster.cluster -target=gke_cluster_2.google_container_cluster.cluster -target=monitoring_cluster.google_container_cluster.cluster -out=clusters.out
             terraform plan -out=terraform.out
       - persist_to_workspace:
           root: example
