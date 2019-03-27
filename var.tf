@@ -166,9 +166,9 @@ locals {
     "hydra_project" = "${var.project_name}"
   }
 
-  gke1       = "${path.cwd}gke1.kubeconfig"
-  gke2       = "${path.cwd}gke2.kubeconfig"
-  monitoring = "${path.cwd}monitoring.kubeconfig"
-  aks1       = "${path.cwd}aks1.kubeconfig"
-  aks2       = "${path.cwd}aks2.kubeconfig"
+  gke1       = "${path.cwd}/gke1.kubeconfig"
+  gke2       = "${path.cwd}/gke2.kubeconfig"
+  monitoring = "${path.cwd}/monitoring.kubeconfig"
+  aks1       = "${path.cwd}/aks1.kubeconfig"
+  aks2       = "${path.cwd}/aks2.kubeconfig"
 }
