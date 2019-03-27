@@ -10,8 +10,8 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    config_path            = "${var.kubeconfig_path}"
-    host                   = "${var.host}"
+    config_path = "${var.kubeconfig_path}"
+    host        = "${var.host}"
   }
 }
 

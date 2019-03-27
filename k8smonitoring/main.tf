@@ -8,8 +8,8 @@ variable "traefik_replica_count" {
 variable "kubeconfig_path" {}
 
 provider "kubernetes" {
-  config_path            = "${var.kubeconfig_path}"
-  load_config_file       = true
+  config_path      = "${var.kubeconfig_path}"
+  load_config_file = true
 }
 
 # create service account for tiller - server side of Helm
@@ -74,8 +74,8 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    config_path            = "${var.kubeconfig_path}"
-    load_config_file       = true
+    config_path      = "${var.kubeconfig_path}"
+    load_config_file = true
   }
 }
 

@@ -15,7 +15,7 @@ provider "helm" {
 
   kubernetes {
     config_path = "${var.kubeconfig_path}"
-    host                   = "${var.host}"
+    host        = "${var.host}"
   }
 }
 
