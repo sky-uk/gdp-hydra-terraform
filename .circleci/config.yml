@@ -40,7 +40,7 @@ jobs:
             bash ../install.sh
             terraform init
             terraform apply -auto-approve -target=module.hydra.module.aks_cluster_1.local_file.kubeconfig -target=module.hydra.module.aks_cluster_2.local_file.kubeconfig -target=module.hydra.module.gke_cluster_1.local_file.kubeconfig -target=module.hydra.module.gke_cluster_2.local_file.kubeconfig -target=module.hydra.module.monitoring_cluster.local_file.kubeconfig
-            terraform apply
+            terraform apply -auto-approve
       - run:
           name: Postinstall software
           working_directory: postinstall
