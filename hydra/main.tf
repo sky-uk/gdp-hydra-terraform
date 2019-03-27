@@ -32,7 +32,6 @@ locals {
   aks1       = "${path.cwd}/aks1.kubeconfig"
   aks2       = "${path.cwd}/aks2.kubeconfig"
 }
-
 module "hydra" {
   source = "../"
 }
