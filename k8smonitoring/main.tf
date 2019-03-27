@@ -8,7 +8,6 @@ variable "traefik_replica_count" {
 variable "kubeconfig_path" {}
 
 provider "kubernetes" {
-  host             = "${var.host}"
   config_path      = "${var.kubeconfig_path}"
   load_config_file = true
 }
