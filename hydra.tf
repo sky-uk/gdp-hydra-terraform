@@ -112,8 +112,8 @@ module "k8s_config_aks_1" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  host                   = "${module.aks_cluster_1.host}"
-  node_count             = "${var.node_count}"
+  host       = "${module.aks_cluster_1.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -130,8 +130,8 @@ module "k8s_config_aks_2" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  host                   = "${module.aks_cluster_2.host}"
-  node_count             = "${var.node_count}"
+  host       = "${module.aks_cluster_2.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -148,8 +148,8 @@ module "k8s_config_gke_1" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  host                   = "${module.gke_cluster_1.host}"
-  node_count             = "${var.node_count}"
+  host       = "${module.gke_cluster_1.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
@@ -166,8 +166,8 @@ module "k8s_config_gke_2" {
 
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  host                   = "${module.gke_cluster_2.host}"
-  node_count             = "${var.node_count}"
+  host       = "${module.gke_cluster_2.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
