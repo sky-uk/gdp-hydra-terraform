@@ -25,10 +25,10 @@ jobs:
             echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
-            terraform plan -parallelism=25 -target=aks_cluster_1.azurerm_kubernetes_cluster.aks target=aks_cluster_2.azurerm_kubernetes_cluster.aks -out=aks.out
-            terraform plan -parallelism=25 -target=gke_cluster_1.google_container_cluster.cluster -target=gke_cluster_2.google_container_cluster.cluster -out=gke.out
-            terraform plan -parallelism=25 -target=monitoring_cluster.google_container_cluster.cluster -out=monitoring.out
-            terraform plan -parallelism=25 -out=terraform.out
+            terraform plan -target=aks_cluster_1.azurerm_kubernetes_cluster.aks target=aks_cluster_2.azurerm_kubernetes_cluster.aks -out=aks.out
+            terraform plan -target=gke_cluster_1.google_container_cluster.cluster -target=gke_cluster_2.google_container_cluster.cluster -out=gke.out
+            terraform plan -target=monitoring_cluster.google_container_cluster.cluster -out=monitoring.out
+            terraform plan -out=terraform.out
       - persist_to_workspace:
           root: example
           paths:
