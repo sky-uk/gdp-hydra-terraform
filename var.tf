@@ -166,9 +166,9 @@ locals {
     "hydra_project" = "${var.project_name}"
   }
 
-  gke1 = "gke1.kubeconfig"
-  gke2 = "gke2.kubeconfig"
+  gke1       = "gke1.kubeconfig"
+  gke2       = "gke2.kubeconfig"
   monitoring = "monitoring.kubeconfig"
-  aks1 = "aks1.kubeconfig"
-  aks2 = "aks2.kubeconfig"
+  aks1       = "aks1.kubeconfig"
+  aks2       = "aks2.kubeconfig"
 }

@@ -4,7 +4,7 @@ locals {
 
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.host}.kubeconfig"
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
   }
 }
 
@@ -19,12 +19,10 @@ provider "helm" {
   }
 }
 
-
 data "template_file" "elasticsearch_values" {
   template = "${file("${path.module}/values/elasticsearch.values.yaml")}"
 
-  vars {
-  }
+  vars {}
 }
 
 resource "helm_release" "elasticsearch" {

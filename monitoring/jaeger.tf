@@ -5,6 +5,7 @@ data "template_file" "jaeger_values" {
     monitoring_dns_name = "${var.monitoring_dns_name}"
   }
 }
+
 #
 #data "helm_repository" "incubator" {
 #  name       = "incubator"

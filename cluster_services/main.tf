@@ -1,6 +1,6 @@
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.host}.kubeconfig"
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
   }
 }
 
@@ -10,7 +10,7 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    config_path            = "${var.host}.kubeconfig"
+    config_path            = "${var.kubeconfig_path}"
     cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
   }
