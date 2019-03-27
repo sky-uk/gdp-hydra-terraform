@@ -32,7 +32,7 @@ module "cluster_services_aks1" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-  kubeconfig_path      = "{local.aks2}"
+  kubeconfig_path      = "${local.aks2}"
 
   // This forces the helm config to run after the
   // initial Kubernetes configuration module
@@ -46,7 +46,7 @@ module "helm_aks2" {
   enable_prometheus = "${var.enable_prometheus}"
 
   host            = "${module.aks_cluster_2.host}"
-  kubeconfig_path = "{local.aks2}"
+  kubeconfig_path = "${local.aks2}"
 
   cluster_name           = "aks2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
@@ -70,7 +70,7 @@ module "cluster_services_aks2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-  kubeconfig_path      = "{local.aks2}"
+  kubeconfig_path      = "${local.aks2}"
 
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
