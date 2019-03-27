@@ -33,6 +33,6 @@ output "name" {
 }
 
 resource "local_file" "kubeconfig" {
-  content  = "${azurerm_kubernetes_cluster.aks.kube_config_raw}"
+  content  = "${azurerm_kubernetes_cluster.aks.kube_admin_config_raw}"
   filename = "${var.kubeconfig_path}"
 }
