@@ -1,5 +1,5 @@
 provider "kubernetes" {
-  config_path      = "${path.cwd}${var.kubeconfig_path}"
+  config_path      = "${var.kubeconfig_path}"
   load_config_file = true
 }
 
