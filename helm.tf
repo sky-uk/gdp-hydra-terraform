@@ -5,6 +5,7 @@ module "helm_aks1" {
 
   cluster_ca_certificate = "${base64decode(module.aks_cluster_1.cluster_ca)}"
   host                   = "${module.aks_cluster_1.host}"
+  kubeconfig_path        = "{local.aks1}"
 
   cluster_name           = "aks1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
@@ -33,6 +34,7 @@ module "cluster_services_aks1" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
+  kubeconfig_path      = "{local.aks2}"
 
   // This forces the helm config to run after the
   // initial Kubernetes configuration module
@@ -47,6 +49,8 @@ module "helm_aks2" {
 
   cluster_ca_certificate = "${base64decode(module.aks_cluster_2.cluster_ca)}"
   host                   = "${module.aks_cluster_2.host}"
+  kubeconfig_path        = "{local.aks2}"
+
   cluster_name           = "aks2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
   tiller_service_account = "${module.k8s_config_aks_2.tiller_service_account_name}"
@@ -71,6 +75,7 @@ module "cluster_services_aks2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
+  kubeconfig_path      = "{local.aks2}"
 
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
@@ -82,6 +87,7 @@ module "helm_gke1" {
 
   cluster_ca_certificate = "${base64decode(module.gke_cluster_1.cluster_ca)}"
   host                   = "${module.gke_cluster_1.host}"
+  kubeconfig_path        = "{local.gke1}"
 
   cluster_name           = "gke1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
@@ -105,6 +111,7 @@ module "cluster_services_gke1" {
   tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
+  kubeconfig_path      = "{local.gke1}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
@@ -116,6 +123,7 @@ module "helm_gke2" {
 
   cluster_ca_certificate = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host                   = "${module.gke_cluster_2.host}"
+  kubeconfig_path        = "{local.gke2}"
 
   cluster_name           = "gke2"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
@@ -140,6 +148,7 @@ module "cluster_services_gke2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
+  kubeconfig_path      = "{local.gke2}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }
@@ -156,6 +165,6 @@ module "cluster_services_monitoring" {
   traefik_replica_count  = "2"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-
-  depends_on_hack = "${module.monitoring_cluster.host}"
+  kubeconfig_path      = "{local.monitoring}"
+  depends_on_hack      = "${module.monitoring_cluster.host}"
 }

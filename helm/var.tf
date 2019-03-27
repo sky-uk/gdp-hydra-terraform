@@ -14,3 +14,4 @@ variable "fluentd_ingress_ip" {}
 variable "tiller_service_account" {}
 variable "monitoring_namespace" {}
 variable "logging_namespace" {}
+variable "kubeconfig_path" {}

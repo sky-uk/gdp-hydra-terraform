@@ -244,8 +244,9 @@ module "monitoring_k8s" {
 module "monitoring_config" {
   source = "monitoring"
 
-  cluster_ca = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-  host       = "${module.monitoring_cluster.host}"
+  cluster_ca      = "${base64decode(module.monitoring_cluster.cluster_ca)}"
+  host            = "${module.monitoring_cluster.host}"
+  kubeconfig_path = "${local.monitoring}"
 
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
