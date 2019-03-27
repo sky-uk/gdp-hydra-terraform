@@ -39,7 +39,7 @@ jobs:
             echo $TF_VAR_project_name
             bash ../install.sh
             terraform init
-            terraform apply -auto-approve -target=module.hydra.module.gke_cluster_1.google_container_cluster.cluster
+            terraform apply -auto-approve -target=module.hydra.module.aks_cluster_1.azurerm_kubernetes_cluster.aks -target=module.hydra.module.aks_cluster_2.azurerm_kubernetes_cluster.aks -target=module.hydra.module.gke_cluster_1.google_container_cluster.cluster -target=module.hydra.module.gke_cluster_1.google_container_cluster.cluster -target=module.hydra.module.monitoring_cluster.google_container_cluster.cluster
             terraform apply 
       - run:
           name: Postinstall software
