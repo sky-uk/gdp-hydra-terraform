@@ -1,4 +1,5 @@
 provider "kubernetes" {
+  host             = "${var.host}"
   config_path      = "${var.kubeconfig_path}"
   load_config_file = true
 }
