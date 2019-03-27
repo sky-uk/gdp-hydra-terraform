@@ -12,7 +12,7 @@ output "cluster_ca" {
 
 output "host" {
   description = "The DNS host for the API of the cluster"
-  value       = "${google_container_cluster.cluster.0.endpoint}"
+  value       = "${google_container_cluster.cluster.0.endpoint ? google_container_cluster.cluster.0.endpoint : ""}"
 }
 
 output "name" {
@@ -22,5 +22,5 @@ output "name" {
 
 resource "local_file" "kubeconfig" {
   content  = "${data.template_file.kubeconfig.rendered}"
-  filename = "${google_container_cluster.cluster.0.endpoint}.kubeconfig"
+  filename = "${var.kubeconfig_path}"
 }

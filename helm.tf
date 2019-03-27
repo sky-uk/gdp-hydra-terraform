@@ -12,10 +12,10 @@ module "helm_aks1" {
   monitoring_namespace   = "${module.k8s_config_aks_1.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_aks_1.logging_namespace}"
 
-  fluentd_ingress_ip = "${module.monitoring_config.fluentd_ingress_ip}"
+  fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
   // This forces the helm config to run after the
-  // initial Kubernetes configuration module 
+  // initial Kubernetes configuration module
   // to prevent race configuration
   depends_on_hack = "${module.k8s_config_aks_1.cluster_ingress_ip}"
 }
@@ -35,7 +35,7 @@ module "cluster_services_aks1" {
   cluster_issuer_email = "${var.cluster_issuer_email}"
 
   // This forces the helm config to run after the
-  // initial Kubernetes configuration module 
+  // initial Kubernetes configuration module
   // to prevent race configuration
   depends_on_hack = "${module.k8s_config_aks_1.cluster_ingress_ip}"
 }
@@ -53,7 +53,7 @@ module "helm_aks2" {
   monitoring_namespace   = "${module.k8s_config_aks_2.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_aks_2.logging_namespace}"
 
-  fluentd_ingress_ip = "${module.monitoring_config.fluentd_ingress_ip}"
+  fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_aks_2.cluster_ingress_ip}"
 }
@@ -88,7 +88,7 @@ module "helm_gke1" {
   tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
   monitoring_namespace   = "${module.k8s_config_gke_1.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_gke_1.logging_namespace}"
-  fluentd_ingress_ip     = "${module.monitoring_config.fluentd_ingress_ip}"
+  fluentd_ingress_ip     = "${module.monitoring_k8s.ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
@@ -123,7 +123,7 @@ module "helm_gke2" {
   monitoring_namespace   = "${module.k8s_config_gke_2.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_gke_2.logging_namespace}"
 
-  fluentd_ingress_ip = "${module.monitoring_config.fluentd_ingress_ip}"
+  fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }
@@ -152,7 +152,7 @@ module "cluster_services_monitoring" {
   cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host                   = "${module.monitoring_cluster.host}"
   cluster_name           = "gke2"
-  tiller_service_account = "${module.monitoring_config.tiller_service_account_name}"
+  tiller_service_account = "${module.monitoring_k8s.tiller_service_account_name}"
   traefik_replica_count  = "2"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"

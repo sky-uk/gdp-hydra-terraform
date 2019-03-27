@@ -2,10 +2,29 @@ locals {
   elasticsearch_host = "elascticsearch-elasticsearch-coordinating-only"
 }
 
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.host}.kubeconfig"
+  }
+}
+
+provider "helm" {
+  install_tiller  = true
+  service_account = "${var.tiller_service_account}"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
+
+  kubernetes {
+    cluster_ca_certificate = "${var.cluster_ca}"
+    host                   = "${var.host}"
+  }
+}
+
+
 data "template_file" "elasticsearch_values" {
   template = "${file("${path.module}/values/elasticsearch.values.yaml")}"
 
-  vars {}
+  vars {
+  }
 }
 
 resource "helm_release" "elasticsearch" {
@@ -28,7 +47,9 @@ resource "helm_release" "elasticsearch" {
 data "template_file" "elasticsearch_exporter_values" {
   template = "${file("${path.module}/values/elasticsearch-exporter.values.yaml")}"
 
-  vars {}
+  vars {
+    elasticsearch_host = "${local.elasticsearch_host}"
+  }
 }
 
 resource "helm_release" "elasticsearch_exporter" {

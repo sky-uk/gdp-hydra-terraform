@@ -41,3 +41,7 @@ variable "cluster_ca" {
 }
 
 variable "cluster_prefix" {}
+
+variable "tiller_service_account" {}
+variable "monitoring_namespace" {}
+variable "logging_namespace" {}

@@ -1,5 +1,11 @@
+variable "host" {}
+variable "cluster_ca" {}
+variable "cluster_prefix" {}
+variable "traefik_replica_count" { default = "3"}
+variable "kubeconfig_path" {}
+
 provider "kubernetes" {
-  config_path            = "${var.host}.kubeconfig"
+  config_path            = "${var.kubeconfig_path}"
   load_config_file       = true
   cluster_ca_certificate = "${var.cluster_ca}"
   host                   = "${var.host}"
@@ -59,8 +65,6 @@ resource "null_resource" "helm_init" {
   provisioner "local-exec" {
     command = "helm init --service-account ${kubernetes_service_account.tiller.metadata.0.name} --wait --kubeconfig ${var.host}.kubeconfig"
   }
-
-  depends_on = ["kubernetes_cluster_role_binding.tiller"]
 }
 
 provider "helm" {
@@ -69,7 +73,33 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
+    config_path            = "${var.host}.kubeconfig"
+    load_config_file       = true
     cluster_ca_certificate = "${var.cluster_ca}"
     host                   = "${var.host}"
   }
+}
+
+data "template_file" "traefik_values" {
+  template = "${file("${path.module}/values/traefik.values.yaml")}"
+
+  vars {
+    replicas_count = "${var.traefik_replica_count}"
+  }
+}
+
+resource "helm_release" "traefik" {
+  name      = "traefik-ingress-controller"
+  chart     = "stable/traefik"
+  namespace = "kube-system"
+  timeout   = "900"
+
+  # workaround to stop CI from complaining about keyring change
+  keyring = ""
+
+  values = [
+    "${data.template_file.traefik_values.rendered}",
+  ]
+
+  depends_on = ["null_resource.helm_init"]
 }

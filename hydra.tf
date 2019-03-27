@@ -45,6 +45,9 @@ module "aks_cluster_1" {
   node_sku                  = "${local.aks_node}"
 
   region = "${var.azure_resource_locations[0]}"
+
+
+      kubeconfig_path = "${local.aks1}"
 }
 
 module "aks_cluster_2" {
@@ -63,6 +66,8 @@ module "aks_cluster_2" {
   node_sku                  = "${local.aks_node}"
 
   region = "${var.azure_resource_locations[1]}"
+
+      kubeconfig_path = "${local.aks2}"
 }
 
 module "gke_cluster_1" {
@@ -77,6 +82,8 @@ module "gke_cluster_1" {
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
+
+      kubeconfig_path = "${local.gke1}"
 }
 
 module "gke_cluster_2" {
@@ -91,6 +98,7 @@ module "gke_cluster_2" {
   google_project     = "${var.google_project_id}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
+      kubeconfig_path = "${local.gke2}"
 }
 
 resource "random_string" "prom_metrics_password" {
@@ -113,6 +121,7 @@ module "k8s_config_aks_1" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+      kubeconfig_path = "${local.aks1}"
 }
 
 module "k8s_config_aks_2" {
@@ -130,6 +139,7 @@ module "k8s_config_aks_2" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+        kubeconfig_path = "${local.aks2}"
 }
 
 module "k8s_config_gke_1" {
@@ -147,6 +157,7 @@ module "k8s_config_gke_1" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+        kubeconfig_path = "${local.gke1}"
 }
 
 module "k8s_config_gke_2" {
@@ -164,6 +175,7 @@ module "k8s_config_gke_2" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+        kubeconfig_path = "${local.gke2}"
 }
 
 module "akamai_config" {
@@ -181,7 +193,7 @@ module "akamai_config" {
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
 
-  monitoring_cluster_ips = "${module.monitoring_config.monitoring_cluster_ips}"
+  monitoring_cluster_ips = "${module.monitoring_k8s.ingress_ip}"
 }
 
 module "cloudflare" {
@@ -212,10 +224,27 @@ module "monitoring_cluster" {
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
+
+    kubeconfig_path = "${local.monitoring}"
 }
+
+module "monitoring_k8s" {
+  source = "k8smonitoring"
+
+  kubeconfig_path = "${local.monitoring}"
+
+  cluster_ca = "${base64decode(module.gke_cluster_2.cluster_ca)}"
+  host                   = "${module.gke_cluster_2.host}"
+    cluster_prefix = "${var.project_name}-monitoring"
+
+}
+
 
 module "monitoring_config" {
   source = "monitoring"
+
+
+
 
   cluster_ca = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host       = "${module.monitoring_cluster.host}"
@@ -235,4 +264,8 @@ module "monitoring_config" {
   prometheus_ui_password = "${var.prometheus_ui_password}"
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+
+  logging_namespace = "${module.monitoring_k8s.logging_namespace}"
+  monitoring_namespace = "${module.monitoring_k8s.monitoring_namespace}"
+  tiller_service_account = "${module.monitoring_k8s.tiller_service_account_name}"
 }
