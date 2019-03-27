@@ -1,8 +1,6 @@
 provider "kubernetes" {
   config_path            = "${var.kubeconfig_path}"
   load_config_file       = true
-  cluster_ca_certificate = "${var.cluster_ca_certificate}"
-  host                   = "${var.host}"
 }
 
 resource "kubernetes_service" "ingress_service" {
