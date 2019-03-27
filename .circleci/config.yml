@@ -25,7 +25,7 @@ jobs:
             echo $TF_VAR_project_name
             sh ../install.sh
             terraform init
-            terraform plan -parallelism=25 -target=azurerm_storage_blob.kubeconfig -out=clusters.out
+            terraform plan -parallelism=25 -target=hydra/ -out=clusters.out
             terraform plan -parallelism=25 -out=terraform.out
       - persist_to_workspace:
           root: example
