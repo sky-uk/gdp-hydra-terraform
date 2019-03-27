@@ -217,7 +217,7 @@ module "monitoring_cluster" {
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
 
-  cluster_prefix     = "${local.resource_group_name_clusters}"
+  cluster_prefix     = "${var.project_name}-monitoring"
   region             = "europe-west2-a"
   google_project     = "${var.google_project_id}"
   kubernetes_version = "${var.kubernetes_version}"
