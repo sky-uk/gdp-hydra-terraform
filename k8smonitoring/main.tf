@@ -1,5 +1,4 @@
 variable "host" {}
-variable "cluster_ca" {}
 variable "cluster_prefix" {}
 
 variable "traefik_replica_count" {
@@ -11,8 +10,6 @@ variable "kubeconfig_path" {}
 provider "kubernetes" {
   config_path            = "${var.kubeconfig_path}"
   load_config_file       = true
-  cluster_ca_certificate = "${var.cluster_ca}"
-  host                   = "${var.host}"
 }
 
 # create service account for tiller - server side of Helm
@@ -79,8 +76,6 @@ provider "helm" {
   kubernetes {
     config_path            = "${var.kubeconfig_path}"
     load_config_file       = true
-    cluster_ca_certificate = "${var.cluster_ca}"
-    host                   = "${var.host}"
   }
 }
 

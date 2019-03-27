@@ -232,7 +232,6 @@ module "monitoring_k8s" {
 
   kubeconfig_path = "${local.monitoring}"
 
-  cluster_ca     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
   host           = "${module.gke_cluster_2.host}"
   cluster_prefix = "${var.project_name}-monitoring"
 }
@@ -240,7 +239,6 @@ module "monitoring_k8s" {
 module "monitoring_config" {
   source = "monitoring"
 
-  cluster_ca      = "${base64decode(module.monitoring_cluster.cluster_ca)}"
   host            = "${module.monitoring_cluster.host}"
   kubeconfig_path = "${local.monitoring}"
 

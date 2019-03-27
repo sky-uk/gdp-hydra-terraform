@@ -4,12 +4,6 @@ output "kubeconfig" {
   sensitive   = true
 }
 
-output "cluster_ca" {
-  description = "The cluster CA certificate"
-  value       = "${google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate}"
-  sensitive   = true
-}
-
 output "host" {
   description = "The DNS host for the API of the cluster"
   value       = "${google_container_cluster.cluster.0.endpoint}"

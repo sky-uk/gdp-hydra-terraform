@@ -35,11 +35,6 @@ variable "monitoring_dns_name" {
 
 variable "host" {}
 
-variable "cluster_ca" {
-  type        = "string"
-  description = "CA Cert for the cluster"
-}
-
 variable "cluster_prefix" {}
 
 variable "tiller_service_account" {}
