@@ -29,6 +29,77 @@ provider "cloudflare" {
   token = "${var.cloudflare_token}"
 }
 
+module "aks_cluster_1" {
+  source = "aks"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix            = "${local.resource_group_name_clusters}"
+  linux_admin_username      = "aks"
+  linux_admin_ssh_publickey = "${var.azure_node_ssh_key}"
+  client_id                 = "${var.azure_client_id}"
+  client_secret             = "${var.azure_client_secret}"
+  kubernetes_version        = "${var.kubernetes_version}"
+  node_count                = "${var.node_count}"
+  node_sku                  = "${local.aks_node}"
+
+  region = "${var.azure_resource_locations[0]}"
+
+  kubeconfig_path = "${local.aks1}"
+}
+
+module "aks_cluster_2" {
+  source = "aks"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix            = "${local.resource_group_name_clusters}"
+  linux_admin_username      = "aks"
+  linux_admin_ssh_publickey = "${var.azure_node_ssh_key}"
+  client_id                 = "${var.azure_client_id}"
+  client_secret             = "${var.azure_client_secret}"
+  kubernetes_version        = "${var.kubernetes_version}"
+  node_count                = "${var.node_count}"
+  node_sku                  = "${local.aks_node}"
+
+  region = "${var.azure_resource_locations[1]}"
+
+  kubeconfig_path = "${local.aks2}"
+}
+
+module "gke_cluster_1" {
+  source = "gke"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${local.resource_group_name_clusters}"
+  region             = "europe-west2-a"
+  google_project     = "${var.google_project_id}"
+  kubernetes_version = "${var.kubernetes_version}"
+  node_count         = "${var.node_count}"
+  machine_type       = "${local.gke_node}"
+
+  kubeconfig_path = "${local.gke1}"
+}
+
+module "gke_cluster_2" {
+  source = "gke"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${local.resource_group_name_clusters}"
+  region             = "europe-west3-a"
+  kubernetes_version = "${var.kubernetes_version}"
+  google_project     = "${var.google_project_id}"
+  node_count         = "${var.node_count}"
+  machine_type       = "${local.gke_node}"
+  kubeconfig_path    = "${local.gke2}"
+}
+
 resource "random_string" "prom_metrics_password" {
   length  = 16
   special = true
@@ -138,6 +209,22 @@ module "cloudflare" {
   aks_cluster_2_enabled = "${var.traffic_manager_aks_cluster_2_enabled}"
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
+}
+
+module "monitoring_cluster" {
+  source = "gke"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${var.project_name}-monitoring"
+  region             = "europe-west2-a"
+  google_project     = "${var.google_project_id}"
+  kubernetes_version = "${var.kubernetes_version}"
+  node_count         = "${var.node_count}"
+  machine_type       = "${local.gke_node}"
+
+  kubeconfig_path = "${local.monitoring}"
 }
 
 module "monitoring_k8s" {
