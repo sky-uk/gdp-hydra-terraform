@@ -9,10 +9,8 @@ variable "traefik_replica_count" {
 variable "kubeconfig_path" {}
 
 provider "kubernetes" {
-  config_path            = "${var.kubeconfig_path}"
+  config_path            = "${path.cwd}${var.kubeconfig_path}"
   load_config_file       = true
-  cluster_ca_certificate = "${var.cluster_ca}"
-  host                   = "${var.host}"
 }
 
 # create service account for tiller - server side of Helm
