@@ -30,7 +30,7 @@ module "cluster_services_aks1" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-  kubeconfig_path      = "${local.aks2}"
+  kubeconfig_path      = "${local.aks1}"
 
   // This forces the helm config to run after the
   // initial Kubernetes configuration module
