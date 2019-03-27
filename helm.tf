@@ -165,6 +165,6 @@ module "cluster_services_monitoring" {
   traefik_replica_count  = "2"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-  kubeconfig_path      = "{local.monitoring}"
+  kubeconfig_path      = "${local.monitoring}"
   depends_on_hack      = "${module.monitoring_cluster.host}"
 }
