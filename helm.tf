@@ -3,7 +3,7 @@ module "helm_aks1" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  kubeconfig_path = "{local.aks1}"
+  kubeconfig_path = "${local.aks1}"
 
   cluster_name           = "aks1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
