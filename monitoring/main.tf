@@ -1,7 +1,8 @@
 provider "kubernetes" {
-  host     = "${var.host}"
-  username = "${var.username}"
-  password = "${var.password}"
+  host                   = "${var.host}"
+  cluster_ca_certificate = "${var.cluster_ca_certificate}"
+  username               = "${var.username}"
+  password               = "${var.password}"
 }
 
 provider "helm" {
@@ -10,8 +11,9 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    host     = "${var.host}"
-    username = "${var.username}"
-    password = "${var.password}"
+    host                   = "${var.host}"
+    cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    username               = "${var.username}"
+    password               = "${var.password}"
   }
 }

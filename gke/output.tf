@@ -19,6 +19,12 @@ resource "local_file" "kubeconfig" {
   filename = "${var.kubeconfig_path}"
 }
 
+output "cluster_ca_certificate" {
+  description = "The cluster CA certificate"
+  value       = "${base64decode(google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate)}"
+  sensitive   = true
+}
+
 output "username" {
   value     = "${google_container_cluster.cluster.0.master_auth.0.username}"
   sensitive = true
