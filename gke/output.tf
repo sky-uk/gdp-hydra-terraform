@@ -21,7 +21,7 @@ resource "local_file" "kubeconfig" {
 
 output "cluster_ca_certificate" {
   description = "The cluster CA certificate"
-  value       = "${google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate}"
+  value       = "${base64decode(google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate)}"
   sensitive   = true
 }
 

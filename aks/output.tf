@@ -21,7 +21,7 @@ resource "local_file" "kubeconfig" {
 
 output "cluster_ca_certificate" {
   description = "The cluster CA certificate"
-  value       = "${azurerm_kubernetes_cluster.aks.0.kube_config.0.cluster_ca_certificate}"
+  value       = "${base64decode(azurerm_kubernetes_cluster.aks.0.kube_config.0.cluster_ca_certificate)}"
   sensitive   = true
 }
 
