@@ -243,6 +243,7 @@ module "monitoring_k8s" {
   source = "k8smonitoring"
 
   kubeconfig_path        = "${local.monitoring}"
+  host                   = "${module.monitoring_cluster.host}"
   cluster_ca_certificate = "${module.monitoring_cluster.cluster_ca_certificate}"
   username               = "${module.monitoring_cluster.username}"
   password               = "${module.monitoring_cluster.password}"
@@ -253,7 +254,11 @@ module "monitoring_k8s" {
 module "monitoring_config" {
   source = "monitoring"
 
-  kubeconfig_path = "${local.monitoring}"
+  kubeconfig_path        = "${local.monitoring}"
+  host                   = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate = "${module.monitoring_cluster.cluster_ca_certificate}"
+  username               = "${module.monitoring_cluster.username}"
+  password               = "${module.monitoring_cluster.password}"
 
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
