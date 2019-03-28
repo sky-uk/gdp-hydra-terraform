@@ -4,6 +4,7 @@ module "helm_aks1" {
   enable_prometheus = "${var.enable_prometheus}"
 
   kubeconfig_path        = "${local.aks1}"
+  host                   = "${module.aks_cluster_1.host}"
   cluster_ca_certificate = "${module.aks_cluster_1.cluster_ca_certificate}"
   username               = "${module.aks_cluster_1.username}"
   password               = "${module.aks_cluster_1.password}"
@@ -34,6 +35,7 @@ module "cluster_services_aks1" {
 
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   kubeconfig_path        = "${local.aks1}"
+  host                   = "${module.aks_cluster_1.host}"
   cluster_ca_certificate = "${module.aks_cluster_1.cluster_ca_certificate}"
   username               = "${module.aks_cluster_1.username}"
   password               = "${module.aks_cluster_1.password}"
@@ -50,6 +52,7 @@ module "helm_aks2" {
   enable_prometheus = "${var.enable_prometheus}"
 
   kubeconfig_path        = "${local.aks2}"
+  host                   = "${module.aks_cluster_2.host}"
   cluster_ca_certificate = "${module.aks_cluster_2.cluster_ca_certificate}"
   username               = "${module.aks_cluster_2.username}"
   password               = "${module.aks_cluster_2.password}"
@@ -76,6 +79,7 @@ module "cluster_services_aks2" {
 
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   kubeconfig_path        = "${local.aks2}"
+  host                   = "${module.aks_cluster_2.host}"
   cluster_ca_certificate = "${module.aks_cluster_2.cluster_ca_certificate}"
   username               = "${module.aks_cluster_2.username}"
   password               = "${module.aks_cluster_2.password}"
@@ -89,6 +93,7 @@ module "helm_gke1" {
   enable_prometheus = "${var.enable_prometheus}"
 
   kubeconfig_path        = "${local.gke1}"
+  host                   = "${module.gke_cluster_1.host}"
   cluster_ca_certificate = "${module.gke_cluster_1.cluster_ca_certificate}"
   username               = "${module.gke_cluster_1.username}"
   password               = "${module.gke_cluster_1.password}"
@@ -116,6 +121,7 @@ module "cluster_services_gke1" {
   kubeconfig_path      = "{local.gke1}"
 
   depends_on_hack        = "${module.k8s_config_gke_1.cluster_ingress_ip}"
+  host                   = "${module.gke_cluster_1.host}"
   cluster_ca_certificate = "${module.gke_cluster_1.cluster_ca_certificate}"
   username               = "${module.gke_cluster_1.username}"
   password               = "${module.gke_cluster_1.password}"
@@ -127,6 +133,7 @@ module "helm_gke2" {
   enable_prometheus = "${var.enable_prometheus}"
 
   kubeconfig_path        = "{local.gke2}"
+  host                   = "${module.gke_cluster_2.host}"
   cluster_ca_certificate = "${module.gke_cluster_2.cluster_ca_certificate}"
   username               = "${module.gke_cluster_2.username}"
   password               = "${module.gke_cluster_2.password}"
@@ -153,6 +160,7 @@ module "cluster_services_gke2" {
 
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   kubeconfig_path        = "{local.gke2}"
+  host                   = "${module.gke_cluster_2.host}"
   cluster_ca_certificate = "${module.gke_cluster_2.cluster_ca_certificate}"
   username               = "${module.gke_cluster_2.username}"
   password               = "${module.gke_cluster_2.password}"
@@ -171,6 +179,7 @@ module "cluster_services_monitoring" {
 
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   kubeconfig_path        = "${local.monitoring}"
+  host                   = "${module.monitoring_cluster.host}"
   cluster_ca_certificate = "${module.monitoring_cluster.cluster_ca_certificate}"
   username               = "${module.monitoring_cluster.username}"
   password               = "${module.monitoring_cluster.password}"
