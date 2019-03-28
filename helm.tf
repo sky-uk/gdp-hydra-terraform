@@ -76,7 +76,7 @@ module "helm_gke1" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  kubeconfig_path = "{local.gke1}"
+  kubeconfig_path = "${local.gke1}"
 
   cluster_name           = "gke1"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
