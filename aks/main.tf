@@ -27,6 +27,11 @@ module "service_principal" {
   sp_name = "${local.cluster_name}"
 }
 
+resource "random_string" "random" {
+  length  = 16
+  special = true
+}
+
 resource "azurerm_kubernetes_cluster" "aks" {
   name       = "${local.cluster_name}"
   dns_prefix = "${random_string.cluster_name.result}"
@@ -34,6 +39,9 @@ resource "azurerm_kubernetes_cluster" "aks" {
   location            = "${var.region}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
   kubernetes_version  = "${var.kubernetes_version}"
+
+  username = "${random_string.random.result}"
+  password = "${random_string.random.result}"
 
   linux_profile {
     admin_username = "${var.linux_admin_username}"

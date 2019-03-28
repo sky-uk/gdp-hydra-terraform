@@ -118,7 +118,7 @@ module "cluster_services_gke1" {
   tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
 
   cluster_issuer_email = "${var.cluster_issuer_email}"
-  kubeconfig_path      = "{local.gke1}"
+  kubeconfig_path      = "${local.gke1}"
 
   depends_on_hack        = "${module.k8s_config_gke_1.cluster_ingress_ip}"
   host                   = "${module.gke_cluster_1.host}"
@@ -132,7 +132,7 @@ module "helm_gke2" {
   enable_traefik    = "${var.enable_traefik}"
   enable_prometheus = "${var.enable_prometheus}"
 
-  kubeconfig_path        = "{local.gke2}"
+  kubeconfig_path        = "${local.gke2}"
   host                   = "${module.gke_cluster_2.host}"
   cluster_ca_certificate = "${module.gke_cluster_2.cluster_ca_certificate}"
   username               = "${module.gke_cluster_2.username}"
@@ -159,7 +159,7 @@ module "cluster_services_gke2" {
   traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email   = "${var.cluster_issuer_email}"
-  kubeconfig_path        = "{local.gke2}"
+  kubeconfig_path        = "${local.gke2}"
   host                   = "${module.gke_cluster_2.host}"
   cluster_ca_certificate = "${module.gke_cluster_2.cluster_ca_certificate}"
   username               = "${module.gke_cluster_2.username}"
