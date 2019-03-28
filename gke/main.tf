@@ -5,7 +5,7 @@ locals {
 resource "google_container_cluster" "cluster" {
   project            = "${var.google_project}"
   name               = "${local.cluster_name}"
-  zone               = "${var.region}"
+  location           = "${var.region}"
   initial_node_count = "${var.node_count}"
   min_master_version = "${var.kubernetes_version}"
   node_version       = "${var.kubernetes_version}"

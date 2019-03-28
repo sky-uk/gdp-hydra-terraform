@@ -7,8 +7,8 @@ variable "azure_resource_locations" {
   description = "List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. "
 
   default = [
-    "westeurope",
-    "northeurope",
+    "ukwest",
+    "uksouth",
   ]
 }
 
