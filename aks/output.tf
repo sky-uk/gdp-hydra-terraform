@@ -27,10 +27,10 @@ output "cluster_ca_certificate" {
 
 output "username" {
   value     = "${azurerm_kubernetes_cluster.aks.0.kube_config.0.username}"
-  sensitive = false
+  sensitive = true
 }
 
 output "password" {
   value     = "${azurerm_kubernetes_cluster.aks.0.kube_config.0.password}"
-  sensitive = false
+  sensitive = true
 }
