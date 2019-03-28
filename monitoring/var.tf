@@ -40,6 +40,5 @@ variable "monitoring_namespace" {}
 variable "logging_namespace" {}
 variable "kubeconfig_path" {}
 variable "host" {}
-variable "cluster_ca_certificate" {}
 variable "username" {}
 variable "password" {}

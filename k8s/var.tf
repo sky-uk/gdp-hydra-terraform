@@ -10,6 +10,5 @@ variable "node_count" {}
 
 variable "kubeconfig_path" {}
 
-variable "cluster_ca_certificate" {}
 variable "username" {}
 variable "password" {}

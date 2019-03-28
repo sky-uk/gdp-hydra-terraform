@@ -6,10 +6,9 @@ resource "null_resource" "helm_init" {
 
 provider "helm" {
   kubernetes {
-    host                   = "${var.host}"
-    cluster_ca_certificate = "${var.cluster_ca_certificate}"
-    username               = "${var.username}"
-    password               = "${var.password}"
+    host     = "${var.host}"
+    username = "${var.username}"
+    password = "${var.password}"
   }
 
   install_tiller  = true
