@@ -8,7 +8,6 @@ variable "kubeconfig_path" {}
 
 provider "kubernetes" {
   config_path      = "${var.kubeconfig_path}"
-  load_config_file = true
 }
 
 # create service account for tiller - server side of Helm
@@ -74,7 +73,6 @@ provider "helm" {
 
   kubernetes {
     config_path      = "${var.kubeconfig_path}"
-    load_config_file = true
   }
 }
 
