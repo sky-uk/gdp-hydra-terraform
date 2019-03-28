@@ -1,3 +1,5 @@
+variable "cluster_client_certificate" {}
+variable "cluster_client_key" {}
 variable "host" {}
 variable "cluster_name" {}
 variable "monitoring_endpoint_password" {}

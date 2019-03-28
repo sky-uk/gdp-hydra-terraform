@@ -120,10 +120,12 @@ module "k8s_config_aks_1" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path        = "${local.aks1}"
-  cluster_ca_certificate = "${module.aks_cluster_1.cluster_ca_certificate}"
-  username               = "${module.aks_cluster_1.username}"
-  password               = "${module.aks_cluster_1.password}"
+  kubeconfig_path            = "${local.aks1}"
+  cluster_ca_certificate     = "${module.aks_cluster_1.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.aks_cluster_1.cluster_client_certificate}"
+  cluster_client_key         = "${module.aks_cluster_1.cluster_client_key}"
+  username                   = "${module.aks_cluster_1.username}"
+  password                   = "${module.aks_cluster_1.password}"
 }
 
 module "k8s_config_aks_2" {
@@ -141,10 +143,12 @@ module "k8s_config_aks_2" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path        = "${local.aks2}"
-  cluster_ca_certificate = "${module.aks_cluster_2.cluster_ca_certificate}"
-  username               = "${module.aks_cluster_2.username}"
-  password               = "${module.aks_cluster_2.password}"
+  kubeconfig_path            = "${local.aks2}"
+  cluster_ca_certificate     = "${module.aks_cluster_2.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.aks_cluster_2.cluster_client_certificate}"
+  cluster_client_key         = "${module.aks_cluster_2.cluster_client_key}"
+  username                   = "${module.aks_cluster_2.username}"
+  password                   = "${module.aks_cluster_2.password}"
 }
 
 module "k8s_config_gke_1" {
@@ -162,10 +166,12 @@ module "k8s_config_gke_1" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path        = "${local.gke1}"
-  cluster_ca_certificate = "${module.gke_cluster_1.cluster_ca_certificate}"
-  username               = "${module.gke_cluster_1.username}"
-  password               = "${module.gke_cluster_1.password}"
+  kubeconfig_path            = "${local.gke1}"
+  cluster_ca_certificate     = "${module.gke_cluster_1.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.gke_cluster_1.cluster_client_certificate}"
+  cluster_client_key         = "${module.gke_cluster_1.cluster_client_key}"
+  username                   = "${module.gke_cluster_1.username}"
+  password                   = "${module.gke_cluster_1.password}"
 }
 
 module "k8s_config_gke_2" {
@@ -183,10 +189,12 @@ module "k8s_config_gke_2" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path        = "${local.gke2}"
-  cluster_ca_certificate = "${module.gke_cluster_2.cluster_ca_certificate}"
-  username               = "${module.gke_cluster_2.username}"
-  password               = "${module.gke_cluster_2.password}"
+  kubeconfig_path            = "${local.gke2}"
+  cluster_ca_certificate     = "${module.gke_cluster_2.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.gke_cluster_2.cluster_client_certificate}"
+  cluster_client_key         = "${module.gke_cluster_2.cluster_client_key}"
+  username                   = "${module.gke_cluster_2.username}"
+  password                   = "${module.gke_cluster_2.password}"
 }
 
 module "akamai_config" {
@@ -242,11 +250,13 @@ module "monitoring_cluster" {
 module "monitoring_k8s" {
   source = "k8smonitoring"
 
-  kubeconfig_path        = "${local.monitoring}"
-  host                   = "${module.monitoring_cluster.host}"
-  cluster_ca_certificate = "${module.monitoring_cluster.cluster_ca_certificate}"
-  username               = "${module.monitoring_cluster.username}"
-  password               = "${module.monitoring_cluster.password}"
+  kubeconfig_path            = "${local.monitoring}"
+  host                       = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate     = "${module.monitoring_cluster.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.monitoring_cluster.cluster_client_certificate}"
+  cluster_client_key         = "${module.monitoring_cluster.cluster_client_key}"
+  username                   = "${module.monitoring_cluster.username}"
+  password                   = "${module.monitoring_cluster.password}"
 
   cluster_prefix = "${var.project_name}-monitoring"
 }
@@ -254,11 +264,13 @@ module "monitoring_k8s" {
 module "monitoring_config" {
   source = "monitoring"
 
-  kubeconfig_path        = "${local.monitoring}"
-  host                   = "${module.monitoring_cluster.host}"
-  cluster_ca_certificate = "${module.monitoring_cluster.cluster_ca_certificate}"
-  username               = "${module.monitoring_cluster.username}"
-  password               = "${module.monitoring_cluster.password}"
+  kubeconfig_path            = "${local.monitoring}"
+  host                       = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate     = "${module.monitoring_cluster.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.monitoring_cluster.cluster_client_certificate}"
+  cluster_client_key         = "${module.monitoring_cluster.cluster_client_key}"
+  username                   = "${module.monitoring_cluster.username}"
+  password                   = "${module.monitoring_cluster.password}"
 
   project_name = "${var.project_name}"
   tags         = "${local.tags}"

@@ -6,5 +6,7 @@ variable "tiller_service_account" {}
 variable "kubeconfig_path" {}
 variable "host" {}
 variable "cluster_ca_certificate" {}
+variable "cluster_client_certificate" {}
+variable "cluster_client_key" {}
 variable "username" {}
 variable "password" {}

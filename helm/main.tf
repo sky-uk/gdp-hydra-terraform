@@ -8,6 +8,8 @@ provider "helm" {
   kubernetes {
     host                   = "${var.host}"
     cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    client_certificate     = "${var.cluster_client_certificate}"
+    client_key             = "${var.cluster_client_key}"
     username               = "${var.username}"
     password               = "${var.password}"
   }
