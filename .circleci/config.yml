@@ -74,7 +74,7 @@ jobs:
             }
 
             function clean_azure {
-                groTF_VAR_project_nameups=$(az group list --query "[?tags.hydra_project=='$TF_VAR_project_name' && properties.provisioningState != 'Deleting'].name" -o tsv)
+                groups=$(az group list --query "[?tags.hydra_project=='$TF_VAR_project_name' && properties.provisioningState != 'Deleting'].name" -o tsv)
                 for g in $groups
                 do
                     az group delete -y --name $g & pids+=( $! )
