@@ -120,7 +120,10 @@ module "k8s_config_aks_1" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path = "${local.aks1}"
+  kubeconfig_path        = "${local.aks1}"
+  cluster_ca_certificate = "${module.aks_cluster_1.cluster_ca_certificate}"
+  username               = "${module.aks_cluster_1.username}"
+  password               = "${module.aks_cluster_1.password}"
 }
 
 module "k8s_config_aks_2" {
@@ -138,7 +141,10 @@ module "k8s_config_aks_2" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path = "${local.aks2}"
+  kubeconfig_path        = "${local.aks2}"
+  cluster_ca_certificate = "${module.aks_cluster_2.cluster_ca_certificate}"
+  username               = "${module.aks_cluster_2.username}"
+  password               = "${module.aks_cluster_2.password}"
 }
 
 module "k8s_config_gke_1" {
@@ -158,7 +164,8 @@ module "k8s_config_gke_1" {
 
   kubeconfig_path        = "${local.gke1}"
   cluster_ca_certificate = "${module.gke_cluster_1.cluster_ca_certificate}"
-  access_token           = "${module.gke_cluster_1.access_token}"
+  username               = "${module.gke_cluster_1.username}"
+  password               = "${module.gke_cluster_1.password}"
 }
 
 module "k8s_config_gke_2" {
@@ -176,7 +183,10 @@ module "k8s_config_gke_2" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path = "${local.gke2}"
+  kubeconfig_path        = "${local.gke2}"
+  cluster_ca_certificate = "${module.gke_cluster_2.cluster_ca_certificate}"
+  username               = "${module.gke_cluster_2.username}"
+  password               = "${module.gke_cluster_2.password}"
 }
 
 module "akamai_config" {
@@ -232,7 +242,10 @@ module "monitoring_cluster" {
 module "monitoring_k8s" {
   source = "k8smonitoring"
 
-  kubeconfig_path = "${local.monitoring}"
+  kubeconfig_path        = "${local.monitoring}"
+  cluster_ca_certificate = "${module.monitoring_cluster.cluster_ca_certificate}"
+  username               = "${module.monitoring_cluster.username}"
+  password               = "${module.monitoring_cluster.password}"
 
   cluster_prefix = "${var.project_name}-monitoring"
 }

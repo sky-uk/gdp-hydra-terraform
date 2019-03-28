@@ -32,9 +32,6 @@ resource "google_container_cluster" "cluster" {
     client_certificate_config {
       issue_client_certificate = false
     }
-
-    username = ""
-    password = ""
   }
 
   resource_labels = "${var.tags}"

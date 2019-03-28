@@ -1,7 +1,8 @@
 provider "kubernetes" {
   host                   = "${var.host}"
-  token                  = "${var.access_token}"
   cluster_ca_certificate = "${var.cluster_ca_certificate}"
+  username               = "${var.username}"
+  password               = "${var.password}"
 }
 
 resource "kubernetes_service" "ingress_service" {

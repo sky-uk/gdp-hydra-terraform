@@ -25,6 +25,12 @@ output "cluster_ca_certificate" {
   sensitive   = true
 }
 
-output "access_token" {
-  value = "${data.google_client_config.current.access_token}"
+output "username" {
+  value     = "${google_container_cluster.cluster.0.master_auth.0.username}"
+  sensitive = true
+}
+
+output "password" {
+  value     = "${google_container_cluster.cluster.0.master_auth.0.password}"
+  sensitive = true
 }
