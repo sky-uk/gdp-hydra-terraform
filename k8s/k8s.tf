@@ -1,5 +1,5 @@
 provider "kubernetes" {
-  config_path      = "${var.kubeconfig_path}"
+  config_path = "${var.kubeconfig_path}"
 }
 
 resource "kubernetes_service" "ingress_service" {

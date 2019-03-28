@@ -6,7 +6,7 @@ resource "null_resource" "helm_init" {
 
 provider "helm" {
   kubernetes {
-    config_path      = "${var.kubeconfig_path}"
+    config_path = "${var.kubeconfig_path}"
   }
 
   install_tiller  = true
