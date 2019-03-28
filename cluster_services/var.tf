@@ -4,3 +4,7 @@ variable "traefik_replica_count" {}
 variable "cluster_issuer_email" {}
 variable "tiller_service_account" {}
 variable "kubeconfig_path" {}
+variable "host" {}
+variable "cluster_ca_certificate" {}
+variable "username" {}
+variable "password" {}

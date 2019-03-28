@@ -6,7 +6,10 @@ resource "null_resource" "helm_init" {
 
 provider "helm" {
   kubernetes {
-    config_path = "${var.kubeconfig_path}"
+    host                   = "${var.host}"
+    cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    username               = "${var.username}"
+    password               = "${var.password}"
   }
 
   install_tiller  = true
