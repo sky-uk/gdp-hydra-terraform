@@ -156,7 +156,9 @@ module "k8s_config_gke_1" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  kubeconfig_path = "${local.gke1}"
+  kubeconfig_path        = "${local.gke1}"
+  cluster_ca_certificate = "${module.gke_cluster_1.cluster_ca_certificate}"
+  access_token           = "${module.gke_cluster_1.access_token}"
 }
 
 module "k8s_config_gke_2" {

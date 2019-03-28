@@ -18,3 +18,13 @@ resource "local_file" "kubeconfig" {
   content  = "${data.template_file.kubeconfig.rendered}"
   filename = "${var.kubeconfig_path}"
 }
+
+output "cluster_ca_certificate" {
+  description = "The cluster CA certificate"
+  value       = "${google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate}"
+  sensitive   = true
+}
+
+output "access_token" {
+  value = "${data.google_client_config.current.access_token}"
+}
