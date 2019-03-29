@@ -21,6 +21,8 @@ resource "google_container_cluster" "cluster" {
     ]
   }
 
+  logging_service = "none"
+
   // Offset each cluster maintance windows by 2 hours from each other
   maintenance_policy {
     daily_maintenance_window {
