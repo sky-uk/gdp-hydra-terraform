@@ -32,7 +32,7 @@ function install_jaeger {
 
 function install_jaeger_monitoring {
     kubeconfig=$1
-    kubectl create namespace observability
+    kubectl create namespace observability --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml --kubeconfig=$kubeconfig
