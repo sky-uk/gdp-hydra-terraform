@@ -92,26 +92,26 @@ provider "helm" {
   }
 }
 
-data "template_file" "traefik_values" {
-  template = "${file("${path.module}/values/traefik.values.yaml")}"
-
-  vars {
-    replicas_count = "${var.traefik_replica_count}"
-  }
-}
-
-resource "helm_release" "traefik" {
-  name      = "traefik-ingress-controller"
-  chart     = "stable/traefik"
-  namespace = "kube-system"
-  timeout   = "900"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  values = [
-    "${data.template_file.traefik_values.rendered}",
-  ]
-
-  depends_on = ["null_resource.helm_init"]
-}
+#data "template_file" "traefik_values" {
+#  template = "${file("${path.module}/values/traefik.values.yaml")}"
+#
+#  vars {
+#    replicas_count = "${var.traefik_replica_count}"
+#  }
+#}
+#
+#resource "helm_release" "traefik" {
+#  name      = "traefik-ingress-controller"
+#  chart     = "stable/traefik"
+#  namespace = "kube-system"
+#  timeout   = "900"
+#
+#  # workaround to stop CI from complaining about keyring change
+#  keyring = ""
+#
+#  values = [
+#    "${data.template_file.traefik_values.rendered}",
+#  ]
+#
+#  depends_on = ["null_resource.helm_init"]
+#}
