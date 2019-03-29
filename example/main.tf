@@ -53,10 +53,6 @@ module "hydra" {
   "edge_dns_name"                = "${var.edge_dns_name}"
   "monitoring_endpoint_password" = "${random_string.monitoring_password.result}"
 
-  elasticsearch_url      = "empty"
-  elasticsearch_username = "empty"
-  elasticsearch_password = "empty"
-
   cloudflare_enabled = false
   cloudflare_email   = "empty"
   cloudflare_token   = "empty"

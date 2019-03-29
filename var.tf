@@ -4,9 +4,10 @@ variable "azure_tenant_id" {}
 variable "azure_subscription_id" {}
 
 variable "azure_resource_locations" {
-  description = "List of locations used for deploying resources. The first location is the default location that any tooling such as the docker registry will be created in. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. "
+  description = "List of locations used for deploying resources. The first location is the default location that any tooling. Only two values are required, others will be ignored. They should be valid Azure region strings. Defaults to westeurope and northeurope. "
 
   default = [
+    "uksouth",
     "ukwest",
     "uksouth",
   ]
@@ -165,21 +166,12 @@ locals {
     "hydra_version" = "0_0_4"
     "hydra_project" = "${var.project_name}"
   }
-}
 
-variable "elasticsearch_url" {
-  description = "URL of an Elasticsearch instance"
-  default     = "empty"
-}
-
-variable "elasticsearch_username" {
-  description = "username for an Elasticsearch instance"
-  default     = "empty"
-}
-
-variable "elasticsearch_password" {
-  description = "password for an Elasticsearch instance"
-  default     = "empty"
+  gke1       = "${path.cwd}/gke1.kubeconfig"
+  gke2       = "${path.cwd}/gke2.kubeconfig"
+  monitoring = "${path.cwd}/monitoring.kubeconfig"
+  aks1       = "${path.cwd}/aks1.kubeconfig"
+  aks2       = "${path.cwd}/aks2.kubeconfig"
 }
 
 variable "letsencrypt_environment" {

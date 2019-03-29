@@ -2,10 +2,12 @@
 # all clusters except for the monitoring cluster.
 
 provider "kubernetes" {
+  host                   = "${var.host}"
+  cluster_ca_certificate = "${var.cluster_ca_certificate}"
   client_certificate     = "${var.cluster_client_certificate}"
   client_key             = "${var.cluster_client_key}"
-  cluster_ca_certificate = "${var.cluster_ca_certificate}"
-  host                   = "${var.host}"
+  username               = "${var.username}"
+  password               = "${var.password}"
 }
 
 resource "kubernetes_service" "ingress_service" {
@@ -103,36 +105,6 @@ resource "kubernetes_cluster_role_binding" "tiller" {
     name      = "${kubernetes_service_account.tiller.metadata.0.name}"
     api_group = ""
     namespace = "${kubernetes_service_account.tiller.metadata.0.namespace}"
-  }
-}
-
-resource "kubernetes_config_map" "elasticsearch" {
-  # Only create this configmap if we have valid details
-  count = "${var.elasticsearch_credentials["username"] == "empty" ? 0 : 1}"
-
-  metadata {
-    name      = "elastic-secrets"
-    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
-  }
-
-  data {
-    username = "${var.elasticsearch_credentials["username"]}"
-    password = "${var.elasticsearch_credentials["password"]}"
-  }
-}
-
-resource "kubernetes_service" "elasticsearch" {
-  # Only create this configmap if we have valid details
-  count = "${var.elasticsearch_credentials["url"] == "empty" ? 0 : 1}"
-
-  metadata {
-    name      = "elasticsearch"
-    namespace = "${kubernetes_namespace.monitoring.metadata.0.name}"
-  }
-
-  spec {
-    type          = "ExternalName"
-    external_name = "${var.elasticsearch_credentials["url"]}"
   }
 }
 

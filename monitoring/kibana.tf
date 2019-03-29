@@ -8,7 +8,7 @@ resource "helm_release" "kibana" {
   version   = "0.14.7"
   name      = "kibana"
   chart     = "stable/kibana"
-  namespace = "${kubernetes_namespace.logging.metadata.0.name}"
+  namespace = "${var.logging_namespace}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -26,7 +26,7 @@ resource "helm_release" "kibana" {
 resource "kubernetes_secret" "kibana_password" {
   metadata {
     name      = "kibana"
-    namespace = "${kubernetes_namespace.logging.metadata.0.name}"
+    namespace = "${var.logging_namespace}"
   }
 
   data {
@@ -40,14 +40,12 @@ resource "kubernetes_secret" "kibana_password" {
   lifecycle {
     ignore_changes = ["data.auth"]
   }
-
-  depends_on = ["kubernetes_namespace.logging"]
 }
 
 resource "kubernetes_ingress" "kibana-ingress" {
   metadata {
     name      = "kibana"
-    namespace = "${kubernetes_namespace.logging.metadata.0.name}"
+    namespace = "${var.logging_namespace}"
 
     annotations {
       "kubernetes.io/ingress.class"               = "traefik"

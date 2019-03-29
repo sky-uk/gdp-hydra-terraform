@@ -1,23 +1,20 @@
 # This module defines Helm-specific config that applies to all clusters
 # except for the monitoring cluster.
 
-resource "local_file" "kubeconfig" {
-  content  = "${var.kubeconfig}"
-  filename = "${var.host}.kubeconfig"
-}
-
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${local_file.kubeconfig.filename}"
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
   }
 }
 
 provider "helm" {
   kubernetes {
-    client_certificate     = "${var.client_certificate}"
-    client_key             = "${var.client_key}"
-    cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
+    cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    client_certificate     = "${var.cluster_client_certificate}"
+    client_key             = "${var.cluster_client_key}"
+    username               = "${var.username}"
+    password               = "${var.password}"
   }
 
   install_tiller  = true
@@ -31,12 +28,15 @@ output "depends_on_hack" {
   value = "${var.depends_on_hack}"
 }
 
-resource "helm_release" "jaeger" {
-  name       = "jaeger"
-  chart      = "stable/jaeger-operator"
-  namespace  = "monitoring"
-  depends_on = ["null_resource.helm_init"]
-}
+# resource "helm_release" "jaeger" {
+#   name      = "jaeger"
+#   chart     = "stable/traefik"
+#   namespace = "kube-system"
+
+#   values = [
+#     "${file("${path.module}/values/traefik.values.yaml")}",
+#   ]
+# }
 
 data "template_file" "prom_values" {
   template = "${file("${path.module}/values/prometheus.worker.values.yaml")}"
@@ -64,7 +64,7 @@ resource "helm_release" "prometheus" {
 
   set {
     name  = "rbacEnable"
-    value = "true"
+    value = "false"
   }
 
   # depends_on = [

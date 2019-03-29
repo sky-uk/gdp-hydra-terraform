@@ -2,6 +2,12 @@ locals {
   elasticsearch_host = "elascticsearch-elasticsearch-client.elasticsearch"
 }
 
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
+  }
+}
+
 data "template_file" "elasticsearch_values" {
   template = "${file("${path.module}/values/elasticsearch.values.yaml")}"
 
@@ -28,7 +34,9 @@ resource "helm_release" "elasticsearch" {
 data "template_file" "elasticsearch_exporter_values" {
   template = "${file("${path.module}/values/elasticsearch-exporter.values.yaml")}"
 
-  vars {}
+  vars {
+    elasticsearch_host = "${local.elasticsearch_host}"
+  }
 }
 
 resource "helm_release" "elasticsearch_exporter" {

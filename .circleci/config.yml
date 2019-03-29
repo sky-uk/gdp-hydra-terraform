@@ -23,40 +23,35 @@ jobs:
           command: |
             sh ../install.sh
             terraform init
-            terraform plan -out=terraform.out
-      - persist_to_workspace:
-          root: example
-          paths:
-           - terraform.out
+            terraform plan
+
   deploy:
     docker:
       - image: paulgrav/cloudcli
     environment:
     steps:
-      - attach_workspace:
-          at: /tmp/example
       - checkout
       - run:
           name: Run Terraform
           working_directory: example
           command: |
-            sh ../install.sh
+            export TF_VAR_project_name="${TF_VAR_project_name}${CIRCLE_BUILD_NUM}"
+            echo $TF_VAR_project_name
+            bash ../install.sh
             terraform init
-            terraform apply /tmp/example/terraform.out
+            terraform apply -auto-approve
       - run:
           name: Postinstall software
           working_directory: postinstall
           command: |
             sh postinstall.sh ../example/terraform.tfstate
-  cleanup:
-    docker:
-      - image: paulgrav/cloudcli
-    environment:
-    steps:
       - run:
           name: Cleanup
+          when: always
           command: |
             set +x
+            export TF_VAR_project_name="${TF_VAR_project_name}${CIRCLE_BUILD_NUM}"
+            echo $TF_VAR_project_name
             num_failures=0
             pids=( )
 
@@ -165,17 +160,6 @@ workflows:
       - deploy:
           requires:
             - plan
-          filters:
-            branches:
-              ignore: master
-      - hold:
-          type: approval
-          filters:
-            branches:
-              ignore: master
-      - cleanup:
-          requires:
-            - hold
           filters:
             branches:
               ignore: master

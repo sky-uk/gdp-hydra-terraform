@@ -1,14 +1,9 @@
 # This module defines services/configuration that are common to all clusters
 # including the monitoring cluster.
 
-resource "local_file" "kubeconfig" {
-  content  = "${var.kubeconfig}"
-  filename = "${var.host}.kubeconfig"
-}
-
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${local_file.kubeconfig.filename}"
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
   }
 }
 
@@ -18,10 +13,12 @@ provider "helm" {
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    client_certificate     = "${var.client_certificate}"
-    client_key             = "${var.client_key}"
-    cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
+    cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    client_certificate     = "${var.cluster_client_certificate}"
+    client_key             = "${var.cluster_client_key}"
+    username               = "${var.username}"
+    password               = "${var.password}"
   }
 }
 

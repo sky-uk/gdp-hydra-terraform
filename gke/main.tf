@@ -23,8 +23,6 @@ resource "google_container_cluster" "cluster" {
 
   logging_service = "none"
 
-  enable_legacy_abac = "true"
-
   // Offset each cluster maintance windows by 2 hours from each other
   maintenance_policy {
     daily_maintenance_window {
@@ -32,23 +30,18 @@ resource "google_container_cluster" "cluster" {
     }
   }
 
-  master_auth {
-    client_certificate_config {
-      issue_client_certificate = true
-    }
-  }
-
   resource_labels = "${var.tags}"
 }
+
+data "google_client_config" "current" {}
 
 data "template_file" "kubeconfig" {
   template = "${file("${path.module}/templates/kubeconfig.cert.tpl")}"
 
   vars {
+    access_token               = "${data.google_client_config.current.access_token}"
     cluster_name               = "${google_container_cluster.cluster.name}"
     certificate_authority_data = "${google_container_cluster.cluster.0.master_auth.0.cluster_ca_certificate}"
     server                     = "https://${google_container_cluster.cluster.0.endpoint}"
-    client_cert                = "${google_container_cluster.cluster.0.master_auth.0.client_certificate}"
-    client_key                 = "${google_container_cluster.cluster.0.master_auth.0.client_key}"
   }
 }

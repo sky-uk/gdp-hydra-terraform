@@ -4,7 +4,7 @@ output "ips" {
 }
 
 output "kubeconfigs" {
-  description = "Map of the kuber config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url"
+  description = "Map of the kube config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url"
   sensitive   = true
 
   value = {
@@ -37,7 +37,7 @@ output "kubeconfig_url" {
 # }
 
 output "monitoring_kubeconfig" {
-  value = "${module.monitoring.kubeconfig}"
+  value = "${module.monitoring_cluster.kubeconfig}"
 }
 
 output "cluster_dns_name" {

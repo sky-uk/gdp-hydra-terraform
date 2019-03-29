@@ -1,82 +1,23 @@
 provider "kubernetes" {
-  client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
-  client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
-  cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-  host                   = "${module.monitoring_cluster.host}"
-}
-
-# create service account for tiller - server side of Helm
-resource "kubernetes_service_account" "tiller" {
-  metadata {
-    name      = "tiller-service-account"
-    namespace = "kube-system"
-  }
-}
-
-# allow tiller do the stuff :)
-resource "kubernetes_cluster_role_binding" "tiller" {
-  metadata {
-    name = "tiller-cluster-rule"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "cluster-admin"
-  }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.tiller.metadata.0.name}"
-    api_group = ""
-    namespace = "${kubernetes_service_account.tiller.metadata.0.namespace}"
-  }
-}
-
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    labels = {
-      createdby  = "terraform"
-      datacenter = "${var.cluster_prefix}"
-    }
-
-    name = "monitoring"
-  }
-}
-
-resource "kubernetes_namespace" "logging" {
-  metadata {
-    labels = {
-      createdby  = "terraform"
-      datacenter = "${var.cluster_prefix}"
-    }
-
-    name = "logging"
-  }
-}
-
-resource "local_file" "kubeconfig" {
-  content  = "${module.monitoring_cluster.kubeconfig}"
-  filename = "${module.monitoring_cluster.host}.kubeconfig"
-}
-
-resource "null_resource" "helm_init" {
-  provisioner "local-exec" {
-    command = "helm init --service-account ${kubernetes_service_account.tiller.metadata.0.name} --wait --kubeconfig ${local_file.kubeconfig.filename}"
-  }
-
-  depends_on = ["kubernetes_cluster_role_binding.tiller"]
+  host                   = "${var.host}"
+  cluster_ca_certificate = "${var.cluster_ca_certificate}"
+  client_certificate     = "${var.cluster_client_certificate}"
+  client_key             = "${var.cluster_client_key}"
+  username               = "${var.username}"
+  password               = "${var.password}"
 }
 
 provider "helm" {
   install_tiller  = true
-  service_account = "${kubernetes_service_account.tiller.metadata.0.name}"
+  service_account = "${var.tiller_service_account}"
   tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    client_certificate     = "${base64decode(module.monitoring_cluster.cluster_client_certificate)}"
-    client_key             = "${base64decode(module.monitoring_cluster.cluster_client_key)}"
-    cluster_ca_certificate = "${base64decode(module.monitoring_cluster.cluster_ca)}"
-    host                   = "${module.monitoring_cluster.host}"
+    host                   = "${var.host}"
+    cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    client_certificate     = "${var.cluster_client_certificate}"
+    client_key             = "${var.cluster_client_key}"
+    username               = "${var.username}"
+    password               = "${var.password}"
   }
 }

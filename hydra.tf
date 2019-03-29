@@ -52,6 +52,8 @@ module "aks_cluster_1" {
   node_sku                  = "${local.aks_node}"
 
   region = "${var.azure_resource_locations[0]}"
+
+  kubeconfig_path = "${local.aks1}"
 }
 
 module "aks_cluster_2" {
@@ -70,6 +72,8 @@ module "aks_cluster_2" {
   node_sku                  = "${local.aks_node}"
 
   region = "${var.azure_resource_locations[1]}"
+
+  kubeconfig_path = "${local.aks2}"
 }
 
 module "gke_cluster_1" {
@@ -84,6 +88,8 @@ module "gke_cluster_1" {
   kubernetes_version = "${var.kubernetes_version}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
+
+  kubeconfig_path = "${local.gke1}"
 }
 
 module "gke_cluster_2" {
@@ -98,6 +104,7 @@ module "gke_cluster_2" {
   google_project     = "${var.google_project_id}"
   node_count         = "${var.node_count}"
   machine_type       = "${local.gke_node}"
+  kubeconfig_path    = "${local.gke2}"
 }
 
 resource "random_string" "prom_metrics_password" {
@@ -113,22 +120,20 @@ module "k8s_config_aks_1" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
   monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
-  cluster_client_certificate = "${base64decode(module.aks_cluster_1.cluster_client_certificate)}"
-  cluster_client_key         = "${base64decode(module.aks_cluster_1.cluster_client_key)}"
-  cluster_ca_certificate     = "${base64decode(module.aks_cluster_1.cluster_ca)}"
-  host                       = "${module.aks_cluster_1.host}"
-  node_count                 = "${var.node_count}"
+  host       = "${module.aks_cluster_1.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  elasticsearch_credentials = {
-    url      = "${var.elasticsearch_url}"
-    username = "${var.elasticsearch_username}"
-    password = "${var.elasticsearch_password}"
-  }
+  kubeconfig_path            = "${local.aks1}"
+  cluster_ca_certificate     = "${module.aks_cluster_1.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.aks_cluster_1.cluster_client_certificate}"
+  cluster_client_key         = "${module.aks_cluster_1.cluster_client_key}"
+  username                   = "${module.aks_cluster_1.username}"
+  password                   = "${module.aks_cluster_1.password}"
 }
 
 module "k8s_config_aks_2" {
@@ -139,22 +144,20 @@ module "k8s_config_aks_2" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
   monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
-  cluster_client_certificate = "${base64decode(module.aks_cluster_2.cluster_client_certificate)}"
-  cluster_client_key         = "${base64decode(module.aks_cluster_2.cluster_client_key)}"
-  cluster_ca_certificate     = "${base64decode(module.aks_cluster_2.cluster_ca)}"
-  host                       = "${module.aks_cluster_2.host}"
-  node_count                 = "${var.node_count}"
+  host       = "${module.aks_cluster_2.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  elasticsearch_credentials = {
-    url      = "${var.elasticsearch_url}"
-    username = "${var.elasticsearch_username}"
-    password = "${var.elasticsearch_password}"
-  }
+  kubeconfig_path            = "${local.aks2}"
+  cluster_ca_certificate     = "${module.aks_cluster_2.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.aks_cluster_2.cluster_client_certificate}"
+  cluster_client_key         = "${module.aks_cluster_2.cluster_client_key}"
+  username                   = "${module.aks_cluster_2.username}"
+  password                   = "${module.aks_cluster_2.password}"
 }
 
 module "k8s_config_gke_1" {
@@ -165,22 +168,20 @@ module "k8s_config_gke_1" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
   monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
-  cluster_client_certificate = "${base64decode(module.gke_cluster_1.cluster_client_certificate)}"
-  cluster_client_key         = "${base64decode(module.gke_cluster_1.cluster_client_key)}"
-  cluster_ca_certificate     = "${base64decode(module.gke_cluster_1.cluster_ca)}"
-  host                       = "${module.gke_cluster_1.host}"
-  node_count                 = "${var.node_count}"
+  host       = "${module.gke_cluster_1.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  elasticsearch_credentials = {
-    url      = "${var.elasticsearch_url}"
-    username = "${var.elasticsearch_username}"
-    password = "${var.elasticsearch_password}"
-  }
+  kubeconfig_path            = "${local.gke1}"
+  cluster_ca_certificate     = "${module.gke_cluster_1.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.gke_cluster_1.cluster_client_certificate}"
+  cluster_client_key         = "${module.gke_cluster_1.cluster_client_key}"
+  username                   = "${module.gke_cluster_1.username}"
+  password                   = "${module.gke_cluster_1.password}"
 }
 
 module "k8s_config_gke_2" {
@@ -191,22 +192,20 @@ module "k8s_config_gke_2" {
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
   monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
 
-  cluster_client_certificate = "${base64decode(module.gke_cluster_2.cluster_client_certificate)}"
-  cluster_client_key         = "${base64decode(module.gke_cluster_2.cluster_client_key)}"
-  cluster_ca_certificate     = "${base64decode(module.gke_cluster_2.cluster_ca)}"
-  host                       = "${module.gke_cluster_2.host}"
-  node_count                 = "${var.node_count}"
+  host       = "${module.gke_cluster_2.host}"
+  node_count = "${var.node_count}"
 
   prom_metrics_credentials = {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
 
-  elasticsearch_credentials = {
-    url      = "${var.elasticsearch_url}"
-    username = "${var.elasticsearch_username}"
-    password = "${var.elasticsearch_password}"
-  }
+  kubeconfig_path            = "${local.gke2}"
+  cluster_ca_certificate     = "${module.gke_cluster_2.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.gke_cluster_2.cluster_client_certificate}"
+  cluster_client_key         = "${module.gke_cluster_2.cluster_client_key}"
+  username                   = "${module.gke_cluster_2.username}"
+  password                   = "${module.gke_cluster_2.password}"
 }
 
 module "akamai_config" {
@@ -224,7 +223,7 @@ module "akamai_config" {
   gke_cluster_1_enabled = "${var.traffic_manager_gke_cluster_1_enabled}"
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
 
-  monitoring_cluster_ips = "${module.monitoring.monitoring_cluster_ips}"
+  monitoring_cluster_ips = "${module.monitoring_k8s.ingress_ip}"
 }
 
 module "cloudflare" {
@@ -243,28 +242,53 @@ module "cloudflare" {
   gke_cluster_2_enabled = "${var.traffic_manager_gke_cluster_2_enabled}"
 }
 
-module "monitoring" {
+module "monitoring_cluster" {
+  source = "gke"
+
+  project_name = "${var.project_name}"
+  tags         = "${local.tags}"
+
+  cluster_prefix     = "${var.project_name}-monitoring"
+  region             = "europe-west2-a"
+  google_project     = "${var.google_project_id}"
+  kubernetes_version = "${var.kubernetes_version}"
+  node_count         = "${var.node_count}"
+  machine_type       = "${local.gke_node}"
+
+  kubeconfig_path = "${local.monitoring}"
+}
+
+module "monitoring_k8s" {
+  source = "k8smonitoring"
+
+  kubeconfig_path            = "${local.monitoring}"
+  host                       = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate     = "${module.monitoring_cluster.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.monitoring_cluster.cluster_client_certificate}"
+  cluster_client_key         = "${module.monitoring_cluster.cluster_client_key}"
+  username                   = "${module.monitoring_cluster.username}"
+  password                   = "${module.monitoring_cluster.password}"
+
+  cluster_prefix = "${var.project_name}-monitoring"
+}
+
+module "monitoring_config" {
   source = "monitoring"
+
+  kubeconfig_path            = "${local.monitoring}"
+  host                       = "${module.monitoring_cluster.host}"
+  cluster_ca_certificate     = "${module.monitoring_cluster.cluster_ca_certificate}"
+  cluster_client_certificate = "${module.monitoring_cluster.cluster_client_certificate}"
+  cluster_client_key         = "${module.monitoring_cluster.cluster_client_key}"
+  username                   = "${module.monitoring_cluster.username}"
+  password                   = "${module.monitoring_cluster.password}"
 
   project_name = "${var.project_name}"
   tags         = "${local.tags}"
 
   cluster_ips = "${local.cluster_ips}"
 
-  azure_node_ssh_key  = "${var.azure_node_ssh_key}"
-  azure_client_id     = "${var.azure_client_id}"
-  azure_client_secret = "${var.azure_client_secret}"
-  kubernetes_version  = "${var.kubernetes_version}"
-  node_count          = "${var.node_count}"
-  node_sku            = "${local.aks_node}"
-
-  azure_resource_location = "${var.azure_resource_locations[0]}"
-
-  cluster_prefix     = "${var.project_name}-monitoring"
-  google_project     = "${var.google_project_id}"
-  kubernetes_version = "${var.kubernetes_version}"
-  node_count         = "${var.node_count}"
-  machine_type       = "${local.gke_node}"
+  cluster_prefix = "${var.project_name}-monitoring"
 
   prometheus_scrape_credentials = {
     username = "${var.prom_metrics_username}"
@@ -276,4 +300,8 @@ module "monitoring" {
   prometheus_ui_password = "${var.prometheus_ui_password}"
   cluster_issuer_email   = "${var.cluster_issuer_email}"
   monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
+
+  logging_namespace      = "${module.monitoring_k8s.logging_namespace}"
+  monitoring_namespace   = "${module.monitoring_k8s.monitoring_namespace}"
+  tiller_service_account = "${module.monitoring_k8s.tiller_service_account_name}"
 }
