@@ -184,8 +184,8 @@ module "cluster_services_gke2" {
   cluster_client_key         = "${module.gke_cluster_2.cluster_client_key}"
   letsencrypt_environment    = "${var.letsencrypt_environment}"
 
-  username                   = "${module.gke_cluster_2.username}"
-  password                   = "${module.gke_cluster_2.password}"
+  username = "${module.gke_cluster_2.username}"
+  password = "${module.gke_cluster_2.password}"
 
   depends_on_hack = "${module.k8s_config_gke_2.cluster_ingress_ip}"
 }

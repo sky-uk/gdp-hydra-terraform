@@ -94,7 +94,7 @@ provider "helm" {
 
 data "kubernetes_service" "ingress" {
   metadata {
-    name = "traefik-ingress-controller"
+    name      = "traefik-ingress-controller"
     namespace = "kube-system"
   }
 }
