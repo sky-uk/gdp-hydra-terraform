@@ -18,3 +18,4 @@ variable "cluster_ca_certificate" {}
 variable "username" {}
 variable "password" {}
 variable "monitoring_dns_name" {}
+variable "ingress_controller" {}

@@ -17,9 +17,6 @@ resource "helm_release" "kibana" {
     "${data.template_file.kibana_values.rendered}",
   ]
 
-  # depends_on = [
-  #   "helm_release.traefik",
-  # ]
   depends_on = ["null_resource.helm_init"]
 }
 

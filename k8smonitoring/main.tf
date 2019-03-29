@@ -11,6 +11,7 @@ variable "traefik_replica_count" {
 }
 
 variable "kubeconfig_path" {}
+variable "ingress_controller" {}
 
 provider "kubernetes" {
   host                   = "${var.host}"
@@ -94,7 +95,7 @@ provider "helm" {
 
 data "kubernetes_service" "ingress" {
   metadata {
-    name      = "traefik-ingress-controller"
+    name      = "${var.ingress_controller}"
     namespace = "kube-system"
   }
 

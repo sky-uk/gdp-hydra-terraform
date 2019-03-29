@@ -10,44 +10,13 @@ provider "kubernetes" {
   password               = "${var.password}"
 }
 
-resource "kubernetes_service" "ingress_service" {
+data "kubernetes_service" "ingress" {
   metadata {
-    name      = "terraform-ingress-controller"
+    name      = "${var.ingress_controller}"
     namespace = "kube-system"
-
-    labels = {
-      createdby  = "terraform"
-      app        = "traefik"
-      datacenter = "${var.cluster_name}"
-    }
   }
 
-  spec {
-    selector {
-      app     = "traefik"
-      release = "traefik-ingress-controller"
-    }
-
-    port {
-      name        = "http"
-      port        = 80
-      target_port = 80
-    }
-
-    port {
-      name        = "https"
-      port        = 443
-      target_port = 443
-    }
-
-    port {
-      name        = "metrics"
-      port        = 8080
-      target_port = 8080
-    }
-
-    type = "LoadBalancer"
-  }
+  depends_on = ["kubernetes_service.jaeger_collector"]
 }
 
 # create service account for tiller - server side of Helm

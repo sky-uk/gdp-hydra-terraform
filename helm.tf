@@ -199,7 +199,7 @@ module "cluster_services_monitoring" {
   tiller_service_account  = "${module.monitoring_k8s.tiller_service_account_name}"
   letsencrypt_environment = "${var.letsencrypt_environment}"
 
-  traefik_replica_count = "2"
+  traefik_replica_count = "${var.traefik_replicas_count}"
 
   cluster_issuer_email       = "${var.cluster_issuer_email}"
   kubeconfig_path            = "${local.monitoring}"

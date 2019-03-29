@@ -6,33 +6,6 @@ data "template_file" "jaeger_values" {
   }
 }
 
-#
-#data "helm_repository" "incubator" {
-#  name       = "incubator"
-#  url        = "https://kubernetes-charts-incubator.storage.googleapis.com/"
-#  depends_on = ["null_resource.helm_init"]
-#}
-#
-#resource "helm_release" "jaeger" {
-#  timeout = "900"
-#
-#  name       = "jaeger"
-#  chart      = "jaeger"
-#  namespace  = "${kubernetes_namespace.monitoring.metadata.0.name}"
-#  repository = "${data.helm_repository.incubator.metadata.0.name}"
-#
-#  # workaround to stop CI from complaining about keyring change
-#  keyring = ""
-#
-#  values = [
-#    "${data.template_file.jaeger_values.rendered}",
-#  ]
-#
-#  depends_on = [
-#    "helm_release.elasticsearch",
-#  ]
-#}
-
 resource "kubernetes_ingress" "jaeger-ui" {
   metadata {
     name      = "jaeger-ui"

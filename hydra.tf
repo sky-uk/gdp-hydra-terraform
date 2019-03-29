@@ -128,6 +128,8 @@ module "k8s_config_aks_1" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
+  ingress_controller = "${module.cluster_services_aks1.helm_traefik_name}"
+
   kubeconfig_path            = "${local.aks1}"
   cluster_ca_certificate     = "${module.aks_cluster_1.cluster_ca_certificate}"
   cluster_client_certificate = "${module.aks_cluster_1.cluster_client_certificate}"
@@ -151,6 +153,8 @@ module "k8s_config_aks_2" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  ingress_controller = "${module.cluster_services_aks2.helm_traefik_name}"
 
   kubeconfig_path            = "${local.aks2}"
   cluster_ca_certificate     = "${module.aks_cluster_2.cluster_ca_certificate}"
@@ -176,6 +180,8 @@ module "k8s_config_gke_1" {
     password = "${random_string.prom_metrics_password.result}"
   }
 
+  ingress_controller = "${module.cluster_services_gke1.helm_traefik_name}"
+
   kubeconfig_path            = "${local.gke1}"
   cluster_ca_certificate     = "${module.gke_cluster_1.cluster_ca_certificate}"
   cluster_client_certificate = "${module.gke_cluster_1.cluster_client_certificate}"
@@ -199,6 +205,8 @@ module "k8s_config_gke_2" {
     username = "${var.prom_metrics_username}"
     password = "${random_string.prom_metrics_password.result}"
   }
+
+  ingress_controller = "${module.cluster_services_gke2.helm_traefik_name}"
 
   kubeconfig_path            = "${local.gke2}"
   cluster_ca_certificate     = "${module.gke_cluster_2.cluster_ca_certificate}"
@@ -270,6 +278,8 @@ module "monitoring_k8s" {
   password                   = "${module.monitoring_cluster.password}"
 
   cluster_prefix = "${var.project_name}-monitoring"
+
+  ingress_controller = "${module.cluster_services_monitoring.helm_traefik_name}"
 }
 
 module "monitoring_config" {

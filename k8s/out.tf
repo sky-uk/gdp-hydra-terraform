@@ -1,5 +1,5 @@
 output "cluster_ingress_ip" {
-  value = "${kubernetes_service.ingress_service.load_balancer_ingress.0.ip}"
+  value = "${data.kubernetes_service.ingress.load_balancer_ingress.0.ip}"
 
   //The helm elements depend on some of the items created in this module
   // as modules don’t support the depends_on syntax we abuse this output variable
