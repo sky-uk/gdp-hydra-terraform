@@ -57,5 +57,6 @@ done
 # monitoring clusters only
 for conf in $(find . -type f -name 'kubeconfig_*' | grep  monitoring)
 do
+    echo "Installing jaeger_monitoring for kubeconf: $conf"
     install_jaeger_monitoring $conf
 done
