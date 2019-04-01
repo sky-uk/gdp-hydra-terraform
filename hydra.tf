@@ -14,6 +14,14 @@ provider "azurerm" {
 
 // Configure the Google Cloud provider
 provider "google" {
+  scopes = [
+    "https://www.googleapis.com/auth/compute",
+    "https://www.googleapis.com/auth/cloud-platform",
+    "https://www.googleapis.com/auth/ndev.clouddns.readwrite",
+    "https://www.googleapis.com/auth/devstorage.full_control",
+    "https://www.googleapis.com/auth/userinfo.email",
+  ]
+
   credentials = "${base64decode(var.google_creds_base64)}"
 }
 
