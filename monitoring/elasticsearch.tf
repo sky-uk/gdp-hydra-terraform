@@ -1,5 +1,5 @@
 locals {
-  elasticsearch_host = "elascticsearch-elasticsearch-client.elasticsearch"
+  elasticsearch_host = "elasticsearch-elasticsearch-client.elasticsearch"
 }
 
 resource "null_resource" "helm_init" {
@@ -17,7 +17,7 @@ data "template_file" "elasticsearch_values" {
 resource "helm_release" "elasticsearch" {
   timeout = "900"
 
-  name      = "elascticsearch"
+  name      = "elasticsearch"
   chart     = "stable/elasticsearch"
   namespace = "elasticsearch"
 
@@ -42,7 +42,7 @@ data "template_file" "elasticsearch_exporter_values" {
 resource "helm_release" "elasticsearch_exporter" {
   timeout = "900"
 
-  name      = "elascticsearch-exporter"
+  name      = "elasticsearch-exporter"
   chart     = "stable/elasticsearch-exporter"
   namespace = "elasticsearch"
 
