@@ -46,8 +46,8 @@ function install_jaeger_monitoring {
 get_configs
 for conf in $(find . -type f -name 'kubeconfig_*' | grep -v monitoring)
 do
-  echo "Installing hc-app for kubeconf: $conf"
-  install_hc_app $conf
+#   echo "Installing hc-app for kubeconf: $conf"
+#   install_hc_app $conf
   echo "Installing hotrod for kubeconf: $conf"
   install_hotrod $conf
   echo "Installing jaeger for kubeconf: $conf"
