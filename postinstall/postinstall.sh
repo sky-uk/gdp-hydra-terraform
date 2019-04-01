@@ -32,11 +32,11 @@ function install_jaeger {
 
 function install_jaeger_monitoring {
     kubeconfig=$1
-    kubectl create namespace observability
+    kubectl create namespace observability --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/crds/jaegertracing_v1_jaeger_crd.yaml --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/service_account.yaml --kubeconfig=$kubeconfig
-    kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role_binding.yaml --kubeconfig=$kubeconfig
+    kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/role.yaml --kubeconfig=$kubeconfig
     kubectl create -f https://raw.githubusercontent.com/jaegertracing/jaeger-operator/master/deploy/operator.yaml --kubeconfig=$kubeconfig
 
     kubectl create -f jaeger-monitoring/ --kubeconfig=$kubeconfig
@@ -48,12 +48,15 @@ for conf in $(find . -type f -name 'kubeconfig_*' | grep -v monitoring)
 do
   echo "Installing hc-app for kubeconf: $conf"
   install_hc_app $conf
+  echo "Installing hotrod for kubeconf: $conf"
   install_hotrod $conf
+  echo "Installing jaeger for kubeconf: $conf"
   install_jaeger $conf
 done
 
 # monitoring clusters only
 for conf in $(find . -type f -name 'kubeconfig_*' | grep  monitoring)
 do
+    echo "Installing jaeger_monitoring for kubeconf: $conf"
     install_jaeger_monitoring $conf
 done
