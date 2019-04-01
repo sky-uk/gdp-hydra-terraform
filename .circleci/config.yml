@@ -27,7 +27,7 @@ jobs:
 
   deploy:
     docker:
-      - image: paulgrav/cloudcli
+      - image: sky-public.jfrog.io/hydra/ci-tools
     environment:
     steps:
       - checkout
