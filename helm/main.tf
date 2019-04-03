@@ -104,13 +104,13 @@ resource "helm_release" "fluent_bit" {
 resource "helm_release" "healthcheck" {
   timeout = "900"
 
-  name = "healthcheck"
-  namespace ="healthcheck"
+  name      = "healthcheck"
+  namespace = "healthcheck"
 
   chart = "https://sky.jfrog.io/sky/helm-public/healthcheck-0.1.0.tgz"
 
   set {
-    name = "password"
+    name  = "password"
     value = "${var.monitoring_endpoint_password}"
   }
 

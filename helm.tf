@@ -11,13 +11,12 @@ module "helm_aks1" {
   username                   = "${module.aks_cluster_1.username}"
   password                   = "${module.aks_cluster_1.password}"
 
-  cluster_name           = "aks1"
-  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
-  tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
-  monitoring_namespace   = "${module.k8s_config_aks_1.monitoring_namespace}"
-  logging_namespace      = "${module.k8s_config_aks_1.logging_namespace}"
+  cluster_name                 = "aks1"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account       = "${module.k8s_config_aks_1.tiller_service_account_name}"
+  monitoring_namespace         = "${module.k8s_config_aks_1.monitoring_namespace}"
+  logging_namespace            = "${module.k8s_config_aks_1.logging_namespace}"
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
-
 
   fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
@@ -66,11 +65,11 @@ module "helm_aks2" {
   username                   = "${module.aks_cluster_2.username}"
   password                   = "${module.aks_cluster_2.password}"
 
-  cluster_name           = "aks2"
-  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
-  tiller_service_account = "${module.k8s_config_aks_2.tiller_service_account_name}"
-  monitoring_namespace   = "${module.k8s_config_aks_2.monitoring_namespace}"
-  logging_namespace      = "${module.k8s_config_aks_2.logging_namespace}"
+  cluster_name                 = "aks2"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account       = "${module.k8s_config_aks_2.tiller_service_account_name}"
+  monitoring_namespace         = "${module.k8s_config_aks_2.monitoring_namespace}"
+  logging_namespace            = "${module.k8s_config_aks_2.logging_namespace}"
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
@@ -113,14 +112,14 @@ module "helm_gke1" {
   username                   = "${module.gke_cluster_1.username}"
   password                   = "${module.gke_cluster_1.password}"
 
-  cluster_name           = "gke1"
-  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
-  tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
-  monitoring_namespace   = "${module.k8s_config_gke_1.monitoring_namespace}"
-  logging_namespace      = "${module.k8s_config_gke_1.logging_namespace}"
+  cluster_name                 = "gke1"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account       = "${module.k8s_config_gke_1.tiller_service_account_name}"
+  monitoring_namespace         = "${module.k8s_config_gke_1.monitoring_namespace}"
+  logging_namespace            = "${module.k8s_config_gke_1.logging_namespace}"
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
-  fluentd_ingress_ip     = "${module.monitoring_k8s.ingress_ip}"
+  fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
 }
@@ -161,11 +160,11 @@ module "helm_gke2" {
   username                   = "${module.gke_cluster_2.username}"
   password                   = "${module.gke_cluster_2.password}"
 
-  cluster_name           = "gke2"
-  monitoring_dns_name    = "${module.akamai_config.monitoring_dns_name}"
-  tiller_service_account = "${module.k8s_config_gke_2.tiller_service_account_name}"
-  monitoring_namespace   = "${module.k8s_config_gke_2.monitoring_namespace}"
-  logging_namespace      = "${module.k8s_config_gke_2.logging_namespace}"
+  cluster_name                 = "gke2"
+  monitoring_dns_name          = "${module.akamai_config.monitoring_dns_name}"
+  tiller_service_account       = "${module.k8s_config_gke_2.tiller_service_account_name}"
+  monitoring_namespace         = "${module.k8s_config_gke_2.monitoring_namespace}"
+  logging_namespace            = "${module.k8s_config_gke_2.logging_namespace}"
   monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
