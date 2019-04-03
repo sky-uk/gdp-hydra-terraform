@@ -16,6 +16,8 @@ module "helm_aks1" {
   tiller_service_account = "${module.k8s_config_aks_1.tiller_service_account_name}"
   monitoring_namespace   = "${module.k8s_config_aks_1.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_aks_1.logging_namespace}"
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
 
   fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
@@ -69,6 +71,7 @@ module "helm_aks2" {
   tiller_service_account = "${module.k8s_config_aks_2.tiller_service_account_name}"
   monitoring_namespace   = "${module.k8s_config_aks_2.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_aks_2.logging_namespace}"
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 
@@ -115,6 +118,8 @@ module "helm_gke1" {
   tiller_service_account = "${module.k8s_config_gke_1.tiller_service_account_name}"
   monitoring_namespace   = "${module.k8s_config_gke_1.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_gke_1.logging_namespace}"
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
+
   fluentd_ingress_ip     = "${module.monitoring_k8s.ingress_ip}"
 
   depends_on_hack = "${module.k8s_config_gke_1.cluster_ingress_ip}"
@@ -161,6 +166,7 @@ module "helm_gke2" {
   tiller_service_account = "${module.k8s_config_gke_2.tiller_service_account_name}"
   monitoring_namespace   = "${module.k8s_config_gke_2.monitoring_namespace}"
   logging_namespace      = "${module.k8s_config_gke_2.logging_namespace}"
+  monitoring_endpoint_password = "${var.monitoring_endpoint_password}"
 
   fluentd_ingress_ip = "${module.monitoring_k8s.ingress_ip}"
 

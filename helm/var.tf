@@ -6,7 +6,7 @@ variable "monitoring_dns_name" {
   type        = "string"
   description = "DNS name for monitoring cluster ingress"
 }
-
+variable "monitoring_endpoint_password" {}
 variable "fluentd_ingress_ip" {}
 
 variable "tiller_service_account" {}
