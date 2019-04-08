@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotrod
+  labels:
+    createdby: terraform
+    datacenter: cluster # "${var.cluster_name}"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hotrod
+  template:
+    metadata:
+      labels:
+        app: hotrod
+        createdby: terraform
+        datacenter: cluster # "${var.cluster_name}"
+    spec:
+      containers:
+      - name: hotrod
+        image: jaegertracing/example-hotrod:latest
+        args: 
+          - all
+        ports:
+        - containerPort: 8080
+        - containerPort: 8081
+        - containerPort: 8082
+        - containerPort: 8083
+        env:
+          - name: JAEGER_AGENT_HOST
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: JAEGER_AGENT_PORT
+            value: "6831"

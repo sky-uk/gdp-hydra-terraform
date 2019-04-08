@@ -1,0 +1,20 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: hotrod-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    ingress.kubernetes.io/rewrite-target: /hotrod
+  labels:
+    createdby: terraform
+    datacenter: cluster # ${var.cluster_name}
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /hotrod
+        backend:
+          serviceName: hotrod-service
+          servicePort: 8080
+

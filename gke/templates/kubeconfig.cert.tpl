@@ -15,6 +15,12 @@ preferences: {}
 users:
 - name: user-${cluster_name}
   user:
-    client-certificate-data: ${client_cert}
-    client-key-data: ${client_key}
-
+    auth-provider:
+      config:
+        access-token: ${access_token}
+        cmd-args: config config-helper --format=json
+        cmd-path: /usr/local/google-cloud-sdk/bin/gcloud
+        expiry: "${timeadd(timestamp(), "1h")}"
+        expiry-key: '{.credential.token_expiry}'
+        token-key: '{.credential.access_token}'
+      name: gcp

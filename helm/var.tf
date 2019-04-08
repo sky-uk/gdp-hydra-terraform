@@ -1,7 +1,3 @@
-variable "client_certificate" {}
-variable "client_key" {}
-variable "cluster_ca_certificate" {}
-variable "host" {}
 variable "enable_traefik" {}
 variable "enable_prometheus" {}
 variable "cluster_name" {}
@@ -11,6 +7,16 @@ variable "monitoring_dns_name" {
   description = "DNS name for monitoring cluster ingress"
 }
 
-variable "fluentd_ingress_ip" {
-  
-}
+variable "monitoring_endpoint_password" {}
+variable "fluentd_ingress_ip" {}
+
+variable "tiller_service_account" {}
+variable "monitoring_namespace" {}
+variable "logging_namespace" {}
+variable "kubeconfig_path" {}
+variable "host" {}
+variable "cluster_ca_certificate" {}
+variable "cluster_client_certificate" {}
+variable "cluster_client_key" {}
+variable "username" {}
+variable "password" {}

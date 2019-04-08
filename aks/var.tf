@@ -54,3 +54,5 @@ variable "tags" {
   type        = "map"
   description = "Tags to apply to all resources"
 }
+
+variable "kubeconfig_path" {}

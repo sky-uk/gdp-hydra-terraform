@@ -1,43 +1,57 @@
 locals {
-  elasticsearch_host = "elascticsearch-elasticsearch-coordinating-only"
+  elasticsearch_host = "elasticsearch-elasticsearch-client.elasticsearch"
+}
+
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
+  }
 }
 
 data "template_file" "elasticsearch_values" {
   template = "${file("${path.module}/values/elasticsearch.values.yaml")}"
 
-  vars {    
-  }
+  vars {}
 }
 
 resource "helm_release" "elasticsearch" {
-  name       = "elascticsearch"  
-  chart      = "stable/elasticsearch"
-  namespace  = "elasticsearch"
+  timeout = "900"
+
+  name      = "elasticsearch"
+  chart     = "stable/elasticsearch"
+  namespace = "elasticsearch"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
 
   values = [
     "${data.template_file.elasticsearch_values.rendered}",
-  ]  
+  ]
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 data "template_file" "elasticsearch_exporter_values" {
   template = "${file("${path.module}/values/elasticsearch-exporter.values.yaml")}"
 
-  vars {    
+  vars {
+    elasticsearch_host = "${local.elasticsearch_host}"
   }
 }
 
 resource "helm_release" "elasticsearch_exporter" {
-  name       = "elascticsearch"  
-  chart      = "stable/elasticsearch-exporter"
-  namespace  = "elasticsearch"
+  timeout = "900"
+
+  name      = "elasticsearch-exporter"
+  chart     = "stable/elasticsearch-exporter"
+  namespace = "elasticsearch"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
 
   values = [
     "${data.template_file.elasticsearch_exporter_values.rendered}",
-  ]  
+  ]
+
+  depends_on = ["null_resource.helm_init"]
 }

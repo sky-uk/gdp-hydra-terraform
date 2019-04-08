@@ -4,7 +4,7 @@ output "ips" {
 }
 
 output "kubeconfigs" {
-  description = "Map of the kuber config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url"
+  description = "Map of the kube config files for all clusters. These files are also zipped up and uploaded to kubeconfig_url"
   sensitive   = true
 
   value = {
@@ -18,33 +18,6 @@ output "kubeconfigs" {
 output "edge_url" {
   description = "The URL of the edge routing (Akamai or Cloudflare)"
   value       = "${var.edge_dns_name}.${var.edge_dns_zone}"
-}
-
-output "gcr_url" {
-  description = "The URL of the docker registry for GCP clusters"
-  value       = "${module.gcr.url}"
-}
-
-output "gcr_credentials" {
-  description = "JSON credentials file for the docker registry for GCP clusters"
-  sensitive   = true
-  value       = "${module.gcr.credentials}"
-}
-
-output "acr_url" {
-  description = "The URL of the docker registry for Azure clusters"
-  value       = "${module.acr.url}"
-}
-
-output "acr_username" {
-  description = "The username for the docker registry for Azure clusters"
-  value       = "${module.acr.username}"
-}
-
-output "acr_password" {
-  description = "The password for the docker registry for Azure clusters"
-  sensitive   = true
-  value       = "${module.acr.password}"
 }
 
 output "kubeconfig_url" {
@@ -64,7 +37,7 @@ output "kubeconfig_url" {
 # }
 
 output "monitoring_kubeconfig" {
-  value = "${module.monitoring.kubeconfig}"
+  value = "${module.monitoring_cluster.kubeconfig}"
 }
 
 output "cluster_dns_name" {
@@ -73,4 +46,12 @@ output "cluster_dns_name" {
 
 output "monitoring_dns_name" {
   value = "${module.akamai_config.monitoring_dns_name}"
+}
+
+output "monitoring_prometheus_username" {
+  value = "${var.prom_metrics_username}"
+}
+
+output "monitoring_prometheus_password" {
+  value = "${random_string.prom_metrics_password.result}"
 }

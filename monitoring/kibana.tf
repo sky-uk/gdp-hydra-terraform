@@ -3,10 +3,12 @@ data "template_file" "kibana_values" {
 }
 
 resource "helm_release" "kibana" {
+  timeout = "900"
+
   version   = "0.14.7"
   name      = "kibana"
   chart     = "stable/kibana"
-  namespace = "logging"
+  namespace = "${var.logging_namespace}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -15,15 +17,13 @@ resource "helm_release" "kibana" {
     "${data.template_file.kibana_values.rendered}",
   ]
 
-  # depends_on = [
-  #   "helm_release.traefik",
-  # ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "kubernetes_secret" "kibana_password" {
   metadata {
     name      = "kibana"
-    namespace = "logging"
+    namespace = "${var.logging_namespace}"
   }
 
   data {
@@ -42,7 +42,7 @@ resource "kubernetes_secret" "kibana_password" {
 resource "kubernetes_ingress" "kibana-ingress" {
   metadata {
     name      = "kibana"
-    namespace = "logging"
+    namespace = "${var.logging_namespace}"
 
     annotations {
       "kubernetes.io/ingress.class"               = "traefik"

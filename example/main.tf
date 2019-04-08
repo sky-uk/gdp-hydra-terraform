@@ -5,90 +5,82 @@ variable azure_client_id {}
 variable azure_client_secret {}
 variable azure_tenant_id {}
 variable azure_subscription_id {}
-variable cloudflare_email {}
-variable cloudflare_token {}
 variable edge_dns_zone {}
 variable edge_dns_name {}
+variable kubernetes_version {}
+variable azure_node_ssh_key {}
+variable prometheus_ui_password {}
+variable cluster_issuer_email {}
+variable akamai_access_token {}
+variable akamai_client_token {}
+variable akamai_host {}
+variable akamai_client_secret {}
+variable node_count {}
+variable node_type {}
+
+# generate passowrd for monitoring endpoint
+resource "random_string" "monitoring_password" {
+  length  = 16
+  special = true
+}
 
 module "hydra" {
-  source = "../"
+  "source" = ".."
 
-  project_name = "${var.project_name}"
+  "project_name"          = "${var.project_name}"
+  "azure_client_id"       = "${var.azure_client_id}"
+  "azure_client_secret"   = "${var.azure_client_secret}"
+  "azure_tenant_id"       = "${var.azure_tenant_id}"
+  "azure_subscription_id" = "${var.azure_subscription_id}"
+  "azure_node_ssh_key"    = "${var.azure_node_ssh_key}"
+  "google_project_id"     = "${var.google_project_id}"
+  "google_creds_base64"   = "${var.google_creds_base64}"
+  "akamai_host"           = "${var.akamai_host}"
+  "akamai_client_secret"  = "${var.akamai_client_secret}"
+  "akamai_access_token"   = "${var.akamai_access_token}"
+  "akamai_client_token"   = "${var.akamai_client_token}"
+  "kubernetes_version"    = "${var.kubernetes_version}"
 
-  enable_traefik    = true
-  enable_prometheus = true
+  "node_type"                             = "${var.node_type}"
+  "node_count"                            = "${var.node_count}"
+  "traffic_manager_aks_cluster_1_enabled" = true
+  "traffic_manager_aks_cluster_2_enabled" = true
+  "traffic_manager_gke_cluster_1_enabled" = true
+  "traffic_manager_gke_cluster_2_enabled" = true
 
-  monitoring_endpoint_password = "monitor"
-  traefik_replicas_count       = 3
+  "akamai_enabled"               = true
+  "edge_dns_zone"                = "${var.edge_dns_zone}"
+  "edge_dns_name"                = "${var.edge_dns_name}"
+  "monitoring_endpoint_password" = "${random_string.monitoring_password.result}"
 
-  node_type  = "small"
-  node_count = 3
+  cloudflare_enabled = false
+  cloudflare_email   = "empty"
+  cloudflare_token   = "empty"
 
-  azure_client_id       = "${var.azure_client_id}"
-  azure_client_secret   = "${var.azure_client_secret}"
-  azure_tenant_id       = "${var.azure_tenant_id}"
-  azure_subscription_id = "${var.azure_subscription_id}"
-  azure_node_ssh_key    = "${file("~/.ssh/id_rsa.pub")}"
-
-  google_creds_base64 = "${var.google_creds_base64}"
-  google_project_id   = "${var.google_project_id}"
-
-  edge_dns_zone = "${var.edge_dns_zone}"
-  edge_dns_name = "${var.edge_dns_name}"
-
-  akamai_enabled       = false
-  akamai_host          = ""
-  akamai_client_secret = ""
-  akamai_access_token  = ""
-  akamai_client_token  = ""
-
-  cloudflare_enabled = true
-  cloudflare_email   = "${var.cloudflare_email}"
-  cloudflare_token   = "${var.cloudflare_token}"
-}
-
-// Below we use the credentials from each of the clusters to deploy Kuberentes objects
-// you can also do the same with the helm provider https://github.com/mcuadros/terraform-provider-helm
-module "aks_1_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["aks_cluster_1"], "host")}"
-}
-
-module "aks_2_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["aks_cluster_2"], "host")}"
-}
-
-module "gke_1_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["gke_cluster_1"], "host")}"
-}
-
-module "gke_2_deploy" {
-  source = "./deploy"
-
-  cluster_client_certificate = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_client_certificate")}"
-  cluster_client_key         = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_client_key")}"
-  cluster_ca_certificate     = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "cluster_ca_certificate")}"
-  host                       = "${lookup(module.hydra.kube_conn_details["gke_cluster_2"], "host")}"
+  prometheus_ui_password = "${var.prometheus_ui_password}"
+  cluster_issuer_email   = "${var.cluster_issuer_email}"
 }
 
 output "ips" {
   value = "${module.hydra.ips}"
 }
 
-output "url" {
+output "kubeconfig_url" {
   value = "${module.hydra.kubeconfig_url}"
+}
+
+output "cluster_dns_name" {
+  value = "${module.hydra.cluster_dns_name}"
+}
+
+output "monitoring_dns_name" {
+  value = "${module.hydra.monitoring_dns_name}"
+}
+
+output "monitoring_username" {
+  value = "${module.hydra.monitoring_prometheus_username}"
+}
+
+output "monitoring_password" {
+  value = "${module.hydra.monitoring_prometheus_password}"
 }

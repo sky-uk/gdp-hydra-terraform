@@ -1,14 +1,3 @@
-resource "kubernetes_namespace" "monitoring" {
-  metadata {
-    labels = {
-      createdby  = "terraform"
-      datacenter = "${var.cluster_name}"
-    }
-
-    name = "monitoring"
-  }
-}
-
 resource "kubernetes_secret" "prometheus_metrics_password" {
   metadata {
     name      = "prometheus-metrics"
@@ -57,7 +46,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
           path_regex = "/federate"
 
           backend {
-            service_name = "prometheus"
+            service_name = "prometheus-prometheus-oper-prometheus"
             service_port = 9090
           }
         }

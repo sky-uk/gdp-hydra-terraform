@@ -1,11 +1,24 @@
+# This module defines services/configuration that are common to all clusters
+# including the monitoring cluster.
+
+resource "null_resource" "helm_init" {
+  provisioner "local-exec" {
+    command = "helm init --service-account ${var.tiller_service_account} --wait --kubeconfig ${var.kubeconfig_path}"
+  }
+}
+
 provider "helm" {
-  version = "~> 0.6"
+  install_tiller  = true
+  service_account = "${var.tiller_service_account}"
+  tiller_image    = "gcr.io/kubernetes-helm/tiller:v2.11.0"
 
   kubernetes {
-    client_certificate     = "${var.client_certificate}"
-    client_key             = "${var.client_key}"
-    cluster_ca_certificate = "${var.cluster_ca_certificate}"
     host                   = "${var.host}"
+    cluster_ca_certificate = "${var.cluster_ca_certificate}"
+    client_certificate     = "${var.cluster_client_certificate}"
+    client_key             = "${var.cluster_client_key}"
+    username               = "${var.username}"
+    password               = "${var.password}"
   }
 }
 
@@ -28,6 +41,7 @@ resource "helm_release" "traefik" {
   name      = "traefik-ingress-controller"
   chart     = "stable/traefik"
   namespace = "kube-system"
+  timeout   = "900"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -35,81 +49,42 @@ resource "helm_release" "traefik" {
   values = [
     "${data.template_file.traefik_values.rendered}",
   ]
-}
 
-resource "helm_release" "prometheus_operator" {
-  name       = "prometheus-operator"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "prometheus-operator"
-  namespace  = "monitoring"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  set {
-    name  = "rbacEnable"
-    value = "false"
-  }
-}
-
-resource "helm_release" "registry_rewriter" {
-  name      = "registry-rewriter"
-  chart     = "https://github.com/lawrencegripper/MutatingAdmissionsController/releases/download/v0.1.1/registry-rewriter-0.1.0.tgz"
-  namespace = "kube-system"
-
-  # workaround to stop CI from complaining about keyring change
-  keyring = ""
-
-  set {
-    name  = "containerRegistryUrl"
-    value = "${var.registry_url}"
-  }
-
-  set {
-    name  = "caBundle"
-    value = "${base64encode(var.cluster_ca_certificate)}"
-  }
-
-  set {
-    name  = "webhookImage"
-    value = "lawrencegripper/imagenamemutatingcontroller:30"
-  }
-
-  set {
-    name  = "imagePullSecretName"
-    value = "${substr(var.cluster_name, 0, 3) == "gke" ? "" : "cluster-local-image-secret"}"
-  }
-
-  depends_on = [
-    "helm_release.prometheus_operator",
-  ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "cert_manager" {
+  timeout = "900"
+
   name      = "cert-manager"
   chart     = "stable/cert-manager"
   namespace = "kube-system"
+  version   = "v0.5.2"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
 
   set {
     name  = "rbac.create"
-    value = "false"
+    value = "true"
   }
 
   set {
     name  = "ingressShim.defaultIssuerName"
-    value = "letsencrypt-staging"
+    value = "letsencrypt-${var.letsencrypt_environment}"
   }
 
   set {
     name  = "ingressShim.defaultIssuerKind"
     value = "ClusterIssuer"
   }
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "cluster_certificates" {
+  timeout = "900"
+
   name      = "cluster-certificates"
   chart     = "${path.module}/charts/cluster-certs"
   namespace = "kube-system"
@@ -129,6 +104,7 @@ resource "helm_release" "cluster_certificates" {
   }
 
   depends_on = [
+    "null_resource.helm_init",
     "helm_release.cert_manager",
   ]
 }

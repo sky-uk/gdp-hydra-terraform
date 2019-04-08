@@ -2,9 +2,13 @@
 *.tfstate*
 *.private.*
 crash.log
+*.orig
 
 kubeconfig.zip
+*kubeconfig
 terraform-provider-akamai
 terraform-provider-helm
 
 monitoring/prometheus.yml
+.DS_Store
+.vscode

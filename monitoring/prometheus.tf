@@ -1,7 +1,7 @@
 resource "kubernetes_service" "workers" {
   metadata {
     name      = "hydra-workers"
-    namespace = "monitoring"
+    namespace = "${var.monitoring_namespace}"
 
     labels {
       hydra_role = "worker"
@@ -17,7 +17,7 @@ resource "kubernetes_service" "workers" {
 resource "kubernetes_secret" "prometheus_workers_password" {
   metadata {
     name      = "prometheus-workers"
-    namespace = "monitoring"
+    namespace = "${var.monitoring_namespace}"
   }
 
   data {
@@ -29,11 +29,11 @@ resource "kubernetes_secret" "prometheus_workers_password" {
 }
 
 resource "helm_release" "prometheus_master" {
-  name       = "prometheus-master"
-  version    = "0.0.51"
-  repository = "https://s3-eu-west-1.amazonaws.com/coreos-charts/stable/"
-  chart      = "prometheus"
-  namespace  = "monitoring"
+  timeout = "900"
+
+  name      = "prometheus-master"
+  chart     = "stable/prometheus-operator"
+  namespace = "${var.monitoring_namespace}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -45,12 +45,15 @@ resource "helm_release" "prometheus_master" {
   # depends_on = [
   #   "helm_release.prometheus_operator",
   # ]
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "helm_release" "worker_endpoints" {
+  timeout = "900"
+
   name      = "workerendpoints"
   chart     = "${path.module}/charts/monitoringendpoints"
-  namespace = "monitoring"
+  namespace = "${var.monitoring_namespace}"
 
   # workaround to stop CI from complaining about keyring change
   keyring = ""
@@ -65,12 +68,14 @@ resource "helm_release" "worker_endpoints" {
   lifecycle {
     ignore_changes = ["chart"]
   }
+
+  depends_on = ["null_resource.helm_init"]
 }
 
 resource "kubernetes_secret" "prometheus_password" {
   metadata {
     name      = "prometheus"
-    namespace = "monitoring"
+    namespace = "${var.monitoring_namespace}"
   }
 
   data {
@@ -89,14 +94,14 @@ resource "kubernetes_secret" "prometheus_password" {
 resource "kubernetes_ingress" "prometheus-ingress" {
   metadata {
     name      = "prometheus"
-    namespace = "monitoring"
+    namespace = "${var.monitoring_namespace}"
 
     annotations {
       "kubernetes.io/ingress.class"               = "traefik"
       "traefik.ingress.kubernetes.io/auth-type"   = "basic"
       "traefik.ingress.kubernetes.io/auth-secret" = "prometheus"
       "kubernetes.io/tls-acme"                    = "true"
-      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-production"
+      "certmanager.k8s.io/cluster-issuer"         = "letsencrypt-${var.letsencrypt_environment}"
       "ingress.kubernetes.io/ssl-redirect"        = "true"
     }
 
@@ -119,7 +124,7 @@ resource "kubernetes_ingress" "prometheus-ingress" {
           path_regex = "/prometheus"
 
           backend {
-            service_name = "prometheus-master"
+            service_name = "prometheus-master-promethe-prometheus"
             service_port = 9090
           }
         }
